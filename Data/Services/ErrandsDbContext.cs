@@ -12,6 +12,7 @@ namespace Errands.Data.Services
 
         }
         public DbSet<Errand> Errands { get; set; }
+        public DbSet<FileModel> FileModels { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

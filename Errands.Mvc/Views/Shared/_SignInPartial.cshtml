@@ -1,5 +1,25 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿
+@inject SignInManager<User> signInManager
+
+@if (!signInManager.IsSignedIn(User))
+{
+    
+        <div class="sidebar__sign-in sign-in">
+            <form class="sign-in__form form-horizontal" asp-action="Login" asp-controller="Account" method="post">
+                <h2 class="sign-in__title">Sign in</h2>
+                <span class="sign-in__dash"></span>
+
+                <label for="email" class="sign-in__label">Email</label>
+                <input name="email" type="email" class="sign-in__input">
+
+                <label for="password" class="sign-in__label">Password</label>
+                <input name="password" type="password" class="sign-in__input">
+
+                <input type="checkbox" name="RememberMe" id="RememberMe" data-val="true" value="true" class="sign-in__checkbox custom-checkbox">
+                <label for="RememberMe" class="sign-in__label">Remember me</label>
+
+                <button type="submit" class="sign-in__button btn-submit">Submit</button>
+                <a class="sign-in__link-signin" asp-action="Login" asp-controller="Account">Register</a>
+            </form>
+        </div>
 }

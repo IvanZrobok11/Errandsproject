@@ -1,0 +1,10 @@
+C:\Users\LapStore\source\с#project\ErrandsProject\Application\bin\Debug\netcoreapp3.1\Errrands.Application.deps.json
+C:\Users\LapStore\source\с#project\ErrandsProject\Application\bin\Debug\netcoreapp3.1\Errrands.Application.dll
+C:\Users\LapStore\source\с#project\ErrandsProject\Application\bin\Debug\netcoreapp3.1\Errrands.Application.pdb
+C:\Users\LapStore\source\с#project\ErrandsProject\Application\obj\Debug\netcoreapp3.1\Errrands.Application.csproj.AssemblyReference.cache
+C:\Users\LapStore\source\с#project\ErrandsProject\Application\obj\Debug\netcoreapp3.1\Errrands.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\LapStore\source\с#project\ErrandsProject\Application\obj\Debug\netcoreapp3.1\Errrands.Application.AssemblyInfoInputs.cache
+C:\Users\LapStore\source\с#project\ErrandsProject\Application\obj\Debug\netcoreapp3.1\Errrands.Application.AssemblyInfo.cs
+C:\Users\LapStore\source\с#project\ErrandsProject\Application\obj\Debug\netcoreapp3.1\Errrands.Application.csproj.CoreCompileInputs.cache
+C:\Users\LapStore\source\с#project\ErrandsProject\Application\obj\Debug\netcoreapp3.1\Errrands.Application.dll
+C:\Users\LapStore\source\с#project\ErrandsProject\Application\obj\Debug\netcoreapp3.1\Errrands.Application.pdb

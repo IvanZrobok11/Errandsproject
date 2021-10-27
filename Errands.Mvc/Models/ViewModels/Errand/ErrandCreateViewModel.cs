@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,5 +11,6 @@ namespace Errands.Mvc.Models.ViewModels
         public string Title { get; set; }
         public string Desc { get; set; }
         public decimal Cost { get; set; }
+        public IFormFileCollection Files { get; set; }
     }
 }

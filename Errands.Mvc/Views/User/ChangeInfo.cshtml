@@ -1,0 +1,31 @@
+﻿@model UserViewModel
+
+<div>
+    <form asp-action="ChangeInfo" method="post">
+        <label>Nickname</label>
+        <input type="text" asp-for="@Model.UserName" />
+        <label>FirstName</label>
+        <input type="text" asp-for="@Model.FirstName" />
+        <label>LastName</label>
+        <input type="text" asp-for="@Model.LastName" />
+        <button type="submit">Change</button>
+    </form>
+    <h2>@TempData["message"]</h2>
+    @if (Model.Path == null)
+    {
+        <img src="/img/w128h1281338911651user.png" alt="Alternate Text" />
+        <form asp-action="ChangeLogo" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" id="file"/>
+            <button type="submit">Add logo </button>
+        </form>
+        @*@(Model.Logo.Path==null? "Add logo": "Change logo")*@
+    }
+    else
+    {
+        <img src="@Model.Path" alt="Alternate Text" />
+        <form asp-action="ChangeLogo" method="post" enctype="multipart/form-data">
+            <input type="file" id="file"  name="file"/>
+            <button type="submit">Change logo</button>
+        </form>
+    }
+</div>

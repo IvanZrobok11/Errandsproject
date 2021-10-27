@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
 namespace Errands.Mvc.Controllers
 {
     public class HomeController : Controller
@@ -17,7 +17,7 @@ namespace Errands.Mvc.Controllers
         }
         public IActionResult Index()
         {
-            return View(_repository.Errands);
+            return View(_repository.Errands.ToList());
         }
     }
 }

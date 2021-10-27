@@ -12,8 +12,9 @@ namespace Errands.Data.Services
         Errand GetErrandById(Guid id);
         IEnumerable<Errand> Search(string searchText, string userid);
         IEnumerable<Errand> GetErrandsByUserId(string id);
-        Task CreateErrandAsync(Errand errand);
+        Task CreateErrandAsync(Errand errand, IEnumerable<FileModel> files);
         Task UpdateAsync(Errand errand);
         Task DeleteAsync(Guid id);
+        FileModel GetFileById(Guid id);
     }
 }

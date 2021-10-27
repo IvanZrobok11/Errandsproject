@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Errands.Domain.Models
 {
@@ -12,6 +13,7 @@ namespace Errands.Domain.Models
         public bool Active { get; set; }
         public DateTime CreationDate { get; set; }
         public string HelperUserId { get; set; }
+        public List<FileModel> FileModels { get; set; }
 
         public string UserId { get; set; }// foreingkey 
         public User User { get; set; }//navigation property

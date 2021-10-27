@@ -1,5 +1,6 @@
 ﻿using Errands.Data.Services;
 using Errands.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,18 +15,12 @@ namespace Errands.Data.Services
         public ErrandsRepository(ErrandsDbContext context)
         {
             _context = context;
-        }
-        public IEnumerable<Errand> Errands => _context.Errands;
 
-        public async Task CreateErrandAsync(Errand errand)
-        {
-            await _context.Errands.AddAsync(errand);
-            await _context.SaveChangesAsync();
         }
-
+        public IEnumerable<Errand> Errands => _context.Errands.Include(f => f.FileModels);
         public Errand GetErrandById(Guid id)
         {
-            var errand = _context.Errands.Where(e => e.Id == id).SingleOrDefault();
+            var errand = _context.Errands.Include(f => f.FileModels).Where(e => e.Id == id).SingleOrDefault();
             return errand;
         }
         public async Task DeleteAsync(Guid id)
@@ -35,21 +30,10 @@ namespace Errands.Data.Services
             _context.Errands.Remove(errand);
             await _context.SaveChangesAsync();
         }
-
-
         public IEnumerable<Errand> GetErrandsByUserId(string id)
         {
             var errands = _context.Errands.Where(i => i.UserId == id).ToList();
             return errands;
-        }
-
-        public async Task UpdateAsync(Errand errand)
-        {
-            /*var err = _context.Errands.FirstOrDefault(e => e.Id == errand.Id);
-            Errand entry = err;
-            entry.Price = errand.Price;*/
-            _context.Update(errand);
-            await _context.SaveChangesAsync();
         }
         public IEnumerable<Errand> Search(string searchText, string userid)
         {
@@ -61,6 +45,34 @@ namespace Errands.Data.Services
             }
 
             return result;
+        }
+        public async Task UpdateAsync(Errand errand)
+        {
+            /*var err = _context.Errands.FirstOrDefault(e => e.Id == errand.Id);
+            Errand entry = err;
+            entry.Price = errand.Price;*/
+            _context.Update(errand);
+            await _context.SaveChangesAsync();
+        }
+        public async Task CreateErrandAsync(Errand errand, IEnumerable<FileModel> files)
+        {
+            await _context.Errands.AddAsync(errand);
+            if (files != null)
+            {
+                await _context.AddRangeAsync(files);
+            }
+            await _context.SaveChangesAsync();
+        }
+        public async Task AttachFileAsync(FileModel file)
+        {
+            await _context.FileModels.AddAsync(file);
+            await _context.SaveChangesAsync();
+        }
+
+        public FileModel GetFileById(Guid id)
+        {
+            var file = _context.FileModels.Where(e => e.Id == id).SingleOrDefault();
+            return file;
         }
 
     }

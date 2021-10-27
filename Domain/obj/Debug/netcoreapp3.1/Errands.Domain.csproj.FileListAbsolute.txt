@@ -1,0 +1,10 @@
+C:\Users\LapStore\source\с#project\ErrandsProject\Domain\bin\Debug\netcoreapp3.1\Errands.Domain.deps.json
+C:\Users\LapStore\source\с#project\ErrandsProject\Domain\bin\Debug\netcoreapp3.1\Errands.Domain.dll
+C:\Users\LapStore\source\с#project\ErrandsProject\Domain\bin\Debug\netcoreapp3.1\Errands.Domain.pdb
+C:\Users\LapStore\source\с#project\ErrandsProject\Domain\obj\Debug\netcoreapp3.1\Errands.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\LapStore\source\с#project\ErrandsProject\Domain\obj\Debug\netcoreapp3.1\Errands.Domain.AssemblyInfoInputs.cache
+C:\Users\LapStore\source\с#project\ErrandsProject\Domain\obj\Debug\netcoreapp3.1\Errands.Domain.AssemblyInfo.cs
+C:\Users\LapStore\source\с#project\ErrandsProject\Domain\obj\Debug\netcoreapp3.1\Errands.Domain.csproj.CoreCompileInputs.cache
+C:\Users\LapStore\source\с#project\ErrandsProject\Domain\obj\Debug\netcoreapp3.1\Errands.Domain.dll
+C:\Users\LapStore\source\с#project\ErrandsProject\Domain\obj\Debug\netcoreapp3.1\Errands.Domain.pdb
+C:\Users\LapStore\source\с#project\ErrandsProject\Domain\obj\Debug\netcoreapp3.1\Errands.Domain.csproj.AssemblyReference.cache

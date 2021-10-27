@@ -1,5 +1,7 @@
 using Errands.Data.Services;
 using Errands.Domain.Models;
+using Errands.Mvc.Services;
+using Errrands.Application.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -35,7 +37,11 @@ namespace Errands.Mvc
                 .AddEntityFrameworkStores<ErrandsDbContext>()
                 .AddDefaultTokenProviders()
                 ;
-
+            services.AddTransient<IErrandsRepository, ErrandsRepository>();
+            services.AddTransient<IFileProfile, BoxFile>();
+            services.AddTransient<LogoImageProfile>();
+            services.AddTransient<UserRepository>();
+            services.AddTransient<FileServices>();
             services.AddControllersWithViews();
         }
 
@@ -57,7 +63,7 @@ namespace Errands.Mvc
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default", pattern: "{controller=Home}/{action=Index}");
+                endpoints.MapControllerRoute("default", pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

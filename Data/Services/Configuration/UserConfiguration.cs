@@ -18,9 +18,9 @@ namespace Errands.Data.Services.Configuration
                 .HasColumnName("user_name");
             
 
-            /*entity.HasMany(e => e.Errands)
+            entity.HasOne(e => e.Logo)
                 .WithOne(u => u.User)
-                .HasForeignKey(k=>k.UserId);   */ 
+                .HasForeignKey<FileModel>(k=>k.UserId);   
         }
     }
 }

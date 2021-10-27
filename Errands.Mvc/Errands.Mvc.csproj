@@ -17,4 +17,9 @@
     <ProjectReference Include="..\Data\Errands.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\repos\usersFiles\logos\" />
+    <Folder Include="wwwroot\repos\usersFiles\workingFiles\" />
+  </ItemGroup>
+
 </Project>

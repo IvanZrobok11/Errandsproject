@@ -1,0 +1,18 @@
+﻿
+@model UserViewModel
+
+<div>
+    Email: @Model.Email
+    Nickname: @Model.UserName <br />
+    FirstName: @Model.FirstName<br />
+    LastName: @Model.LastName<br />
+    @if (Model.Path == null)
+    {
+        <img src="/img/w128h1281338911651user.png" alt="Alternate Text" />
+    }
+    else
+	{
+	    <img src="@Model.Path" alt="Alternate Text" />
+	}
+    <a asp-action="ChangeInfo">ChangeInfo</a>
+</div>

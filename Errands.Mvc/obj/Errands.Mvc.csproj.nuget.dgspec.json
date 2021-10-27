@@ -82,6 +82,9 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
+              "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application\\Errrands.Application.csproj": {
+                "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application\\Errrands.Application.csproj"
+              },
               "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj": {
                 "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj"
               }
@@ -97,6 +100,30 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Magick.NET.Core": {
+              "target": "Package",
+              "version": "[8.3.3, )"
+            },
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[3.1.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.1.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.20, )"
+            },
+            "SixLabors.ImageSharp.Web": {
+              "target": "Package",
+              "version": "[1.0.4, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

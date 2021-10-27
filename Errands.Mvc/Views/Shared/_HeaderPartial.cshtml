@@ -1,5 +1,68 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿
+@inject SignInManager<User> signInManager
+<header class="header">
+    <div class="header__container">
+        <div class="header__logo">
+            <a asp-action="Index" asp-controller="Home">Errands</a>
+        </div>
+        <div class="header__menu menu">
+            <div class="menu__icon">
+                <span></span>
+            </div>
+            <nav class="menu__body">
+                <ul class="menu__list">
+
+                    <!-- <li><a href="#" class="menu__user-logo"><img src="img/w128h1281338911651user.png" alt=""></a></li>  -->
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <li><a href="#" class="menu__message"><img src="/img/messenger.png" alt=""><span>1</span></a></li>
+                        <li>
+                            <div class="menu__click">
+                                <span>
+                                    <img src="~/img/icons8-плюс-24.png" alt="">
+                                </span>
+                                <span class="menu__arrow arrow-down"></span>
+                            </div>
+                            <ul class="menu__sub-list">
+                                <li>
+                                    <a asp-action="Create" asp-controller="Errand" class="menu__sub-link">Add new</a>
+                                </li>
+                                <li>
+                                    <a asp-action="List" asp-controller="Errand" class="menu__sub-link">My list</a>
+                                </li>
+                                <li>
+                                    <a href="#" class="menu__sub-link">I done</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="menu__click">
+                                <span href="" class="menu__user-logo">
+                                    <img src="~/img/w128h1281338911651user.png" alt="">
+                                </span>
+                                <span class="arrow-down"></span>
+                            </div>
+                            <ul class="menu__sub-list ">
+                                <li>
+                                    <a href="" class="menu__sub-link">Profile</a>
+                                </li>
+                                <li>
+                                    <a href="" class="menu__sub-link">Setting</a>
+                                </li>
+                                <li>
+                                    <a asp-action="Logout" asp-controller="Account" class="menu__sub-link">Log out</a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li><a asp-action="Login" asp-controller="Account" class="menu__link">Log in</a></li>
+                        <li><a asp-action="Register" asp-controller="Account" class="menu__link">Sign up</a></li>
+                    }
+                    <!-- <a href="#" class="menu__login"></a> -->
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>

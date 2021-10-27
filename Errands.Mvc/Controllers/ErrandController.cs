@@ -9,6 +9,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Errands.Application.Exceptions;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.VisualBasic;
+using Errrands.Application.Common;
+using Errands.Mvc.Services;
 
 namespace Errands.Mvc.Controllers
 {
@@ -16,10 +22,12 @@ namespace Errands.Mvc.Controllers
     public class ErrandController : Controller
     {
         private readonly IErrandsRepository _repository;
+        private readonly FileServices _fileServices;
 
-        public ErrandController(IErrandsRepository repository)
+        public ErrandController(IErrandsRepository repository, FileServices fileServices)
         {
             _repository = repository;
+            _fileServices = fileServices;
         }
         [HttpGet]
         public IActionResult List()
@@ -39,6 +47,13 @@ namespace Errands.Mvc.Controllers
             return View(errands);
         }
         [HttpGet]
+        public VirtualFileResult GetFile(Guid id)
+        {
+            var file = _repository.GetFileById(id);
+            return File($"{file.Path}", "AppContext/pdf", file.Name);
+        }
+        
+        [HttpGet]
         public IActionResult Create()
         {
             return View(new ErrandCreateViewModel());
@@ -53,12 +68,31 @@ namespace Errands.Mvc.Controllers
                 Description = model.Desc,
                 Cost = model.Cost,
                 CreationDate = DateTime.Now,
-                UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value
+                UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value,             
             };
-            await _repository.CreateErrandAsync(errand);
-
+            var files = new List<FileModel>();
+            if (model.Files != null)
+            {
+                foreach (var uploadedFile in model.Files)
+                {
+                    try
+                    {
+                        var fileModel = await _fileServices.SaveFile(uploadedFile);
+                        fileModel.Errand = errand;
+                        files.Add(fileModel);                         
+                    }
+                    catch (Exception e)
+                    {
+                        TempData["errorMessage"] = e.Message;
+                        return View(model);
+                    }
+                   
+                }
+            }
+            await _repository.CreateErrandAsync(errand, files);
             return RedirectToAction("List");
         }
+        
         [HttpGet]
         public IActionResult Edit(Guid id)
         {
@@ -72,7 +106,8 @@ namespace Errands.Mvc.Controllers
                 Title = errand.Title,
                 Desc = errand.Description,
                 Cost = errand.Cost,
-                Id = errand.Id
+                Id = errand.Id,
+                File = errand.FileModels    
             };
             return View(model);
         }
@@ -85,6 +120,7 @@ namespace Errands.Mvc.Controllers
                 Title = model.Title,
                 Description = model.Desc,
                 Cost = model.Cost,
+                Id = model.Id               
             };
             await _repository.UpdateAsync(errand);
             return RedirectToAction("List");   
@@ -93,7 +129,21 @@ namespace Errands.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Guid id)
         {
-            await _repository.DeleteAsync(id);
+            var errand = _repository.GetErrandById(id);
+            try
+            {
+                var paths = errand.FileModels.Select(p => p.Path);             
+                foreach (var p in paths)
+                {
+                    _fileServices.DeleteFile(p);
+                }
+                await _repository.DeleteAsync(id);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
             return RedirectToAction("List");
         }
         [HttpPost]

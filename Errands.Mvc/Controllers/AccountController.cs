@@ -3,6 +3,7 @@ using Errands.Mvc.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Errands.Mvc.Controllers
 {
@@ -16,10 +17,19 @@ namespace Errands.Mvc.Controllers
             _signInManager = signInManager;
             _userManager = userManager;
         }
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View(new RegisterViewModel());
+        }
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
             {
                 User user = new User { Email = model.Email, UserName = model.UserName };
                 // 
@@ -50,24 +60,28 @@ namespace Errands.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
-            }
-            var result =
-                await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
-            if (result.Succeeded)
-            {
-                // 
-                if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
                 {
-                    return Redirect(model.ReturnUrl);
+                    return View(model);
                 }
-                else
+                var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
+                if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    // 
+                    if (!string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
+                    {
+                        return Redirect(model.ReturnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
             }
+           
             else
             {
                 ModelState.AddModelError("", "Email or password is wrong");
@@ -79,9 +93,8 @@ namespace Errands.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            // 
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return Redirect("");
         }
     }
 }

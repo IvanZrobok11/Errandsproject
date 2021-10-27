@@ -1,5 +1,40 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ErrandCreateViewModel
 @{
+    ViewData["Title"] = "Create";
 }
+<div class="form-create">
+    @TempData["errorMessage"]
+    <form asp-action="Create" method="post" class="" enctype="multipart/form-data">
+        <h3 class="sign-in__title form-create__title">Create errand</h3>
+        <div>
+            <label class="form-create__label" asp-for="Title">Theme</label><br>
+            <input class="form-create__input" type="text" asp-for="Title">
+        </div>
+        <div>
+            <label class="form-create__label" asp-for="Desc">Description</label><br>
+            <textarea class="form-create__textarea" placeholder="Enter description" asp-for="Desc" cols="50" rows="4"></textarea>
+        </div>
+        <div>
+            <label class="form-create__label" asp-for="Cost">Enter price how many you ready to pay</label><br>
+            <input class="form-create__input" type="number" placeholder="Enter digit" asp-for="Cost">
+        </div>
+
+
+        <div>
+            <label class="form-create__label" asp-for="Files"></label><br>
+            <input class="form-create__addfile" type="file" asp-for="Files">
+        </div>
+        <div>
+            <label class="form-create__label" asp-for="Files"></label><br>
+            <input class="form-create__addfile" type="file" asp-for="Files">
+        </div>
+        <div>
+            <label class="form-create__label" asp-for="Files"></label><br>
+            <input class="form-create__addfile" type="file" asp-for="Files">
+        </div>      
+
+        <div>
+            <input class="sign-in__button" type="submit" value="Create">
+        </div>
+    </form>
+</div>  

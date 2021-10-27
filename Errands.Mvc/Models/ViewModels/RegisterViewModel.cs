@@ -10,6 +10,7 @@ namespace Errands.Mvc.Models.ViewModels
     {
         [Required]
         [Display(Name = "Nickname")]
+        
         public string UserName { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]
