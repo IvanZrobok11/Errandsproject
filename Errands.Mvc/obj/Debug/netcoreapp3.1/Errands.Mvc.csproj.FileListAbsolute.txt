@@ -100,3 +100,4 @@ C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\bin\Debug\netcore
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\bin\Debug\netcoreapp3.1\Microsoft.IO.RecyclableMemoryStream.dll
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\bin\Debug\netcoreapp3.1\SixLabors.ImageSharp.dll
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\bin\Debug\netcoreapp3.1\SixLabors.ImageSharp.Web.dll
+C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Chat\Index.cshtml.g.cs

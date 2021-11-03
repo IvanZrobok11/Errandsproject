@@ -1,21 +1,14 @@
-﻿using Errands.Domain.Models;
+﻿using Errands.Data.Services;
+using Errands.Domain.Models;
 using Errands.Mvc.Models.ViewModels;
+using Errands.Mvc.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
-using Errands.Data.Services;
-using SixLabors.ImageSharp;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using Errrands.Application.Common;
-using System.Linq;
-using SixLabors.ImageSharp.Formats.Jpeg;
-using SixLabors.ImageSharp.Processing;
-using Errands.Mvc.Services;
-using System;
 
 namespace Errands.Mvc.Controllers
 {
@@ -25,7 +18,7 @@ namespace Errands.Mvc.Controllers
         private readonly UserManager<User> _userManager;
         public readonly UserRepository _userRepository;
         private readonly FileServices _fileServices;
-
+        
         public UserController(SignInManager<User> signInManager, UserManager<User> userManager,
             UserRepository userRepository, FileServices fileServices)
         {
@@ -34,15 +27,16 @@ namespace Errands.Mvc.Controllers
             _userRepository = userRepository;
             _fileServices = fileServices;
         }
-        [HttpGet]        
+        [HttpGet]
         public async Task<IActionResult> Profile()
-        {
+        {          
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             User user = await _userManager.FindByIdAsync(userId);
             var path = _userRepository.GetLogoPathAsync(userId);
 
             return View(new UserViewModel
             {
+                Email = user.Email,
                 UserName = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -58,7 +52,10 @@ namespace Errands.Mvc.Controllers
 
             return View(new UserViewModel
             {
-                UserName = user.UserName, FirstName = user.FirstName, LastName = user.LastName, Path = path
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Path = path
             });
         }
         [HttpPost]
@@ -70,7 +67,7 @@ namespace Errands.Mvc.Controllers
                 return View(viewModel);
             }
             else
-            {                
+            {
                 var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 var user = await _userManager.FindByIdAsync(userId);
 
@@ -96,18 +93,25 @@ namespace Errands.Mvc.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangeLogo(IFormFile file)
+        public async Task<IActionResult> ChangeLogo(IFormFile Logo)
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = await _userManager.FindByIdAsync(userId);
-            if (file == null)
+            if (Logo == null)
             {
-                return RedirectToAction("ChangeInfo");
+                return View("ChangeInfo");
             }
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            User user = await _userManager.FindByIdAsync(userId);
+            var path = _userRepository.GetLogoPathAsync(userId);
             try
             {
-                var fileModel = _fileServices.SaveLogo(file);
-                fileModel.User = user;
+                if (path != null)
+                {
+                    _fileServices.DeleteFile(path);
+                    await _userRepository.DeleteLogoByUserIdAsync(userId);
+                }
+                var logo = _fileServices.SaveLogo(Logo);
+                logo.User = user;
+                await _userRepository.AddLogoAsync(logo);
             }
             catch (ImageProcessingException ex)
             {
@@ -119,8 +123,8 @@ namespace Errands.Mvc.Controllers
                 TempData["message"] = ex.ToString();
                 return RedirectToAction("ChangeInfo");
             }
-            return View("Profile");
+            return RedirectToAction("Profile");
         }
-        
+
     }
 }

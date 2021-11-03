@@ -9,7 +9,7 @@ namespace Errands.Domain.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public FileModel Logo { get; set; }
+        public Logo Logo { get; set; }
         public ICollection<Errand> Errands { get; set; }
     }
 }

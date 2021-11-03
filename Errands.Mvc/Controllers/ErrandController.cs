@@ -1,6 +1,7 @@
 ﻿using Errands.Data.Services;
 using Errands.Domain.Models;
 using Errands.Mvc.Models.ViewModels;
+using Errands.Mvc.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,13 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Errands.Application.Exceptions;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.VisualBasic;
-using Errrands.Application.Common;
-using Errands.Mvc.Services;
 
 namespace Errands.Mvc.Controllers
 {
@@ -30,29 +24,29 @@ namespace Errands.Mvc.Controllers
             _fileServices = fileServices;
         }
         [HttpGet]
-        public IActionResult List()
+        public ViewResult List()
         {
             string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            IEnumerable<ErrandGetViewModel> errands = _repository.GetErrandsByUserId(userid).Select(x => new ErrandGetViewModel 
-            { 
+            IEnumerable<ErrandGetViewModel> errands = _repository.GetErrandsByUserId(userid).Select(x => new ErrandGetViewModel
+            {
                 Id = x.Id,
                 Cost = x.Cost,
                 Description = x.Description,
-                Title = x.Title, 
+                Title = x.Title,
                 Done = x.Done,
                 Active = x.Active,
                 HelperUserId = x.HelperUserId
             });
-            
+
             return View(errands);
         }
         [HttpGet]
-        public VirtualFileResult GetFile(Guid id)
+        public async Task<VirtualFileResult> GetFile(Guid id)
         {
-            var file = _repository.GetFileById(id);
+            var file = await _repository.GetFileByIdAsync(id);
             return File($"{file.Path}", "AppContext/pdf", file.Name);
         }
-        
+
         [HttpGet]
         public IActionResult Create()
         {
@@ -68,7 +62,7 @@ namespace Errands.Mvc.Controllers
                 Description = model.Desc,
                 Cost = model.Cost,
                 CreationDate = DateTime.Now,
-                UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value,             
+                UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value,
             };
             var files = new List<FileModel>();
             if (model.Files != null)
@@ -79,24 +73,24 @@ namespace Errands.Mvc.Controllers
                     {
                         var fileModel = await _fileServices.SaveFile(uploadedFile);
                         fileModel.Errand = errand;
-                        files.Add(fileModel);                         
+                        files.Add(fileModel);
                     }
                     catch (Exception e)
                     {
                         TempData["errorMessage"] = e.Message;
                         return View(model);
                     }
-                   
+
                 }
             }
             await _repository.CreateErrandAsync(errand, files);
             return RedirectToAction("List");
         }
-        
+
         [HttpGet]
-        public IActionResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            var errand = _repository.GetErrandById(id);
+            var errand = await _repository.GetErrandByIdAsync(id);
             if (errand == null)
             {
                 return NotFound();
@@ -107,7 +101,7 @@ namespace Errands.Mvc.Controllers
                 Desc = errand.Description,
                 Cost = errand.Cost,
                 Id = errand.Id,
-                File = errand.FileModels    
+                File = errand.FileModels
             };
             return View(model);
         }
@@ -120,19 +114,19 @@ namespace Errands.Mvc.Controllers
                 Title = model.Title,
                 Description = model.Desc,
                 Cost = model.Cost,
-                Id = model.Id               
+                Id = model.Id
             };
             await _repository.UpdateAsync(errand);
-            return RedirectToAction("List");   
+            return RedirectToAction("List");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var errand = _repository.GetErrandById(id);
+            var errand = await _repository.GetErrandByIdAsync(id);
             try
             {
-                var paths = errand.FileModels.Select(p => p.Path);             
+                var paths = errand.FileModels.Select(p => p.Path);
                 foreach (var p in paths)
                 {
                     _fileServices.DeleteFile(p);
@@ -143,14 +137,14 @@ namespace Errands.Mvc.Controllers
             {
                 throw;
             }
-            
+
             return RedirectToAction("List");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Take(Guid id)
         {
-            var errand = _repository.GetErrandById(id);
+            var errand = await _repository.GetErrandByIdAsync(id);
 
             var newErrand = errand;
             newErrand.Active = false;
@@ -163,10 +157,10 @@ namespace Errands.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Confirm(Guid id)
         {
-            var errand = _repository.GetErrandById(id);
+            var errand = await _repository.GetErrandByIdAsync(id);
 
             var newErrand = errand;
-            newErrand.Done = true;          
+            newErrand.Done = true;
 
             await _repository.UpdateAsync(newErrand);
             return RedirectToAction("Index", "Home");

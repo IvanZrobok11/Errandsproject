@@ -14,9 +14,6 @@ namespace Errands.Domain.Models
         public Guid ErrandId { get; set; }
         public Errand Errand { get; set; }
 
-        public User User { get; set; }
-        public string UserId { get; set; }
-
     }
     public enum TypeFile
     {

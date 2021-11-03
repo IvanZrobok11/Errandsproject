@@ -38,8 +38,7 @@ namespace Errands.Mvc
                 .AddDefaultTokenProviders()
                 ;
             services.AddTransient<IErrandsRepository, ErrandsRepository>();
-            services.AddTransient<IFileProfile, BoxFile>();
-            services.AddTransient<LogoImageProfile>();
+
             services.AddTransient<UserRepository>();
             services.AddTransient<FileServices>();
             services.AddControllersWithViews();

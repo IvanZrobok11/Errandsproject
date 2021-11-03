@@ -15,7 +15,7 @@
     {
         <img src="/img/w128h1281338911651user.png" alt="Alternate Text" />
         <form asp-action="ChangeLogo" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" id="file"/>
+            <input type="file" name="Logo" id="Logo"/>
             <button type="submit">Add logo </button>
         </form>
         @*@(Model.Logo.Path==null? "Add logo": "Change logo")*@
@@ -24,7 +24,7 @@
     {
         <img src="@Model.Path" alt="Alternate Text" />
         <form asp-action="ChangeLogo" method="post" enctype="multipart/form-data">
-            <input type="file" id="file"  name="file"/>
+            <input type="file" id="Logo"  name="Logo"/>
             <button type="submit">Change logo</button>
         </form>
     }

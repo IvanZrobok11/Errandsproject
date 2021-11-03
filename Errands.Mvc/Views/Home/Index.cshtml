@@ -1,62 +1,72 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @inject SignInManager<User> signInManager
 @inject UserManager<User> userManager
-@model List<Errand>
+@model ErrandsListViewModel
 @{ 
     ViewData["Title"] = "Index";
 }
 
 <div class="main__cards">
-    @for (int i = Model.Count()-1; i >= 0; i--)
+    @foreach (var errand in Model.Errands)
     {
-    <div class="card">
-        @if (Model[i].Active)
-        {
-            <div>
-                <span class="card__label txt-success">Active</span><br><br>
-            </div>
-        }
-        else
-        {
-            <div>
-                <span class="card__label txt-danger">Not active</span><br><br>
-            </div>
-        }
-        <h2 class="card__category">
-            @Model[i].Title
-        </h2>
-        @*<img class="card__image" src="img/Знімок екрана1.png" alt="">*@
-        @foreach (var file in Model[i].FileModels)
-        {
-            if (file.Type == TypeFile.File)
+        <div class="card">
+            @if (errand.Active)
             {
-                <a asp-controller="Errand" asp-action="GetFile" asp-route-id="@file.Id">Download @file.Name</a>
+                <div>
+                    <span class="card__label txt-success">Active</span><br><br>
+                </div>
             }
             else
             {
-                <img class="card__image" src="@file.Path" alt="Alternate Text" />
+                <div>
+                    <span class="card__label txt-danger">Not active</span><br><br>
+                </div>
             }
-        }
+            <h2 class="card__category">
+                @errand.Title
+            </h2>
+            @*<img class="card__image" src="img/Знімок екрана1.png" alt="">*@
+            @foreach (var file in errand.FileModels)
+            {
+                if (file.Type == TypeFile.File)
+                {
+                    <a asp-controller="Errand" asp-action="GetFile" asp-route-id="@file.Id">Download @file.Name</a>
+                }
+                else
+                {
+                    <img class="card__image" src="@file.Path" alt="Alternate Text" />
+                }
+            }
 
-        <div class="card__desk">
-            @Model[i].Description
+            <div class="card__desk">
+                @errand.Description
+            </div>
+            <div class="card__price">@errand.Cost</div>
+            @if (!errand.Active || errand.UserId != userManager.GetUserId(User))
+            {
+                <form asp-action="Take" asp-controller="Errand" method="post">
+                    <input type="hidden" name="id" value="@errand.Id" />
+                    <button class="card__aply" type="submit">Take</button>
+                </form>
+            }
+            else
+            {
+                <form href="#" method="post">
+                    <button class="card__disable" type="submit">Take</button>
+                </form>
+            }
         </div>
-        <div class="card__price">@Model[i].Cost</div>
-        @if (!Model[i].Active || Model[i].UserId != userManager.GetUserId(User))
-        {
-            <form asp-action="Take" asp-controller="Errand" method="post">
-                <input type="hidden" name="id" value="@Model[i].Id" />
-                <button class="card__aply" type="submit">Take</button>
-            </form>
-        }
-        else
-        {
-            <form href="#" method="post">             
-                <button class="card__disable" type="submit">Take</button>
-            </form>
-        }
-    </div>
     }
+    <style>
+        .nav-page__disabled {
+            pointer-events: none;
+            color:gray;
+        }
+    </style>
+    <a asp-action="Index" asp-route-pageNumber="@(Model.PageInfo.CurrentPage - 1)"
+       class="@(Model.PageInfo.CurrentPage == 1?"nav-page__disabled":"")">back</a>
+    <a asp-action="Index" asp-route-pageNumber="@(Model.PageInfo.CurrentPage + 1)"
+       class="@(Model.PageInfo.CurrentPage == Model.PageInfo.TotalPages?"nav-page__disabled":"")">next</a>
 </div>
 <div class="main__sidebar sidebar">
     @await Html.PartialAsync("_SignInPartial")

@@ -17,28 +17,24 @@ namespace Errands.Mvc.Services
 {
     public class FileServices
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
         public readonly UserRepository _userRepository;
         private readonly IWebHostEnvironment _appEnvironment;
-        private readonly LogoImageProfile _logoImageProfile;
+
+        private readonly IImageProfile _logoImageProfile;
         private readonly IFileProfile _fileProfile;
 
-        public FileServices(SignInManager<User> signInManager, UserManager<User> userManager,
-            UserRepository userRepository, IWebHostEnvironment appEnvironment, LogoImageProfile logoImageProfile, IFileProfile fileProfile)
+        public FileServices(UserRepository userRepository, IWebHostEnvironment appEnvironment)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
             _userRepository = userRepository;
             _appEnvironment = appEnvironment;
-            _logoImageProfile = logoImageProfile;
-            _fileProfile = fileProfile;
+            _logoImageProfile = new LogoImageProfile();
+            _fileProfile = new BoxFile();
         }
         public async Task<FileModel> SaveFile(IFormFile file)
         {
             var fileExtension = Path.GetExtension(file.FileName);
 
-            ValidateExtencionFile(fileExtension, _fileProfile.AllowedExtensions);
+            ValidateExtensionFile(fileExtension, _fileProfile.AllowedExtensions);
             ValidateSizeFile(file, _fileProfile.MaxSizeBytes);
             // 
             string filePath;
@@ -54,18 +50,18 @@ namespace Errands.Mvc.Services
                 await file.CopyToAsync(fileStream);
             }
             return new FileModel
-            {
-                Path = "/repos/usersFiles/" + _fileProfile.Folder + "/" + fileName,
+            { 
+                Path = Path.Combine("repos", "usersFiles", _fileProfile.Folder, fileName).Replace('\\', '/'),
                 Name = file.FileName,
-                Type = IdentifyTypeFile(fileName),
+                Type = IdentifyTypeFile(fileExtension),
             };
 
         }
-        public FileModel SaveLogo(IFormFile file)
+        public Logo SaveLogo(IFormFile file)
         {
             var fileExtension = Path.GetExtension(file.FileName);
 
-            ValidateExtencionFile(fileExtension, _logoImageProfile.AllowedExtensions);
+            ValidateExtensionFile(fileExtension, _logoImageProfile.AllowedExtensions);
             ValidateSizeFile(file, _logoImageProfile.MaxSizeBytes);
             var image = Image.Load(file.OpenReadStream());
             ValidateSizeImageLogo(image);   
@@ -80,13 +76,12 @@ namespace Errands.Mvc.Services
             } while (System.IO.File.Exists(filePath));
 
             Resize(image, _logoImageProfile);
-            Crop(image, _logoImageProfile); ;
+            Crop(image, _logoImageProfile); 
             image.Save(filePath, new JpegEncoder { Quality = 75 });
-            return new FileModel
+            return new Logo
             {
-                Path = "/repos/usersFiles/" + _logoImageProfile.Folder + "/" + fileName,
-                Name = file.FileName,
-                Type = TypeFile.Image,               
+                Path = Path.Combine("repos", "usersFiles", _logoImageProfile.Folder, fileName).Replace('\\', '/'),
+                Name = file.FileName             
             };
         }
         public void DeleteFile(string filePath)
@@ -105,7 +100,7 @@ namespace Errands.Mvc.Services
                 throw new ImageProcessingException("Logo too small");
             }
         }
-        private void ValidateExtencionFile(string fileExtension, IEnumerable<string> allowExtencion)
+        private void ValidateExtensionFile(string fileExtension, IEnumerable<string> allowExtencion)
         {
             if (!allowExtencion.Any(e => e == fileExtension))
             {
@@ -136,10 +131,10 @@ namespace Errands.Mvc.Services
 
             image.Mutate(action => action.Resize(resizeOptions));
         }
-        private TypeFile IdentifyTypeFile(string fileName)
+        private TypeFile IdentifyTypeFile(string fileExtension)
         {
 
-            if (_logoImageProfile.AllowedExtensions.Any())
+            if (_logoImageProfile.AllowedExtensions.Any(ext => ext == fileExtension.ToLower()))
             {
                 return TypeFile.Image;
             }

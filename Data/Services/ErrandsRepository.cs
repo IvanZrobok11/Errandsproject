@@ -18,14 +18,14 @@ namespace Errands.Data.Services
 
         }
         public IEnumerable<Errand> Errands => _context.Errands.Include(f => f.FileModels);
-        public Errand GetErrandById(Guid id)
+        public Task<Errand> GetErrandByIdAsync(Guid id)
         {
-            var errand = _context.Errands.Include(f => f.FileModels).Where(e => e.Id == id).SingleOrDefault();
+            var errand = _context.Errands.Include(f => f.FileModels).Where(e => e.Id == id).SingleOrDefaultAsync();
             return errand;
         }
         public async Task DeleteAsync(Guid id)
         {
-            var errand = GetErrandById(id); 
+            var errand = await GetErrandByIdAsync(id); 
             
             _context.Errands.Remove(errand);
             await _context.SaveChangesAsync();
@@ -69,9 +69,9 @@ namespace Errands.Data.Services
             await _context.SaveChangesAsync();
         }
 
-        public FileModel GetFileById(Guid id)
+        public async Task<FileModel> GetFileByIdAsync(Guid id)
         {
-            var file = _context.FileModels.Where(e => e.Id == id).SingleOrDefault();
+            var file = await _context.FileModels.Where(e => e.Id == id).SingleOrDefaultAsync();
             return file;
         }
 

@@ -75,9 +75,35 @@ namespace Errands.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ErrandId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasColumnName("nameFile")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Path")
+                        .HasColumnName("path")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ErrandId");
+
+                    b.ToTable("FileModels");
+                });
+
+            modelBuilder.Entity("Errands.Domain.Models.Logo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -86,21 +112,16 @@ namespace Errands.Data.Migrations
                     b.Property<string>("Path")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ErrandId");
-
                     b.HasIndex("UserId")
                         .IsUnique()
                         .HasFilter("[UserId] IS NOT NULL");
 
-                    b.ToTable("FileModels");
+                    b.ToTable("Logos");
                 });
 
             modelBuilder.Entity("Errands.Domain.Models.User", b =>
@@ -322,10 +343,13 @@ namespace Errands.Data.Migrations
                         .HasForeignKey("ErrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
+            modelBuilder.Entity("Errands.Domain.Models.Logo", b =>
+                {
                     b.HasOne("Errands.Domain.Models.User", "User")
                         .WithOne("Logo")
-                        .HasForeignKey("Errands.Domain.Models.FileModel", "UserId");
+                        .HasForeignKey("Errands.Domain.Models.Logo", "UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

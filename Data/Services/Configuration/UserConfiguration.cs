@@ -20,7 +20,7 @@ namespace Errands.Data.Services.Configuration
 
             entity.HasOne(e => e.Logo)
                 .WithOne(u => u.User)
-                .HasForeignKey<FileModel>(k=>k.UserId);   
+                .HasForeignKey<Logo>(k=>k.UserId);   
         }
     }
 }

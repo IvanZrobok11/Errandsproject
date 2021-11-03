@@ -18,32 +18,44 @@ namespace Errands.Data.Services
     public class UserRepository
     {
         private readonly ErrandsDbContext _context;
-        private readonly LogoImageProfile _logoImageProfile;
         private readonly IWebHostEnvironment _appEnvironment;
-        public UserRepository(ErrandsDbContext context, LogoImageProfile logoImageProfile, IWebHostEnvironment appEnvironment)
+        public UserRepository(ErrandsDbContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
-            _logoImageProfile = logoImageProfile;
             _appEnvironment = appEnvironment;
-
         }
-        public async Task<FileModel> GetLogoAsync(string userId)
+        public async Task<Logo> GetLogoAsync(string userId)
         {
-            var logo = await _context.FileModels.FirstOrDefaultAsync(l => l.UserId == userId);
+            var logo = await _context.Logos.FirstOrDefaultAsync(l => l.UserId == userId);
             return logo;
         }
         public string GetLogoPathAsync(string userId)
         {
-            var path = _context.FileModels.Where(f => f.UserId == userId)
+            var path = _context.Logos.Where(f => f.UserId == userId)
                 .AsEnumerable()
                 .Select(p => p.Path)
                 .FirstOrDefault();
             return path;
         }
-        public async Task AddLogoAsync(FileModel file)
+        public async Task AddLogoAsync(Logo logo)
         {
-            await _context.FileModels.AddAsync(file);
+            await _context.Logos.AddAsync(logo);
             await _context.SaveChangesAsync();
+        }
+        public Logo DeleteLogo(Logo logo)
+        {
+            var logoEntry = _context.Logos.Remove(logo).Entity;
+            return logoEntry;
+        }
+        public async Task<Logo> DeleteLogoByUserIdAsync(string userid)
+        {
+            var logo = await GetLogoAsync(userid);
+            if (logo == null)
+            {
+                return null;
+            }
+            var logoEntry = _context.Logos.Remove(logo).Entity;
+            return logoEntry;
         }
 
 
