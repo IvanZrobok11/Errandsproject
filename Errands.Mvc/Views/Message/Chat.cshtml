@@ -1,0 +1,64 @@
+﻿@*<div id="loginBlock">
+        Введите логин:<br />
+        <input id="userName" type="text" />
+        <input id="userPassword" type="text" />
+        <input id="loginBtn" type="button" value="Войти" />
+    </div>*@
+@model UserInfoViewModel
+<br />
+<p>Nickname: @Model.Nickname</p>
+<p>FirstName: @Model.FirstName</p>
+<p>LastName: @Model.LastName</p>
+<p>ID recivers: @Model.ReciverUserId</p>
+@if (Model.PathLogo == null)
+{
+    <img src="/img/w128h1281338911651user.png" alt="Alternate Text" />
+}
+else
+{
+    <img src="@Model.PathLogo" alt="Alternate Text" />
+}
+<br />
+
+<br />
+
+<div id="inputForm">
+    <input type="text" id="message" placeholder="Введите сообщение" />
+    <input type="text" id="receiver" placeholder="Введіть отримувача(необовязково)" />
+    <input type="button" id="sendBtn" @*disabled*@ value="Отправить" />
+</div>
+<div id="chatroom"></div>
+
+<script src="~/src/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script>
+        let token = `@Model.Token`;
+        const hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl("/messages", { accessTokenFactory: () => token })
+            .build();
+        hubConnection.on("Receive", function (message, userName) {
+
+            // создаем элемент <b> для имени пользователя
+            let userNameElem = document.createElement("b");
+            userNameElem.appendChild(document.createTextNode(userName + ": "));
+
+            // создает элемент <p> для сообщения пользователя
+            let elem = document.createElement("p");
+            elem.appendChild(userNameElem);
+            elem.appendChild(document.createTextNode(message));
+
+            var firstElem = document.getElementById("chatroom").firstChild;
+            document.getElementById("chatroom").insertBefore(elem, firstElem);
+        });
+            hubConnection.start();
+
+        // отправка сообщения на сервер
+        document.getElementById("sendBtn").addEventListener("click", function (e) {
+            let message = document.getElementById("message").value;
+            let to = document.getElementById("receiver").value;
+            if (to == "") {
+                to = `@Model.ReciverUserId`;
+            }
+            hubConnection.invoke("Send", message, to);
+        });
+
+</script>

@@ -19,6 +19,20 @@ namespace Errands.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Errands.Domain.Models.BlockedUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BlockedUsers");
+                });
+
             modelBuilder.Entity("Errands.Domain.Models.Errand", b =>
                 {
                     b.Property<Guid>("Id")
@@ -181,8 +195,8 @@ namespace Errands.Data.Migrations
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnName("user_name")
-                        .HasColumnType("nvarchar(25)")
-                        .HasMaxLength(25);
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
 
                     b.HasKey("Id");
 

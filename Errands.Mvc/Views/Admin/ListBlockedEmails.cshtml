@@ -1,0 +1,7 @@
+﻿@model IEnumerable<BlockedUser>
+
+@foreach (var m in Model)
+{
+<p>@m.Email</p>
+}
+<a asp-controller="Admin" asp-action="ListUsers">List users</a>

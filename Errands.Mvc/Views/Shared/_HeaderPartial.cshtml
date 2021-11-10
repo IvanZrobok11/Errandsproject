@@ -15,11 +15,11 @@
                     <!-- <li><a href="#" class="menu__user-logo"><img src="img/w128h1281338911651user.png" alt=""></a></li>  -->
                     @if (signInManager.IsSignedIn(User))
                     {
-                        <li><a href="#" class="menu__message"><img src="/img/messenger.png" alt=""><span>1</span></a></li>
+                        <li><a href="#" class="menu__message"><img src="~/src/img/messenger.png" alt=""><span>1</span></a></li>
                         <li>
                             <div class="menu__click">
                                 <span>
-                                    <img src="~/img/icons8-плюс-24.png" alt="">
+                                    <img src="~/src/img/icons8-плюс-24.png" alt="">
                                 </span>
                                 <span class="menu__arrow arrow-down"></span>
                             </div>
@@ -28,17 +28,17 @@
                                     <a asp-action="Create" asp-controller="Errand" class="menu__sub-link">Add new</a>
                                 </li>
                                 <li>
-                                    <a asp-action="List" asp-controller="Errand" class="menu__sub-link">My list</a>
+                                    <a asp-action="ListMyErrand" asp-controller="Errand" class="menu__sub-link">My list</a>
                                 </li>
                                 <li>
-                                    <a href="#" class="menu__sub-link">I done</a>
+                                    <a asp-action="ListErrandToDo" asp-controller="Errand" class="menu__sub-link">I took</a>
                                 </li>
                             </ul>
                         </li>
                         <li>
                             <div class="menu__click">
                                 <span href="" class="menu__user-logo">
-                                    <img src="~/img/w128h1281338911651user.png" alt="">
+                                    <img src="~/src/img/w128h1281338911651user.png" alt="">
                                 </span>
                                 <span class="arrow-down"></span>
                             </div>

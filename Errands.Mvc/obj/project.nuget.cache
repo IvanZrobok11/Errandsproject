@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "vE7xYagf9ioAr3LwIlHiiKT0p+AxB9bAASAgCMrLhEPD6oJrTp8rKNqeLXLdx1yiRJlh1lCx6f55l0Tgeq/qkg==",
+  "dgSpecHash": "h6ZEN1VhdTkSoMi6nfARjW+sZVr5SncCF+XnJi8zp5IWwD/bQVT6LWJqf4VahH6nqym6Atxp0lZxbslW1zQALw==",
   "success": true,
   "projectFilePath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Errands.Mvc\\Errands.Mvc.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LapStore\\.nuget\\packages\\magick.net.core\\8.3.3\\magick.net.core.8.3.3.nupkg.sha512",
+    "C:\\Users\\LapStore\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.21\\microsoft.aspnetcore.authentication.jwtbearer.3.1.21.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.20\\microsoft.aspnetcore.cryptography.internal.3.1.20.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\3.1.20\\microsoft.aspnetcore.cryptography.keyderivation.3.1.20.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\microsoft.aspnetcore.http.features\\3.1.20\\microsoft.aspnetcore.http.features.3.1.20.nupkg.sha512",

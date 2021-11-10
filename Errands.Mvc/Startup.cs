@@ -1,7 +1,8 @@
 using Errands.Data.Services;
 using Errands.Domain.Models;
+using Errands.Mvc.Chat;
 using Errands.Mvc.Services;
-using Errrands.Application.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Threading.Tasks;
 
 namespace Errands.Mvc
 {
@@ -28,15 +31,49 @@ namespace Errands.Mvc
 
             services.AddIdentity<User, IdentityRole>(opts =>
                 {
-                    opts.Password.RequiredLength = 5;  
+                    opts.Password.RequiredLength = 5;
                     opts.Password.RequireNonAlphanumeric = false;
-                    opts.Password.RequireLowercase = false; 
-                    opts.Password.RequireUppercase = false; 
-                    opts.Password.RequireDigit = false; 
+                    opts.Password.RequireLowercase = false;
+                    opts.Password.RequireUppercase = false;
+                    opts.Password.RequireDigit = false;
                 })
                 .AddEntityFrameworkStores<ErrandsDbContext>()
                 .AddDefaultTokenProviders()
                 ;
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //    .AddJwtBearer(options =>
+            //    {
+            //        options.RequireHttpsMetadata = false;
+            //        options.TokenValidationParameters = new TokenValidationParameters
+            //        {
+            //            ValidateIssuer = true,
+            //            ValidIssuer = AuthOptions.ISSUER,
+            //            ValidateAudience = true,
+            //            ValidAudience = AuthOptions.AUDIENCE,
+            //            ValidateLifetime = true,
+            //            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+            //            ValidateIssuerSigningKey = true,
+            //        };
+            //        options.Events = new JwtBearerEvents
+            //        {
+            //            OnMessageReceived = context =>
+            //            {
+            //                var accessToken = context.Request.Query["access_token"];
+
+            //                // если запрос направлен хабу
+            //                var path = context.HttpContext.Request.Path;
+            //                if (!string.IsNullOrEmpty(accessToken) &&
+            //                    (path.StartsWithSegments("/chat")))
+            //                {
+            //                    // получаем токен из строки запроса
+            //                    context.Token = accessToken;
+            //                }
+            //                return Task.CompletedTask;
+            //            }
+            //        };
+            //    });
+
+            services.AddSignalR();
             services.AddTransient<IErrandsRepository, ErrandsRepository>();
 
             services.AddTransient<UserRepository>();
@@ -62,6 +99,7 @@ namespace Errands.Mvc
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<ChatHub>("/messages");
                 endpoints.MapControllerRoute("default", pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }

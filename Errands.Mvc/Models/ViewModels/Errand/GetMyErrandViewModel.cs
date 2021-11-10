@@ -2,7 +2,7 @@
 
 namespace Errands.Mvc.Models.ViewModels
 {
-    public class ErrandGetViewModel
+    public class GetMyErrandViewModel
     {
         public Guid Id { get; set; }
         public decimal Cost { get; set; }

@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<ErrandGetViewModel>
+@model IEnumerable<GetMyErrandViewModel>
 @{
     ViewData["Title"] = "My List";
 }
@@ -12,6 +12,7 @@
             <th class="table__title">Description</th>
             <th class="table__title">Done</th>
             <th class="table__title">Active</th>
+            <th class="table__title"></th>
             <th class="table__title"></th>
         </tr>
         @foreach (var item in Model)
@@ -28,6 +29,16 @@
                         <input type="hidden" name="id" value="@item.Id" />
                         <button type="submit">Delete</button>
                     </form>
+                </td>
+                <td>
+                    @if (item.HelperUserId != null)
+                    {
+                    @*<a asp-controller="Message" asp-action="Chat" asp-route-userId="@item.HelperUserId">@item.HelperUserId</a>*@
+                        <form asp-action="Chat" asp-controller="Message" method="post">
+                            <input type="hidden" name="receiverUserId" value="@item.HelperUserId" />
+                            <button type="submit">Go to chat</button>
+                        </form>
+                    }
                 </td>
             </tr>
         }

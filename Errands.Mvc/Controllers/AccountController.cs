@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Errands.Mvc.Controllers
 {
@@ -89,12 +90,13 @@ namespace Errands.Mvc.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpGet]
+        [Authorize]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return Redirect("");
+            return RedirectToAction("Index","Home");
         }
     }
 }

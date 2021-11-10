@@ -3,6 +3,7 @@ using Errands.Domain.Models;
 using Errands.Mvc.Models.ViewModels;
 using Errands.Mvc.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,17 +18,36 @@ namespace Errands.Mvc.Controllers
     {
         private readonly IErrandsRepository _repository;
         private readonly FileServices _fileServices;
+        private readonly UserManager<User> _userManager;
 
-        public ErrandController(IErrandsRepository repository, FileServices fileServices)
+        public ErrandController(IErrandsRepository repository, FileServices fileServices,
+            UserManager<User> userManager)
         {
             _repository = repository;
             _fileServices = fileServices;
+            _userManager = userManager;
         }
+        //[HttpGet]
+        //public ViewResult Getdata()
+        //{
+        //    List<string> list = new List<string>();
+        //    string token = User.Identity.AuthenticationType;
+        //    string claim = User.Claims.ToString();
+        //    string cl = ClaimsIdentity.DefaultNameClaimType;
+        //    string name = User.Identity.Name;
+        //    //ValidateAntiForgeryTokenAttribute v = to
+           
+        //    list.Add(token);
+        //    list.Add(cl);
+        //    list.Add(claim);
+        //    list.Add(name);
+        //    return View(list);  
+        //}
         [HttpGet]
-        public ViewResult List()
+        public ViewResult ListMyErrand()
         {
             string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            IEnumerable<ErrandGetViewModel> errands = _repository.GetErrandsByUserId(userid).Select(x => new ErrandGetViewModel
+            IEnumerable<GetMyErrandViewModel> errands = _repository.GetErrandsByUserId(userid).Select(x => new GetMyErrandViewModel
             {
                 Id = x.Id,
                 Cost = x.Cost,
@@ -36,6 +56,22 @@ namespace Errands.Mvc.Controllers
                 Done = x.Done,
                 Active = x.Active,
                 HelperUserId = x.HelperUserId
+            });
+            
+            return View(errands);
+        }
+        [HttpGet]
+        public ViewResult ListErrandToDo()
+        {
+            string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            IEnumerable<GetErrandToDoViewModel> errands = _repository.GetErrandsByHelperUserId(userid).Select(x => new GetErrandToDoViewModel
+            {
+                Id = x.Id,
+                Cost = x.Cost,
+                Description = x.Description,
+                Title = x.Title,
+                Done = x.Done,
+                NeedlyUserId = x.UserId
             });
 
             return View(errands);
@@ -84,7 +120,7 @@ namespace Errands.Mvc.Controllers
                 }
             }
             await _repository.CreateErrandAsync(errand, files);
-            return RedirectToAction("List");
+            return RedirectToAction(nameof(ListMyErrand));
         }
 
         [HttpGet]
@@ -117,7 +153,7 @@ namespace Errands.Mvc.Controllers
                 Id = model.Id
             };
             await _repository.UpdateAsync(errand);
-            return RedirectToAction("List");
+            return RedirectToAction(nameof(ListMyErrand));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -138,7 +174,7 @@ namespace Errands.Mvc.Controllers
                 throw;
             }
 
-            return RedirectToAction("List");
+            return RedirectToAction(nameof(ListMyErrand));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -146,11 +182,10 @@ namespace Errands.Mvc.Controllers
         {
             var errand = await _repository.GetErrandByIdAsync(id);
 
-            var newErrand = errand;
-            newErrand.Active = false;
-            newErrand.HelperUserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            await _repository.UpdateAsync(newErrand);
+            errand.Active = false;
+            errand.HelperUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
+            await _repository.UpdateAsync(errand);
             return RedirectToAction("Index", "Home");
         }
         [HttpPost]
@@ -158,11 +193,9 @@ namespace Errands.Mvc.Controllers
         public async Task<IActionResult> Confirm(Guid id)
         {
             var errand = await _repository.GetErrandByIdAsync(id);
-
-            var newErrand = errand;
-            newErrand.Done = true;
-
-            await _repository.UpdateAsync(newErrand);
+            errand.Done = true;
+            
+            await _repository.UpdateAsync(errand);
             return RedirectToAction("Index", "Home");
         }
     }

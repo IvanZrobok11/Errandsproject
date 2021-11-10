@@ -9,53 +9,54 @@
 <div class="main__cards">
     @foreach (var errand in Model.Errands)
     {
-        <div class="card">
-            @if (errand.Active)
-            {
-                <div>
-                    <span class="card__label txt-success">Active</span><br><br>
-                </div>
-            }
-            else
-            {
-                <div>
-                    <span class="card__label txt-danger">Not active</span><br><br>
-                </div>
-            }
-            <h2 class="card__category">
-                @errand.Title
-            </h2>
-            @*<img class="card__image" src="img/Знімок екрана1.png" alt="">*@
-            @foreach (var file in errand.FileModels)
-            {
-                if (file.Type == TypeFile.File)
-                {
-                    <a asp-controller="Errand" asp-action="GetFile" asp-route-id="@file.Id">Download @file.Name</a>
-                }
-                else
-                {
-                    <img class="card__image" src="@file.Path" alt="Alternate Text" />
-                }
-            }
-
-            <div class="card__desk">
-                @errand.Description
+    <div class="card">
+        @if (errand.Active)
+        {
+            <div>
+                <span class="card__label txt-success">Active</span><br><br>
             </div>
-            <div class="card__price">@errand.Cost</div>
-            @if (!errand.Active || errand.UserId != userManager.GetUserId(User))
+        }
+        else
+        {
+            <div>
+                <span class="card__label txt-danger">Not active</span><br><br>
+            </div>
+        }
+        <h2 class="card__category">
+            @errand.Title
+        </h2>
+        @*<img class="card__image" src="img/Знімок екрана1.png" alt="">*@
+        @foreach (var file in errand.FileModels)
+        {
+            if (file.Type == TypeFile.File)
             {
-                <form asp-action="Take" asp-controller="Errand" method="post">
-                    <input type="hidden" name="id" value="@errand.Id" />
-                    <button class="card__aply" type="submit">Take</button>
-                </form>
+                <a asp-controller="Errand" asp-action="GetFile" asp-route-id="@file.Id">Download @file.Name</a>
             }
             else
             {
-                <form href="#" method="post">
-                    <button class="card__disable" type="submit">Take</button>
-                </form>
+                <img class="card__image" src="@file.Path" alt="Alternate Text" />
             }
+        }
+
+        <div class="card__desk">
+            @errand.Description
         </div>
+        <div class="card__price">@errand.Cost</div>
+        @if (errand.Active && errand.UserId != userManager.GetUserId(User))
+        {
+            <form asp-action="Take" asp-controller="Errand" method="post">
+                <input type="hidden" name="id" value="@errand.Id" />
+                <button class="card__aply" type="submit">Take</button>
+            </form>
+        }
+        else
+        {
+            <form href="#" method="post">
+                <button class="card__disable" type="submit">Take</button>
+            </form>
+
+        }
+    </div>
     }
     <style>
         .nav-page__disabled {

@@ -2,6 +2,7 @@
 using Errands.Domain.Models;
 using Errands.Mvc.Models.ViewModels;
 using Errands.Mvc.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Errands.Mvc.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly SignInManager<User> _signInManager;
@@ -32,7 +34,7 @@ namespace Errands.Mvc.Controllers
         {          
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             User user = await _userManager.FindByIdAsync(userId);
-            var path = _userRepository.GetLogoPathAsync(userId);
+            var path = await _userRepository.GetLogoPathAsync(userId);
 
             return View(new UserViewModel
             {
@@ -48,7 +50,7 @@ namespace Errands.Mvc.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             User user = await _userManager.FindByIdAsync(userId);
-            var path = _userRepository.GetLogoPathAsync(userId);
+            var path = await _userRepository.GetLogoPathAsync(userId);
 
             return View(new UserViewModel
             {
@@ -101,13 +103,13 @@ namespace Errands.Mvc.Controllers
             }
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             User user = await _userManager.FindByIdAsync(userId);
-            var path = _userRepository.GetLogoPathAsync(userId);
+            var path = await _userRepository.GetLogoPathAsync(userId);
             try
             {
                 if (path != null)
                 {
                     _fileServices.DeleteFile(path);
-                    await _userRepository.DeleteLogoByUserIdAsync(userId);
+                    await _userRepository.DeleteLogoAsync(userId);
                 }
                 var logo = _fileServices.SaveLogo(Logo);
                 logo.User = user;

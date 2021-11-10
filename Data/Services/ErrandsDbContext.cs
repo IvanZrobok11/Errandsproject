@@ -3,6 +3,7 @@ using Errands.Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Errands.Data.Services
 {
     public class ErrandsDbContext : IdentityDbContext<User>
@@ -14,13 +15,16 @@ namespace Errands.Data.Services
         public DbSet<Errand> Errands { get; set; }
         public DbSet<FileModel> FileModels { get; set; }
         public DbSet<Logo> Logos { get; set; }
+        public DbSet<BlockedUser> BlockedUsers { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
 
             builder.ApplyConfiguration(new ErrandConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new FileModelConfiguration());
+            base.OnModelCreating(builder);
+
+
         }
 
     }

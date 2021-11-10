@@ -50,6 +50,17 @@
           }
         }
       },
+      "Microsoft.AspNetCore.Authentication.JwtBearer/3.1.21": {
+        "dependencies": {
+          "Microsoft.IdentityModel.Protocols.OpenIdConnect": "5.5.0"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/Microsoft.AspNetCore.Authentication.JwtBearer.dll": {
+            "assemblyVersion": "3.1.21.0",
+            "fileVersion": "3.100.2121.52309"
+          }
+        }
+      },
       "Microsoft.AspNetCore.Cryptography.Internal/3.1.20": {
         "runtime": {
           "lib/netcoreapp3.1/Microsoft.AspNetCore.Cryptography.Internal.dll": {
@@ -1833,6 +1844,7 @@
         "dependencies": {
           "Errands.Data": "1.0.0",
           "Errrands.Application": "1.0.0",
+          "Microsoft.AspNetCore.Authentication.JwtBearer": "3.1.21",
           "Microsoft.EntityFrameworkCore.SqlServer": "3.1.20"
         },
         "runtime": {
@@ -1872,6 +1884,13 @@
       "sha512": "sha512-jFhxdptymhVsiBY1qXscaHNJntGc+pc7y85cuQZcK5aDtD34k8WvIEQJcGX2sq9nJbnWCoLEmC58uWGKfi5BMA==",
       "path": "magick.net.core/8.3.3",
       "hashPath": "magick.net.core.8.3.3.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Authentication.JwtBearer/3.1.21": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-flLLEaro2lX5CwnkBpyWlsk54hkB25qAukqK0mliNBsQIJ4AW+RJbJqwbu76vnSsmsjD93o9HCPF7YFAFujUUQ==",
+      "path": "microsoft.aspnetcore.authentication.jwtbearer/3.1.21",
+      "hashPath": "microsoft.aspnetcore.authentication.jwtbearer.3.1.21.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Cryptography.Internal/3.1.20": {
       "type": "package",

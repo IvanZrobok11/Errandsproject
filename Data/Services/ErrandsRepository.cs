@@ -35,6 +35,11 @@ namespace Errands.Data.Services
             var errands = _context.Errands.Where(i => i.UserId == id).ToList();
             return errands;
         }
+        public IEnumerable<Errand> GetErrandsByHelperUserId(string id)
+        {
+            var errands = _context.Errands.Where(i => i.HelperUserId == id).ToList();
+            return errands;
+        }
         public IEnumerable<Errand> Search(string searchText, string userid)
         {
             IEnumerable<Errand> result = Enumerable.Empty<Errand>();

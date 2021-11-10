@@ -18,23 +18,19 @@ namespace Errands.Data.Services
     public class UserRepository
     {
         private readonly ErrandsDbContext _context;
-        private readonly IWebHostEnvironment _appEnvironment;
-        public UserRepository(ErrandsDbContext context, IWebHostEnvironment appEnvironment)
+        public UserRepository(ErrandsDbContext context)
         {
             _context = context;
-            _appEnvironment = appEnvironment;
         }
         public async Task<Logo> GetLogoAsync(string userId)
         {
             var logo = await _context.Logos.FirstOrDefaultAsync(l => l.UserId == userId);
             return logo;
         }
-        public string GetLogoPathAsync(string userId)
+        public async Task<string> GetLogoPathAsync(string userId)
         {
-            var path = _context.Logos.Where(f => f.UserId == userId)
-                .AsEnumerable()
-                .Select(p => p.Path)
-                .FirstOrDefault();
+            IEnumerable<Logo> list = await _context.Logos.Where(f => f.UserId == userId).ToListAsync();
+            string path = list.Select(p => p.Path).FirstOrDefault();
             return path;
         }
         public async Task AddLogoAsync(Logo logo)
@@ -47,7 +43,7 @@ namespace Errands.Data.Services
             var logoEntry = _context.Logos.Remove(logo).Entity;
             return logoEntry;
         }
-        public async Task<Logo> DeleteLogoByUserIdAsync(string userid)
+        public async Task<Logo> DeleteLogoAsync(string userid)
         {
             var logo = await GetLogoAsync(userid);
             if (logo == null)
@@ -57,7 +53,17 @@ namespace Errands.Data.Services
             var logoEntry = _context.Logos.Remove(logo).Entity;
             return logoEntry;
         }
-
-
+        public async Task<User> GetUserInfoAsync(string userId)
+        {
+            var user = await _context.Users.Include(l => l.Logo)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+            return user;
+        }
+        public async Task AddEmailToBlocked(string email)
+        {
+            await _context.BlockedUsers.AddAsync(new BlockedUser { Email = email });
+        }
+        public List<BlockedUser> ListBlockedUsers =>
+            _context.BlockedUsers.ToList();
     }
 }

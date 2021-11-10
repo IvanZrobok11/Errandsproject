@@ -76,7 +76,6 @@ C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcore
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Account\Register.cshtml.g.cs
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Errand\Create.cshtml.g.cs
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Errand\Edit.cshtml.g.cs
-C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Errand\List.cshtml.g.cs
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_HeaderPartial.cshtml.g.cs
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
@@ -100,4 +99,10 @@ C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\bin\Debug\netcore
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\bin\Debug\netcoreapp3.1\Microsoft.IO.RecyclableMemoryStream.dll
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\bin\Debug\netcoreapp3.1\SixLabors.ImageSharp.dll
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\bin\Debug\netcoreapp3.1\SixLabors.ImageSharp.Web.dll
-C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Chat\Index.cshtml.g.cs
+C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Errand\Getdata.cshtml.g.cs
+C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Message\Chat.cshtml.g.cs
+C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Errand\ListErrandToDo.cshtml.g.cs
+C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Errand\ListMyErrand.cshtml.g.cs
+C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Admin\ListBlockedEmails.cshtml.g.cs
+C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Admin\ListUsers.cshtml.g.cs

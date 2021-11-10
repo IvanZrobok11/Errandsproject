@@ -163,3 +163,4 @@ C:\Users\LapStore\source\с#project\ErrandsProject\ErrandsTests\bin\Debug\netcor
 C:\Users\LapStore\source\с#project\ErrandsProject\ErrandsTests\bin\Debug\netcoreapp3.1\Errands.Domain.pdb
 C:\Users\LapStore\source\с#project\ErrandsProject\ErrandsTests\bin\Debug\netcoreapp3.1\Errands.Mvc.pdb
 C:\Users\LapStore\source\с#project\ErrandsProject\ErrandsTests\bin\Debug\netcoreapp3.1\Errrands.Application.pdb
+C:\Users\LapStore\source\с#project\ErrandsProject\ErrandsTests\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
