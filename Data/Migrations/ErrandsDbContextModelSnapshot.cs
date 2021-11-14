@@ -33,6 +33,17 @@ namespace Errands.Data.Migrations
                     b.ToTable("BlockedUsers");
                 });
 
+            modelBuilder.Entity("Errands.Domain.Models.Chat", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Chats");
+                });
+
             modelBuilder.Entity("Errands.Domain.Models.Errand", b =>
                 {
                     b.Property<Guid>("Id")
@@ -138,6 +149,34 @@ namespace Errands.Data.Migrations
                     b.ToTable("Logos");
                 });
 
+            modelBuilder.Entity("Errands.Domain.Models.Message", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ChatId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .HasColumnName("message_content")
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
+
+                    b.Property<DateTime>("DateSend")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SenderName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("Errands.Domain.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -209,6 +248,21 @@ namespace Errands.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Errands.Domain.Models.UserChat", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("ChatId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "ChatId");
+
+                    b.HasIndex("ChatId");
+
+                    b.ToTable("UserChat");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -364,6 +418,31 @@ namespace Errands.Data.Migrations
                     b.HasOne("Errands.Domain.Models.User", "User")
                         .WithOne("Logo")
                         .HasForeignKey("Errands.Domain.Models.Logo", "UserId");
+                });
+
+            modelBuilder.Entity("Errands.Domain.Models.Message", b =>
+                {
+                    b.HasOne("Errands.Domain.Models.Chat", "Chatting")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatId")
+                        .HasConstraintName("FK_Chat_Message")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Errands.Domain.Models.UserChat", b =>
+                {
+                    b.HasOne("Errands.Domain.Models.Chat", "Chat")
+                        .WithMany("UsersChat")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Errands.Domain.Models.User", "Interlocutor")
+                        .WithMany("UserChats")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

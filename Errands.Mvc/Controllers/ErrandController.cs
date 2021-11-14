@@ -16,16 +16,18 @@ namespace Errands.Mvc.Controllers
     [Authorize]
     public class ErrandController : Controller
     {
-        private readonly IErrandsRepository _repository;
+        private readonly IErrandsRepository _errandRepository;
         private readonly FileServices _fileServices;
         private readonly UserManager<User> _userManager;
+        private readonly IMessageRepository _messageRepository;
 
-        public ErrandController(IErrandsRepository repository, FileServices fileServices,
-            UserManager<User> userManager)
+        public ErrandController(IErrandsRepository errandRepository, FileServices fileServices,
+            UserManager<User> userManager, IMessageRepository messageRepository)
         {
-            _repository = repository;
+            _errandRepository = errandRepository;
             _fileServices = fileServices;
             _userManager = userManager;
+            _messageRepository = messageRepository;
         }
         //[HttpGet]
         //public ViewResult Getdata()
@@ -47,7 +49,7 @@ namespace Errands.Mvc.Controllers
         public ViewResult ListMyErrand()
         {
             string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            IEnumerable<GetMyErrandViewModel> errands = _repository.GetErrandsByUserId(userid).Select(x => new GetMyErrandViewModel
+            IEnumerable<GetMyErrandViewModel> errands = _errandRepository.GetErrandsByUserId(userid).Select(x => new GetMyErrandViewModel
             {
                 Id = x.Id,
                 Cost = x.Cost,
@@ -64,7 +66,7 @@ namespace Errands.Mvc.Controllers
         public ViewResult ListErrandToDo()
         {
             string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            IEnumerable<GetErrandToDoViewModel> errands = _repository.GetErrandsByHelperUserId(userid).Select(x => new GetErrandToDoViewModel
+            IEnumerable<GetErrandToDoViewModel> errands = _errandRepository.GetErrandsByHelperUserId(userid).Select(x => new GetErrandToDoViewModel
             {
                 Id = x.Id,
                 Cost = x.Cost,
@@ -79,7 +81,7 @@ namespace Errands.Mvc.Controllers
         [HttpGet]
         public async Task<VirtualFileResult> GetFile(Guid id)
         {
-            var file = await _repository.GetFileByIdAsync(id);
+            var file = await _errandRepository.GetFileByIdAsync(id);
             return File($"{file.Path}", "AppContext/pdf", file.Name);
         }
 
@@ -119,14 +121,14 @@ namespace Errands.Mvc.Controllers
 
                 }
             }
-            await _repository.CreateErrandAsync(errand, files);
+            await _errandRepository.CreateErrandAsync(errand, files);
             return RedirectToAction(nameof(ListMyErrand));
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var errand = await _repository.GetErrandByIdAsync(id);
+            var errand = await _errandRepository.GetErrandByIdAsync(id);
             if (errand == null)
             {
                 return NotFound();
@@ -152,14 +154,14 @@ namespace Errands.Mvc.Controllers
                 Cost = model.Cost,
                 Id = model.Id
             };
-            await _repository.UpdateAsync(errand);
+            await _errandRepository.UpdateAsync(errand);
             return RedirectToAction(nameof(ListMyErrand));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var errand = await _repository.GetErrandByIdAsync(id);
+            var errand = await _errandRepository.GetErrandByIdAsync(id);
             try
             {
                 var paths = errand.FileModels.Select(p => p.Path);
@@ -167,7 +169,7 @@ namespace Errands.Mvc.Controllers
                 {
                     _fileServices.DeleteFile(p);
                 }
-                await _repository.DeleteAsync(id);
+                await _errandRepository.DeleteAsync(id);
             }
             catch (Exception)
             {
@@ -180,22 +182,27 @@ namespace Errands.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Take(Guid id)
         {
-            var errand = await _repository.GetErrandByIdAsync(id);
+            var errand = await _errandRepository.GetErrandByIdAsync(id);
 
             errand.Active = false;
             errand.HelperUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
-            await _repository.UpdateAsync(errand);
+
+            var chat = await _messageRepository.GetChatByUsersIdAsync(errand.HelperUserId, errand.UserId);
+            if (chat == null)
+            {
+                chat = await _messageRepository.CreateChatAsync(errand.UserId, errand.HelperUserId);
+            }
+            await _errandRepository.UpdateAsync(errand);
             return RedirectToAction("Index", "Home");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Confirm(Guid id)
         {
-            var errand = await _repository.GetErrandByIdAsync(id);
+            var errand = await _errandRepository.GetErrandByIdAsync(id);
             errand.Done = true;
             
-            await _repository.UpdateAsync(errand);
+            await _errandRepository.UpdateAsync(errand);
             return RedirectToAction("Index", "Home");
         }
     }

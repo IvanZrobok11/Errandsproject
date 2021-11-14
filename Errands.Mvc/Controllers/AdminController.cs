@@ -15,8 +15,8 @@ namespace Errands.Mvc.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<User> _userManager;
-        private readonly UserRepository _userRepository;
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, UserRepository userRepository)
+        private readonly IUserRepository _userRepository;
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IUserRepository userRepository)
         {
             _roleManager = roleManager;
             _userManager = userManager;

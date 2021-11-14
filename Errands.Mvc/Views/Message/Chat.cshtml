@@ -4,19 +4,19 @@
         <input id="userPassword" type="text" />
         <input id="loginBtn" type="button" value="Войти" />
     </div>*@
-@model UserInfoViewModel
+@model Errands.Mvc.Models.ChatDataViewModel
 <br />
-<p>Nickname: @Model.Nickname</p>
-<p>FirstName: @Model.FirstName</p>
-<p>LastName: @Model.LastName</p>
-<p>ID recivers: @Model.ReciverUserId</p>
-@if (Model.PathLogo == null)
+<p>Nickname: @Model.ReceiverUserInfo.Nickname</p>
+<p>FirstName: @Model.ReceiverUserInfo.FirstName</p>
+<p>LastName: @Model.ReceiverUserInfo.LastName</p>
+<p>ID recivers: @Model.ReceiverUserInfo.ReceiverUserId</p>
+@if (Model.ReceiverUserInfo.PathLogo == null)
 {
-    <img src="/img/w128h1281338911651user.png" alt="Alternate Text" />
+    <img src="~/src/img/w128h1281338911651user.png" alt="Alternate Text" />
 }
 else
 {
-    <img src="@Model.PathLogo" alt="Alternate Text" />
+    <img src="@Model.ReceiverUserInfo.PathLogo" alt="Alternate Text" />
 }
 <br />
 
@@ -27,11 +27,16 @@ else
     <input type="text" id="receiver" placeholder="Введіть отримувача(необовязково)" />
     <input type="button" id="sendBtn" @*disabled*@ value="Отправить" />
 </div>
-<div id="chatroom"></div>
+<div id="chatroom">
+    @foreach (var messsage in Model.GetMessages)
+    {
+        <p><b>@messsage.SenderName</b> @messsage.Content</p>
+    }
+</div>
 
 <script src="~/src/js/microsoft/signalr/dist/browser/signalr.min.js"></script>
 <script>
-        let token = `@Model.Token`;
+        let token = `@Model.ReceiverUserInfo.Token`;
         const hubConnection = new signalR.HubConnectionBuilder()
             .withUrl("/messages", { accessTokenFactory: () => token })
             .build();
@@ -49,16 +54,16 @@ else
             var firstElem = document.getElementById("chatroom").firstChild;
             document.getElementById("chatroom").insertBefore(elem, firstElem);
         });
-            hubConnection.start();
+        hubConnection.start();
 
         // отправка сообщения на сервер
         document.getElementById("sendBtn").addEventListener("click", function (e) {
             let message = document.getElementById("message").value;
             let to = document.getElementById("receiver").value;
             if (to == "") {
-                to = `@Model.ReciverUserId`;
+                to = `@Model.ReceiverUserInfo.ReceiverUserId`;
             }
-            hubConnection.invoke("Send", message, to);
+            hubConnection.invoke("Send", message, to, `@Model.ReceiverUserInfo.ChatId`);
         });
 
 </script>

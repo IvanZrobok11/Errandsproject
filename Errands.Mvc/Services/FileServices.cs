@@ -17,13 +17,13 @@ namespace Errands.Mvc.Services
 {
     public class FileServices
     {
-        public readonly UserRepository _userRepository;
+        public readonly IUserRepository _userRepository;
         private readonly IWebHostEnvironment _appEnvironment;
 
         private readonly IImageProfile _logoImageProfile;
         private readonly IFileProfile _fileProfile;
 
-        public FileServices(UserRepository userRepository, IWebHostEnvironment appEnvironment)
+        public FileServices(IUserRepository userRepository, IWebHostEnvironment appEnvironment)
         {
             _userRepository = userRepository;
             _appEnvironment = appEnvironment;

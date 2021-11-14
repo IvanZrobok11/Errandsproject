@@ -37,7 +37,7 @@ namespace ErrandsTests
             mock.Setup(p => p.GetErrandsByUserId("111111111111111111111111111aaa")).Returns(GetTestErrands);
 
             // Arrange - create a controller
-            ErrandController controller = new ErrandController(mock.Object, null, null);
+            ErrandController controller = new ErrandController(mock.Object, null, null, null);
 
             // Action
             var result = controller.ListMyErrand().ViewData.Model as GetMyErrandViewModel;
@@ -54,7 +54,7 @@ namespace ErrandsTests
             mock.Setup(m => m.GetErrandsByUserId("")).Returns(GetTestErrands());
 
             // Arrange - create the controller
-            ErrandController controller = new ErrandController(mock.Object, null, null);
+            ErrandController controller = new ErrandController(mock.Object, null, null, null);
 
             // Act
             var errands = GetTestErrands().ToArray();

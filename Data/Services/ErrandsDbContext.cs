@@ -16,16 +16,19 @@ namespace Errands.Data.Services
         public DbSet<FileModel> FileModels { get; set; }
         public DbSet<Logo> Logos { get; set; }
         public DbSet<BlockedUser> BlockedUsers { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<Chat> Chats { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
             builder.ApplyConfiguration(new ErrandConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new FileModelConfiguration());
+            builder.ApplyConfiguration(new MessageConfiguration());
+            builder.ApplyConfiguration(new ChatConfiguration());
+
             base.OnModelCreating(builder);
-
-
         }
-
     }
 }

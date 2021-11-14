@@ -15,7 +15,7 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Errands.Data.Services
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly ErrandsDbContext _context;
         public UserRepository(ErrandsDbContext context)

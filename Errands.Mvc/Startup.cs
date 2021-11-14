@@ -76,7 +76,8 @@ namespace Errands.Mvc
             services.AddSignalR();
             services.AddTransient<IErrandsRepository, ErrandsRepository>();
 
-            services.AddTransient<UserRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IMessageRepository, MessageRepository>();
             services.AddTransient<FileServices>();
             services.AddControllersWithViews();
         }

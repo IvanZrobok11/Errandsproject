@@ -1,25 +1,31 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
+using Errands.Data.Services;
+using Errands.Domain.Models;
 
 namespace Errands.Mvc.Chat
 {
     [Authorize]
     public class ChatHub : Hub
     {
-        public async Task Send(string message, string to)
+        private readonly IMessageRepository _messageRepository;
+
+        public ChatHub(IMessageRepository messageRepository)
+        {
+            _messageRepository = messageRepository;
+        }
+        public async Task Send(string message, string to, Guid chatId)
         {
             var userName = Context.User.Identity.Name;
+            await _messageRepository.SaveMessage(new Message{Content = message, DateSend = DateTime.UtcNow, ChatId = chatId, SenderName = userName});
 
-            if (Context.UserIdentifier != to) // если получатель и текущий пользователь не совпадают
+            if (Context.UserIdentifier != to) 
                 await Clients.User(Context.UserIdentifier).SendAsync("Receive", message, userName);
             await Clients.User(to).SendAsync("Receive", message, userName);
         }
 
-        public override async Task OnConnectedAsync()
-        {
-            await Clients.All.SendAsync("Notify", $"Приветствуем {Context.UserIdentifier}");
-            await base.OnConnectedAsync();
-        }
+        
     }
 }

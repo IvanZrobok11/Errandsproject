@@ -12,7 +12,7 @@ namespace Errands.Mvc.Controllers
     public class HomeController : Controller
     {
         private readonly IErrandsRepository _repository;
-        public int ItemsPerPage = 8;
+        public int ItemsPerPage = 5;
         public HomeController(IErrandsRepository repository)
         {
             _repository = repository;

@@ -18,11 +18,11 @@ namespace Errands.Mvc.Controllers
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        public readonly UserRepository _userRepository;
+        public readonly IUserRepository _userRepository;
         private readonly FileServices _fileServices;
         
         public UserController(SignInManager<User> signInManager, UserManager<User> userManager,
-            UserRepository userRepository, FileServices fileServices)
+            IUserRepository userRepository, FileServices fileServices)
         {
             _signInManager = signInManager;
             _userManager = userManager;
