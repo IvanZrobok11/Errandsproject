@@ -67,8 +67,6 @@ C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcore
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Errands.Mvc.RazorAssemblyInfo.cache
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Errands.Mvc.RazorAssemblyInfo.cs
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\staticwebassets\Errands.Mvc.StaticWebAssets.Manifest.cache
-C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\staticwebassets\Errands.Mvc.StaticWebAssets.xml
-C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\scopedcss\bundle\Errands.Mvc.styles.css
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Errands.Mvc.TagHelpers.input.cache
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Errands.Mvc.TagHelpers.output.cache
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Errands.Mvc.RazorCoreGenerate.cache
@@ -106,3 +104,6 @@ C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcore
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Admin\ListBlockedEmails.cshtml.g.cs
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Admin\ListUsers.cshtml.g.cs
+C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Error\Error.cshtml.g.cs
+C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Errand\GetErrand.cshtml.g.cs
+C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Account\ResetPassword.cshtml.g.cs

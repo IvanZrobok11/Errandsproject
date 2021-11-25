@@ -15,7 +15,9 @@ namespace Errands.Mvc.Models.ViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Path { get; set; }
+        public int CompletedErrands { get; set; }
         public FormFile Logo { get; set; }
+        public string Id { get; set; }
 
     }
 }

@@ -13,19 +13,21 @@
             <th class="table__title">Done</th>
             <th class="table__title"></th>
         </tr>
-        @foreach (var user in Model)
+        @foreach (var errand in Model)
         {
             <tr>
-                <td class="text-right">@user.Title</td>
-                <td class="table__price">@user.Cost</td>
-                <td class="text-right">@user.Description</td>
-                <td class="@(user.Done?"txt-success":"txt-danger")">@user.Done</td>
+                <td class="text-right">
+                    <a asp-action="GetErrand" asp-controller="Errand" asp-route-errandId="@errand.Id">@errand.Title</a>
+                </td>
+                <td class="table__price">@errand.Cost</td>
+                <td class="text-right">@errand.Description</td>
+                <td class="@(errand.Done?"txt-success":"txt-danger")">@errand.Done</td>
                 @*<td><a asp-controller="Message" asp-action="Chat" asp-route-userId="@user.NeedlyUserId">@user.NeedlyUserId</a></td>*@
             <td>
-                @if (user.NeedlyUserId != null)
+                @if (errand.NeedlyUserId != null)
                 {
                     <form asp-action="Chat" asp-controller="Message" method="post">
-                        <input type="hidden" name="receiverUserId" value="@user.NeedlyUserId" />
+                        <input type="hidden" name="receiverUserId" value="@errand.NeedlyUserId" />
                         <button type="submit">Go to chat</button>
                     </form>
                 }

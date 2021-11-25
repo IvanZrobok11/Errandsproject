@@ -40,45 +40,14 @@ namespace Errands.Mvc
                 .AddEntityFrameworkStores<ErrandsDbContext>()
                 .AddDefaultTokenProviders()
                 ;
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.RequireHttpsMetadata = false;
-            //        options.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidateIssuer = true,
-            //            ValidIssuer = AuthOptions.ISSUER,
-            //            ValidateAudience = true,
-            //            ValidAudience = AuthOptions.AUDIENCE,
-            //            ValidateLifetime = true,
-            //            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-            //            ValidateIssuerSigningKey = true,
-            //        };
-            //        options.Events = new JwtBearerEvents
-            //        {
-            //            OnMessageReceived = context =>
-            //            {
-            //                var accessToken = context.Request.Query["access_token"];
-
-            //                // если запрос направлен хабу
-            //                var path = context.HttpContext.Request.Path;
-            //                if (!string.IsNullOrEmpty(accessToken) &&
-            //                    (path.StartsWithSegments("/chat")))
-            //                {
-            //                    // получаем токен из строки запроса
-            //                    context.Token = accessToken;
-            //                }
-            //                return Task.CompletedTask;
-            //            }
-            //        };
-            //    });
 
             services.AddSignalR();
             services.AddTransient<IErrandsRepository, ErrandsRepository>();
-
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IMessageRepository, MessageRepository>();
+            services.AddTransient<IDateTimeProvider, DateTimeProvider>();
             services.AddTransient<FileServices>();
+
             services.AddControllersWithViews();
         }
 
@@ -89,7 +58,10 @@ namespace Errands.Mvc
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseExceptionHandler("/Error/Error");
+            }
             app.UseHttpsRedirection();
             app.UseRouting();
 

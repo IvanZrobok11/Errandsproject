@@ -167,7 +167,7 @@ namespace Errands.Data.Migrations
                     b.Property<DateTime>("DateSend")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("SenderName")
+                    b.Property<string>("SenderId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -183,6 +183,9 @@ namespace Errands.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CompletedErrands")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")

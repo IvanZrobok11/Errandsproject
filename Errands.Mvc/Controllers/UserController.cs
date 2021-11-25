@@ -10,6 +10,7 @@ using SixLabors.ImageSharp;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Errands.Application.Exceptions;
 
 namespace Errands.Mvc.Controllers
 {
@@ -42,7 +43,9 @@ namespace Errands.Mvc.Controllers
                 UserName = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Path = path
+                Path = path,
+                CompletedErrands = user.CompletedErrands,
+                Id = userId,
             });
         }
         [HttpGet]
@@ -99,7 +102,8 @@ namespace Errands.Mvc.Controllers
         {
             if (Logo == null)
             {
-                return View("ChangeInfo");
+                TempData["message"] = "Please attach file";
+                return RedirectToAction("ChangeInfo");
             }
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             User user = await _userManager.FindByIdAsync(userId);
@@ -115,14 +119,19 @@ namespace Errands.Mvc.Controllers
                 logo.User = user;
                 await _userRepository.AddLogoAsync(logo);
             }
-            catch (ImageProcessingException ex)
+            catch (WrongExtensionFileException)
             {
-                TempData["message"] = ex.ToString();
+                TempData["errorMessage"] = "File have unallowable extension";
                 return RedirectToAction("ChangeInfo");
             }
-            catch (Exception ex)
+            catch (InvalidSizeFileException)
             {
-                TempData["message"] = ex.ToString();
+                TempData["errorMessage"] = "Image size is bigger than allowed";
+                return RedirectToAction("ChangeInfo");
+            }
+            catch (ImageProcessingException)
+            {
+                TempData["message"] = "Processing exception";
                 return RedirectToAction("ChangeInfo");
             }
             return RedirectToAction("Profile");

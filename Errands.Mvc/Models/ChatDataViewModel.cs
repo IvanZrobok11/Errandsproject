@@ -9,7 +9,8 @@ namespace Errands.Mvc.Models
 {
     public class ChatDataViewModel
     {
-        public ReceiverUserInfoViewModel ReceiverUserInfo { get; set; }
-        public List<Message> GetMessages { get; set; }
+        public User ReceiverUser { get; set; }
+        public User SenderUser { get; set; }
+        public Guid ChatId { get; set; }
     }
 }

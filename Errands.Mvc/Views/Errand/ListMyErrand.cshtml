@@ -10,36 +10,48 @@
             <th class="table__title">Title</th>
             <th class="table__title">Price</th>
             <th class="table__title">Description</th>
-            <th class="table__title">Done</th>
+            <th class="table__title">Made</th>
             <th class="table__title">Active</th>
             <th class="table__title"></th>
             <th class="table__title"></th>
+            <th class="table__title"></th>
         </tr>
-        @foreach (var item in Model)
+        @foreach (var errand in Model)
         {
             <tr>
-                <td class="text-right">@item.Title</td>
-                <td class="table__price">@item.Cost</td>
-                <td class="text-right">@item.Description</td>
-                <td class="@(item.Done?"txt-success":"txt-danger")">@item.Done</td>
-                <td class="@(item.Active?"txt-success":"txt-danger")">@item.Active</td>
+                <td class="text-right">
+                    <a asp-action="GetErrand" asp-controller="Errand" asp-route-errandId="@errand.Id">@errand.Title</a>
+                </td>
+                <td class="table__price">@errand.Cost</td>
+                <td class="text-right">@errand.Description</td>
+                <td class="@(errand.Done?"txt-success":"txt-danger")">@errand.Done</td>
+                <td class="@(errand.Active?"txt-success":"txt-danger")">@errand.Active</td>
                 <td class="text-center">
                     <form asp-action="Delete" method="post">
-                        <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@item.Id">Edit</a>
-                        <input type="hidden" name="id" value="@item.Id" />
+                        <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@errand.Id">Edit</a>
+                        <input type="hidden" name="id" value="@errand.Id" />
                         <button type="submit">Delete</button>
                     </form>
                 </td>
                 <td>
-                    @if (item.HelperUserId != null)
-                    {
-                    @*<a asp-controller="Message" asp-action="Chat" asp-route-userId="@item.HelperUserId">@item.HelperUserId</a>*@
+                   
+                </td>
+                @if (errand.HelperUserId != null)
+                {
+                    <td>
+                        @*<a asp-controller="Message" asp-action="Chat" asp-route-userId="@item.HelperUserId">@item.HelperUserId</a>*@
                         <form asp-action="Chat" asp-controller="Message" method="post">
-                            <input type="hidden" name="receiverUserId" value="@item.HelperUserId" />
+                            <input type="hidden" name="receiverUserId" value="@errand.HelperUserId" />
                             <button type="submit">Go to chat</button>
                         </form>
-                    }
-                </td>
+                    </td>
+                    <td>
+                        <form asp-action="Confirm" asp-controller="Errand" method="post">
+                            <input type="hidden" name="id" value="@errand.Id" />
+                            <button @(errand.Done?"disabled":"") type="submit">Confirm</button>
+                        </form>
+                    </td>
+                }
             </tr>
         }
 

@@ -4,26 +4,30 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Linq;
+using Errands.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Errands.Mvc.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
-        private readonly SignInManager<User> _signInManager;
-        private readonly UserManager<User> _userManager;
+        public SignInManager<User> SignInManager { get; }
+        public UserManager<User> UserManager { get; }
 
         public AccountController(SignInManager<User> signInManager, UserManager<User> userManager)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
+            SignInManager = signInManager;
+            UserManager = userManager;
         }
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View(new RegisterViewModel());
         }
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
@@ -34,24 +38,22 @@ namespace Errands.Mvc.Controllers
             {
                 User user = new User { Email = model.Email, UserName = model.UserName };
                 // 
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     // 
-                    await _signInManager.SignInAsync(user, false);
+                    await SignInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
+                    AddErrors(result);
                 }
             }
             return View(model);
         }
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
             return View(new LoginViewModel { ReturnUrl = returnUrl });
@@ -59,16 +61,17 @@ namespace Errands.Mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
+                var user = await UserManager.FindByEmailAsync(model.Email);
                 if (user == null)
                 {
                     return View(model);
                 }
-                var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
+                var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, false);
                 if (result.Succeeded)
                 {
                     // 
@@ -82,7 +85,6 @@ namespace Errands.Mvc.Controllers
                     }
                 }
             }
-           
             else
             {
                 ModelState.AddModelError("", "Email or password is wrong");
@@ -91,12 +93,58 @@ namespace Errands.Mvc.Controllers
         }
 
         [HttpGet]
-        [Authorize]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await SignInManager.SignOutAsync();
             return RedirectToAction("Index","Home");
         }
+
+        [HttpGet]
+        public IActionResult ResetPassword(string id)
+        {
+            var resetPasswordViewModel = new ResetPasswordViewModel() { Id = id };
+            if (id == null)
+            {
+                return RedirectToAction("Error", "Error");
+            }
+            else
+            {
+                return View(resetPasswordViewModel);
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await UserManager.FindByIdAsync(model.Id);
+            if (user != null)
+            {
+                var result = await UserManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Profile","User");
+                }
+                else
+                {
+                    AddErrors(result);
+                }
+            }
+            return View(model);
+        }
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+        }
+
+    
     }
 }

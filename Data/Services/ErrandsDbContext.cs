@@ -10,7 +10,7 @@ namespace Errands.Data.Services
     {
         public ErrandsDbContext(DbContextOptions<ErrandsDbContext> options) : base(options)
         {
-
+            Database.EnsureCreated();
         }
         public DbSet<Errand> Errands { get; set; }
         public DbSet<FileModel> FileModels { get; set; }

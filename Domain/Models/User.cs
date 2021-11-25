@@ -18,6 +18,7 @@ namespace Errands.Domain.Models
         public string LastName { get; set; }
         public Logo Logo { get; set; }
         public ICollection<Errand> Errands { get; set; }
+        public int CompletedErrands { get; set; }
 
     }
 }

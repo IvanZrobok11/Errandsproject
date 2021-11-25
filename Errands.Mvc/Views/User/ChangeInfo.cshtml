@@ -13,10 +13,10 @@
     <h2>@TempData["message"]</h2>
     @if (Model.Path == null)
     {
-        <img src="/img/w128h1281338911651user.png" alt="Alternate Text" />
+        <img src="~/src/img/w128h1281338911651user.png" alt="Alternate Text" />
         <form asp-action="ChangeLogo" method="post" enctype="multipart/form-data">
-            <input type="file" name="Logo" id="Logo"/>
-            <button type="submit">Add logo </button>
+            <input type="file" name="Logo" id="Logo" value="Attach"/>
+            <button type="submit">Save</button>
         </form>
         @*@(Model.Logo.Path==null? "Add logo": "Change logo")*@
     }

@@ -13,146 +13,171 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using ErrandsTests.FakeDependencies;
+using Microsoft.Extensions.Caching.Memory;
+using MyTested.AspNetCore.Mvc;
 using Xunit;
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace ErrandsTests
 {
-    public class AccountControllerTests 
-    {
-        [Fact]
-        public async Task RegisterNewUser_ReturnsRedirectToAction()
-        {
-            //Arrange
-            var context = new Mock<HttpContext>();
-            var contextAccessor = new Mock<IHttpContextAccessor>();
-            contextAccessor.Setup(x => x.HttpContext).Returns(context.Object);
+    //public class AccountControllerTests
+    //{
+    //    private Mock<IHttpContextAccessor> _contextAccessor;
+    //    private FakeUserManager _mockUserManager;
+    //    private FakeSignInManager _mockSingInManager;
 
-            var mockUserManager = new FakeUserManager(IdentityResult.Success);
-            var mockSingInManager = new FakeSignInManager(contextAccessor.Object);
+    //    public AccountControllerTests()
+    //    {
+    //        var context = new Mock<HttpContext>();
+    //        _contextAccessor.Setup(x => x.HttpContext).Returns(context.Object);
+    //        _mockSingInManager = new FakeSignInManager(_contextAccessor.Object);
+    //        _mockUserManager = new FakeUserManager(IdentityResult.Failed());
+    //        _contextAccessor = new Mock<IHttpContextAccessor>();
+    //    }
+    //    [Fact]
+    //    public async Task RegisterNewUser_ReturnsRedirectToAction()
+    //    {
+    //        //Arrange
+    //        var controller = new AccountController(_mockSingInManager, _mockUserManager);
+
+    //        //Act
+    //        var input = new NewUserInputBuilder().Build();
+    //        var result = await controller.Register(input);
+
+    //        //Assert
+    //        var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+    //        Assert.Equal("Index", redirectToActionResult.ActionName);
+
+    //    }
+    //    [Fact]
+    //    public async Task RegisterNewUser_ReturnsViewModel()
+    //    {
+    //        //Arrange
             
-            var controller = new AccountController(mockSingInManager, mockUserManager);
+    //        var controller = new AccountController(_mockSingInManager, _mockUserManager);
 
-            //Act
-            var input = new NewUserInputBuilder().Build();
-            var result = await controller.Register(input);
+    //        //Act
+    //        var input = new NewUserInputBuilder().Build();
+    //        var result = await controller.Register(input) as ViewResult;
+    //        var model = Assert.IsType<RegisterViewModel>(result.ViewData.Model);
 
-            //Assert
-            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Index", redirectToActionResult.ActionName);
+    //        //Assert
+    //        var returns = Assert.IsType<ViewResult>(result);
+    //        Assert.Equal(new NewUserInputBuilder().Build().UserName, model.UserName);
+    //        Assert.Equal(new NewUserInputBuilder().Build().Email, model.Email);
+    //    }
+    //}
+    //public class NewUserInputBuilder
+    //{
+    //    private string UserName { get; set; }
+    //    private string Password { get; set; }
+    //    private string ConfirmPassword { get; set; }
+    //    private string Email { get; set; }
 
+    //    internal NewUserInputBuilder()
+    //    {
+    //        this.UserName = "user@gamil.com";
+    //        this.Password = "password";
+    //        this.ConfirmPassword = "password";
+    //        this.Email = "email@gamil.com";
+    //    }
+
+    //    internal NewUserInputBuilder WithNoUsername()
+    //    {
+    //        this.UserName = "";
+    //        return this;
+    //    }
+
+    //    internal NewUserInputBuilder WithMismatchedPasswordConfirmation()
+    //    {
+    //        this.ConfirmPassword = "MismatchedPassword";
+    //        return this;
+    //    }
+
+    //    internal RegisterViewModel Build()
+    //    {
+    //        return new RegisterViewModel
+    //        {
+    //            UserName = this.UserName,
+    //            Password = this.Password,
+    //            ConfirmPassword = this.ConfirmPassword,
+    //            Email = this.Email
+    //        };
+    //    }
+    //}
+    public class AccountControllerTests
+    {
+        [Fact]
+        public void GetLogin_ShouldHave_AllowAnonymousFilter()
+        {
+            MyMvc
+                .Controller<AccountController>()
+                .Calling(c => c.Login(With.No<string>()))
+                .ShouldHave()
+                .ActionAttributes(attrs => attrs
+                    .AllowingAnonymousRequests());
+        }
+
+        [Fact]
+        public void AccountController_ShouldHave_AuthorizeAttribute()
+        {
+            MyMvc.Controller<AccountController>()
+                .ShouldHave().Attributes(a => 
+                    a.RestrictingForAuthorizedRequests());
+        }
+       
+
+        [Fact]
+        public void PostLogin_ShouldReturn_DefaultViewWithInvalidModel()
+        {
+            MyMvc
+                .Controller<AccountController>()
+                .Calling(c => c.Login(
+                    With.Default<LoginViewModel>()
+                   ))
+                .ShouldHave()
+                .ModelState(modelState => modelState
+                    .For<LoginViewModel>()
+                    .ContainingErrorFor(m => m.Email)
+                    .ContainingErrorFor(m => m.Password))
+                .AndAlso()
+                .ShouldReturn()
+                .View();
+        }
+
+
+
+        [Fact]
+        public void GetRegister_ShouldBe_RoutedCorrectly()
+        {
+            //MyMvc
+            //    .Routing()
+            //    .ShouldMap("/Account/Register")
+            //    .To<CheckoutController>(c => c.AddressAndPayment());
         }
         [Fact]
-        public async Task RegisterNewUser_ReturnsViewModel()
+        public void PostLoginShouldReturnRedirectToLocalWithValidUserNameAndReturnUrl()
         {
-            //Arrange
-            var context = new Mock<HttpContext>();
-            var contextAccessor = new Mock<IHttpContextAccessor>();
-            contextAccessor.Setup(x => x.HttpContext).Returns(context.Object);
-
-            var mockUserManager = new FakeUserManager(IdentityResult.Failed());
-            var mockSingInManager = new FakeSignInManager(contextAccessor.Object);
-
-            var controller = new AccountController(mockSingInManager, mockUserManager);
-
-            //Act
-            var input = new NewUserInputBuilder().Build();
-            var result = await controller.Register(input) as ViewResult;
-            var model = Assert.IsType<RegisterViewModel>(result.ViewData.Model);
-
-            //Assert
-            var returns = Assert.IsType<ViewResult>(result);
-            Assert.Equal(new NewUserInputBuilder().Build().UserName, model.UserName);
-            Assert.Equal(new NewUserInputBuilder().Build().Email, model.Email);
-        }
-    }
-    public class FakeUserManager : UserManager<User>
-    {
-        public IdentityResult SetIdentityResult { get; set; }
-        public FakeUserManager(IdentityResult result)
-            : base(new Mock<IUserStore<User>>().Object,
-                  new Mock<IOptions<IdentityOptions>>().Object,
-                  new Mock<IPasswordHasher<User>>().Object,
-                  new IUserValidator<User>[0],
-                  new IPasswordValidator<User>[0],
-                  new Mock<ILookupNormalizer>().Object,
-                  new Mock<IdentityErrorDescriber>().Object,
-                  new Mock<IServiceProvider>().Object,
-                  new Mock<ILogger<UserManager<User>>>().Object)
-        {
-            SetIdentityResult = result;
-        }
-
-        public override Task<IdentityResult> CreateAsync(User user, string password)
-        {
-            return Task.FromResult(SetIdentityResult);
-        }
-    }
-    public class FakeSignInManager : SignInManager<User>
-    {
-        public FakeSignInManager(IHttpContextAccessor contextAccessor)
-            : base(
-                  new FakeUserManager(IdentityResult.Success),
-                  contextAccessor,
-                  new Mock<IUserClaimsPrincipalFactory<User>>().Object,
-                  new Mock<IOptions<IdentityOptions>>().Object,
-                  new Mock<ILogger<SignInManager<User>>>().Object,
-                  new Mock<IAuthenticationSchemeProvider>().Object,
-                  new Mock<IUserConfirmation<User>>().Object)
-        {
-        }
-
-        public override Task SignInAsync(User user, bool isPersistent, string authenticationMethod = null)
-        {
-            return Task.FromResult(0);
-        }
-
-        public override Task<SignInResult> PasswordSignInAsync(string userName, string password, bool isPersistent, bool lockoutOnFailure)
-        {
-            return Task.FromResult(SignInResult.Success);
-        }
-
-        public override Task SignOutAsync()
-        {
-            return Task.FromResult(0);
-        }
-    }
-    public class NewUserInputBuilder
-    {
-        private string UserName { get; set; }
-        private string Password { get; set; }
-        private string ConfirmPassword { get; set; }
-        private string Email { get; set; }
-
-        internal NewUserInputBuilder()
-        {
-            this.UserName = "user@gamil.com";
-            this.Password = "password";
-            this.ConfirmPassword = "password";
-            this.Email = "email@gamil.com";
-        }
-
-        internal NewUserInputBuilder WithNoUsername()
-        {
-            this.UserName = "";
-            return this;
-        }
-
-        internal NewUserInputBuilder WithMismatchedPasswordConfirmation()
-        {
-            this.ConfirmPassword = "MismatchedPassword";
-            return this;
-        }
-
-        internal RegisterViewModel Build()
-        {
-            return new RegisterViewModel
+            var model = new LoginViewModel
             {
-                UserName = this.UserName,
-                Password = this.Password,
-                ConfirmPassword = this.ConfirmPassword,
-                Email = this.Email
+                Email = FakeSignInManager.ValidUser,
+                Password = FakeSignInManager.ValidUser
             };
+
+            var returnUrl = "/Home/Index";
+
+            MyMvc
+                .Controller<AccountController>()
+                .Calling(c => c.Login(
+                    model)
+                    )
+                .ShouldReturn()
+                .Redirect(redirect => redirect
+                    .ToUrl(returnUrl));
         }
+
+        
+
+      
     }
 }

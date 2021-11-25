@@ -6,13 +6,15 @@
     Nickname: @Model.UserName <br />
     FirstName: @Model.FirstName<br />
     LastName: @Model.LastName<br />
+    Completed errands : @Model.CompletedErrands<br />
     @if (Model.Path == null)
     {
         <img src="~/src/img/w128h1281338911651user.png" alt="Alternate Text" />
     }
     else
-	{
-	    <img src="@Model.Path" alt="Alternate Text" />
-	}
+    {
+        <img src="~/@Model.Path" alt="Alternate Text" />
+    }
     <a asp-action="ChangeInfo">ChangeInfo</a>
+    <a class="sign-in__link-signin" asp-route-id="@Model.Id" asp-action="ResetPassword" asp-controller="Account">Reset Passwor</a>
 </div>

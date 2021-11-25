@@ -1,0 +1,20 @@
+﻿@model Errand
+<div>
+    <p>@Model.Title</p>
+    <p>Description: @Model.Description</p>
+    <p>CreationDate: @Model.CreationDate</p>
+    <p>Price @Model.Cost</p>
+    @foreach (var file in Model.FileModels)
+    {
+        if (file.Type == TypeFile.Image)
+        {
+            <img src="~/@file.Path" />
+            <br />
+        }
+        else
+        {
+            <a asp-action="GetFile" asp-controller="Errand" asp-route-id="@file.Id">@file.Name</a>
+            <br />
+        }
+    }
+</div>

@@ -1,74 +1,76 @@
 ﻿@using Microsoft.AspNetCore.Identity;
+@using Errrands.Application.Common.Extension
 @inject SignInManager<User> signInManager
 @inject UserManager<User> userManager
 @model ErrandsListViewModel
 @{ 
     ViewData["Title"] = "Index";
 }
+<style>
 
-<div class="main__cards">
-    @foreach (var errand in Model.Errands)
-    {
-    <div class="card">
-        @if (errand.Active)
-        {
-            <div>
-                <span class="card__label txt-success">Active</span><br><br>
-            </div>
-        }
-        else
-        {
-            <div>
-                <span class="card__label txt-danger">Not active</span><br><br>
-            </div>
-        }
-        <h2 class="card__category">
-            @errand.Title
-        </h2>
-        @*<img class="card__image" src="img/Знімок екрана1.png" alt="">*@
-        @foreach (var file in errand.FileModels)
-        {
-            if (file.Type == TypeFile.File)
-            {
-                <a asp-controller="Errand" asp-action="GetFile" asp-route-id="@file.Id">Download @file.Name</a>
-            }
-            else
-            {
-                <img class="card__image" src="@file.Path" alt="Alternate Text" />
-            }
-        }
-
-        <div class="card__desk">
-            @errand.Description
-        </div>
-        <div class="card__price">@errand.Cost</div>
-        @if (errand.Active && errand.UserId != userManager.GetUserId(User))
-        {
-            <form asp-action="Take" asp-controller="Errand" method="post">
-                <input type="hidden" name="id" value="@errand.Id" />
-                <button class="card__aply" type="submit">Take</button>
-            </form>
-        }
-        else
-        {
-            <form href="#" method="post">
-                <button class="card__disable" type="submit">Take</button>
-            </form>
-
-        }
-    </div>
-    }
-    <style>
-        .nav-page__disabled {
-            pointer-events: none;
-            color:gray;
-        }
-    </style>
-    <a asp-action="Index" asp-route-pageNumber="@(Model.PageInfo.CurrentPage - 1)"
-       class="@(Model.PageInfo.CurrentPage == 1?"nav-page__disabled":"")">back</a>
-    <a asp-action="Index" asp-route-pageNumber="@(Model.PageInfo.CurrentPage + 1)"
-       class="@(Model.PageInfo.CurrentPage == Model.PageInfo.TotalPages?"nav-page__disabled":"")">next</a>
-</div>
+</style>
 <div class="main__sidebar sidebar">
     @await Html.PartialAsync("_SignInPartial")
 </div>
+<div class="main__cards">
+    @foreach (var errand in Model.Errands)
+    {
+        <div class="card">
+            @if (errand.Active)
+            {
+                <div>
+                    <span class="card__label txt-success">Active</span><br><br>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <span class="card__label txt-danger">Not active</span><br><br>
+                </div>
+            }
+            <h2 class="card__category">
+                <a asp-action="GetErrand" asp-controller="Errand" asp-route-errandId="@errand.Id">@errand.Title</a>
+            </h2>
+            @*<img class="card__image" src="img/Знімок екрана1.png" alt="">*@
+            @foreach (var file in errand.FileModels)
+            {
+                if (file.Type == TypeFile.File)
+                {
+                    <a asp-controller="Errand" asp-action="GetFile" asp-route-id="@file.Id">Download @file.Name</a>
+                }
+                else
+                {
+                    <img class="card__image" src="@file.Path.PathToUrl()" alt="Alternate Text" />
+                }
+            }
+
+            <div class="card__desk">
+                @errand.Description
+            </div>
+            <div class="card__price">@errand.Cost</div>
+            @if (errand.Active && errand.UserId != userManager.GetUserId(User))
+            {
+                <form asp-action="Take" asp-controller="Errand" method="post">
+                    <input type="hidden" name="id" value="@errand.Id" />
+                    <button class="card__aply" type="submit">Take</button>
+                </form>
+            }
+            else
+            {
+                <form href="#" method="post">
+                    <button class="card__disable" type="submit">Take</button>
+                </form>
+            }
+        </div>
+    }
+    <br />
+    <br />
+    <nav class="card__nav">
+        <a asp-action="Index" asp-route-pageNumber="@(Model.PageInfo.CurrentPage - 1)"
+           class="@(Model.PageInfo.CurrentPage == 1?"nav-page__disabled":"nav-page__enabled")">back</a>
+        <a asp-action="Index" asp-route-pageNumber="@(Model.PageInfo.CurrentPage + 1)"
+           class="@(Model.PageInfo.CurrentPage == Model.PageInfo.TotalPages?"nav-page__disabled":"nav-page__enabled")">next</a>
+    </nav>
+</div>
+
+

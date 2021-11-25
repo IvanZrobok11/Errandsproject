@@ -10,6 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Errands.Application.Exceptions;
+using Errrands.Application.Common.Extension;
+using SixLabors.ImageSharp;
 
 namespace Errands.Mvc.Controllers
 {
@@ -17,34 +20,32 @@ namespace Errands.Mvc.Controllers
     public class ErrandController : Controller
     {
         private readonly IErrandsRepository _errandRepository;
+        private readonly IMessageRepository _messageRepository;
         private readonly FileServices _fileServices;
         private readonly UserManager<User> _userManager;
-        private readonly IMessageRepository _messageRepository;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
-        public ErrandController(IErrandsRepository errandRepository, FileServices fileServices,
-            UserManager<User> userManager, IMessageRepository messageRepository)
+        public ErrandController(
+            IErrandsRepository errandRepository, 
+            FileServices fileServices,
+            UserManager<User> userManager, 
+            IMessageRepository messageRepository, 
+            IDateTimeProvider dateTimeProvider)
         {
             _errandRepository = errandRepository;
             _fileServices = fileServices;
             _userManager = userManager;
             _messageRepository = messageRepository;
+            _dateTimeProvider = dateTimeProvider;
         }
-        //[HttpGet]
-        //public ViewResult Getdata()
-        //{
-        //    List<string> list = new List<string>();
-        //    string token = User.Identity.AuthenticationType;
-        //    string claim = User.Claims.ToString();
-        //    string cl = ClaimsIdentity.DefaultNameClaimType;
-        //    string name = User.Identity.Name;
-        //    //ValidateAntiForgeryTokenAttribute v = to
-           
-        //    list.Add(token);
-        //    list.Add(cl);
-        //    list.Add(claim);
-        //    list.Add(name);
-        //    return View(list);  
         //}
+        
+        [HttpGet]
+        public async Task<ViewResult> GetErrand(Guid errandId)
+        {
+            Errand errand = await _errandRepository.GetErrandByIdAsync(errandId);
+            return View(errand);
+        }
         [HttpGet]
         public ViewResult ListMyErrand()
         {
@@ -66,7 +67,8 @@ namespace Errands.Mvc.Controllers
         public ViewResult ListErrandToDo()
         {
             string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            IEnumerable<GetErrandToDoViewModel> errands = _errandRepository.GetErrandsByHelperUserId(userid).Select(x => new GetErrandToDoViewModel
+            IEnumerable<GetErrandToDoViewModel> errands = _errandRepository.GetErrandsByHelperUserId(userid)
+                .Select(x => new GetErrandToDoViewModel
             {
                 Id = x.Id,
                 Cost = x.Cost,
@@ -75,14 +77,15 @@ namespace Errands.Mvc.Controllers
                 Done = x.Done,
                 NeedlyUserId = x.UserId
             });
-
             return View(errands);
         }
+
         [HttpGet]
         public async Task<VirtualFileResult> GetFile(Guid id)
         {
             var file = await _errandRepository.GetFileByIdAsync(id);
-            return File($"{file.Path}", "AppContext/pdf", file.Name);
+            return File($"{file.Path.PathToUrl()}", "AppContext/pdf", file.Name);
+            
         }
 
         [HttpGet]
@@ -99,7 +102,7 @@ namespace Errands.Mvc.Controllers
                 Title = model.Title,
                 Description = model.Desc,
                 Cost = model.Cost,
-                CreationDate = DateTime.Now,
+                CreationDate = _dateTimeProvider.Now(),
                 UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value,
             };
             var files = new List<FileModel>();
@@ -113,12 +116,25 @@ namespace Errands.Mvc.Controllers
                         fileModel.Errand = errand;
                         files.Add(fileModel);
                     }
-                    catch (Exception e)
+                    catch (WrongExtensionFileException)
                     {
-                        TempData["errorMessage"] = e.Message;
+                        TempData["errorMessage"] = "File have unallowable extension";
                         return View(model);
                     }
-
+                    catch (InvalidSizeFileException)
+                    {
+                        TempData["errorMessage"] = "File size is bigger than allowed";
+                        return View(model);
+                    }
+                    catch (ImageProcessingException)
+                    {
+                        TempData["errorMessage"] = "Processing exception";
+                        return View(model);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.Message);
+                    }
                 }
             }
             await _errandRepository.CreateErrandAsync(errand, files);
@@ -173,9 +189,8 @@ namespace Errands.Mvc.Controllers
             }
             catch (Exception)
             {
-                throw;
+                throw new NotFoundException(errand?.Title, id);
             }
-
             return RedirectToAction(nameof(ListMyErrand));
         }
         [HttpPost]
@@ -193,17 +208,26 @@ namespace Errands.Mvc.Controllers
                 chat = await _messageRepository.CreateChatAsync(errand.UserId, errand.HelperUserId);
             }
             await _errandRepository.UpdateAsync(errand);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("ListErrandToDo");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Confirm(Guid id)
         {
             var errand = await _errandRepository.GetErrandByIdAsync(id);
+            if (errand.HelperUserId == null || 
+                errand.Done == true)
+            {
+                return RedirectToAction("ListMyErrand");
+            }
+            User helperUser = await _userManager.FindByIdAsync(errand.HelperUserId);
+
             errand.Done = true;
-            
+            helperUser.CompletedErrands += 1;
+
+            await _userManager.UpdateAsync(helperUser);
             await _errandRepository.UpdateAsync(errand);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("ListMyErrand");
         }
     }
 }

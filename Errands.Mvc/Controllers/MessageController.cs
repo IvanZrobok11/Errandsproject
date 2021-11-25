@@ -30,26 +30,30 @@ namespace Errands.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ViewResult> Chat(string receiverUserId)
         {
-            User user = await _userRepository.GetUserInfoAsync(receiverUserId);
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var chat = await _messageRepository.GetChatByUsersIdAsync(receiverUserId, userId);
+            User receiverUser = await _userRepository.GetUserInfoAsync(receiverUserId);
+            User senderUser = await _userRepository.GetUserInfoAsync(
+                User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var chat = await _messageRepository.GetChatByUsersIdAsync(receiverUser.Id, senderUser.Id);
             var model = new ChatDataViewModel
             {
-                ReceiverUserInfo = new ReceiverUserInfoViewModel
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Nickname = user.UserName,
-                    PathLogo = user.Logo?.Path,
-                    Token = userId,
-                    ReceiverUserId = user.Id,
-                    ChatId = chat.Id
-                },
-                GetMessages = _messageRepository.GetMessages(chat.Id).TakeLast(100).ToList()
+                ChatId = chat.Id,
+                ReceiverUser = receiverUser,
+                SenderUser = senderUser
             };
             return View(model);
         }
-        
+
+        [HttpPost]
+        public JsonResult LoadMessages(Guid chatId, int countMessages, int skipMessages)
+        {
+            
+            var messages = _messageRepository.GetMessages(chatId)
+                .SkipLast(skipMessages).TakeLast(countMessages);
+            return Json(messages.ToArray());
+        }
+
+
         [HttpGet]
         public IActionResult MessageList()
         {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Errrands.Application.Common
+namespace Errands.Application.Common
 {
     public class BoxFile : IFileProfile
     {

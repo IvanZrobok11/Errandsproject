@@ -25,10 +25,6 @@ namespace Errands.Data.Services
                 .Where(ch => ch.UsersChat.Any(u => u.UserId == userId1))
                 .Where(ch => ch.UsersChat.Any(u => u.UserId == userId2));
 
-            //var userChatsFirstInterlocutor = chats.Select(chat => chat.UsersChat)
-            //    .Select(uch => uch.FirstOrDefault(u => u.Interlocutor.Id == user1.Id));
-            //var userChat = await userChatsFirstInterlocutor.FirstOrDefaultAsync(ch => ch.UserId == user2.Id);
-
             Chat chat = await chats
                 .FirstOrDefaultAsync(c => 
                     c.UsersChat.Any(u => u.UserId == userId1) &&
@@ -52,7 +48,7 @@ namespace Errands.Data.Services
         }
         public IEnumerable<Message> GetMessages(Guid chatId)
         {
-            var result = _dbContext.Messages.Where(ch => ch.ChatId == chatId).AsEnumerable();
+            var result = _dbContext.Messages.Where(ch => ch.ChatId == chatId);
             return result;
         }
     }

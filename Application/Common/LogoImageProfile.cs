@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Errrands.Application.Common
+namespace Errands.Application.Common
 {
     public class LogoImageProfile : IImageProfile
     {
         public LogoImageProfile()
         {
-            AllowedExtensions = new List<string> { ".jpg", ".jpeg", ".png" };
+            AllowedExtensions = new List<string> { ".jpg", ".jpeg", ".png", ".jfif", ".jp2", ".bmp"};
         }
         private const int mb = 1048576;
-        public int Width => 300;
+        public int Width => 150;
 
-        public int Height => 300;
+        public int Height => 150;
 
         public int MaxSizeBytes => 5 * mb;
 

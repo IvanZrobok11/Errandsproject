@@ -1,5 +1,10 @@
-﻿
+﻿@using Errands.Data.Services
+@using System.Security.Claims
+@inject IUserRepository userRepository
 @inject SignInManager<User> signInManager
+@{
+    string logoPath = await userRepository.GetLogoPathAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+}
 <header class="header">
     <div class="header__container">
         <div class="header__logo">
@@ -38,7 +43,14 @@
                         <li>
                             <div class="menu__click">
                                 <span href="" class="menu__user-logo">
-                                    <img src="~/src/img/w128h1281338911651user.png" alt="">
+                                    @if (!string.IsNullOrEmpty(logoPath))
+                                    {
+                                        <img src="~/@logoPath" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/src/img/w128h1281338911651user.png" alt="">
+                                    }
                                 </span>
                                 <span class="arrow-down"></span>
                             </div>

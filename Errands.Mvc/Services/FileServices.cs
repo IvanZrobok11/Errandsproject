@@ -1,6 +1,6 @@
 ﻿using Errands.Data.Services;
 using Errands.Domain.Models;
-using Errrands.Application.Common;
+using Errands.Application.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -9,27 +9,30 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Errands.Application.Exceptions;
 
 namespace Errands.Mvc.Services
 {
     public class FileServices
     {
-        public readonly IUserRepository _userRepository;
+
         private readonly IWebHostEnvironment _appEnvironment;
 
         private readonly IImageProfile _logoImageProfile;
         private readonly IFileProfile _fileProfile;
 
-        public FileServices(IUserRepository userRepository, IWebHostEnvironment appEnvironment)
+        public FileServices(IWebHostEnvironment appEnvironment)
         {
-            _userRepository = userRepository;
+
             _appEnvironment = appEnvironment;
             _logoImageProfile = new LogoImageProfile();
             _fileProfile = new BoxFile();
         }
+       // private const string PathToLogosImages = Path.Combine("repos", "usersFiles", _fileProfile.Folder);
         public async Task<FileModel> SaveFile(IFormFile file)
         {
             var fileExtension = Path.GetExtension(file.FileName);
@@ -45,13 +48,14 @@ namespace Errands.Mvc.Services
                 fileName = GenerateFileName(file);
                 filePath = Path.Combine(folderPath, fileName);
             } while (System.IO.File.Exists(filePath));
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+
+            await using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
                 await file.CopyToAsync(fileStream);
             }
             return new FileModel
             { 
-                Path = Path.Combine("repos", "usersFiles", _fileProfile.Folder, fileName).Replace('\\', '/'),
+                Path = Path.Combine("repos", "usersFiles", _fileProfile.Folder, fileName),
                 Name = file.FileName,
                 Type = IdentifyTypeFile(fileExtension),
             };
@@ -80,13 +84,13 @@ namespace Errands.Mvc.Services
             image.Save(filePath, new JpegEncoder { Quality = 75 });
             return new Logo
             {
-                Path = Path.Combine("repos", "usersFiles", _logoImageProfile.Folder, fileName).Replace('\\', '/'),
+                Path = Path.Combine("repos", "usersFiles", _logoImageProfile.Folder, fileName),
                 Name = file.FileName             
             };
         }
         public void DeleteFile(string filePath)
         {
-            string fullPath = Path.Combine(_appEnvironment.WebRootPath + filePath);
+            string fullPath = Path.Combine(_appEnvironment.WebRootPath, filePath);
             File.Delete(fullPath);
         } 
         /// <summary>
@@ -100,18 +104,18 @@ namespace Errands.Mvc.Services
                 throw new ImageProcessingException("Logo too small");
             }
         }
-        private void ValidateExtensionFile(string fileExtension, IEnumerable<string> allowExtencion)
+        private void ValidateExtensionFile(string fileExtension, IEnumerable<string> allowExtension)
         {
-            if (!allowExtencion.Any(e => e == fileExtension))
+            if (!allowExtension.Any(e => e == fileExtension))
             {
-                throw new Exception("Wrong file format");
+                throw new WrongExtensionFileException(fileExtension);
             }
         }
         private void ValidateSizeFile(IFormFile file, long MaxlengthFileInBytes)
         {
             if (file.Length > MaxlengthFileInBytes)
             {
-                throw new Exception("File too large");
+                throw new InvalidSizeFileException("File too large");
             }
         }
         private string GenerateFileName(IFormFile file)
