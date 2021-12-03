@@ -22,7 +22,7 @@ namespace Errands.Data.Migrations
                     table.ForeignKey(
                         name: "FK_FileModels_Errands_ErrandId",
                         column: x => x.ErrandId,
-                        principalTable: "Errands",
+                        principalTable: "AllAsync",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });

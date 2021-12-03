@@ -1,14 +1,15 @@
 ﻿@using Errands.Data.Services
 @using System.Security.Claims
-@inject IUserRepository userRepository
+
+@inject IUserService _userService
 @inject SignInManager<User> signInManager
 @{
-    string logoPath = await userRepository.GetLogoPathAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+    string logoPath = await _userService.GetLogoPathAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
 }
 <header class="header">
     <div class="header__container">
         <div class="header__logo">
-            <a asp-action="Index" asp-controller="Home">Errands</a>
+            <a asp-action="Index" asp-controller="Home">Logo</a>
         </div>
         <div class="header__menu menu">
             <div class="menu__icon">
@@ -24,7 +25,7 @@
                         <li>
                             <div class="menu__click">
                                 <span>
-                                    <img src="~/src/img/icons8-плюс-24.png" alt="">
+                                    <img src="~/src/img/icons8-плюс-24.png" alt="+">
                                 </span>
                                 <span class="menu__arrow arrow-down"></span>
                             </div>
@@ -45,7 +46,7 @@
                                 <span href="" class="menu__user-logo">
                                     @if (!string.IsNullOrEmpty(logoPath))
                                     {
-                                        <img src="~/@logoPath" />
+                                        <img src="~/@logoPath.PathToUrl()" />
                                     }
                                     else
                                     {

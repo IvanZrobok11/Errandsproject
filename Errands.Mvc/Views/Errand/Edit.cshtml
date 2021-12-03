@@ -1,11 +1,14 @@
-﻿@model ErrandEditViewModel
+﻿@model EditErrandModel
 @{
     ViewData["Title"] = "Edit";
 }
 <div class="form-create">
     <form asp-action="Edit" method="post" class="">
         <h3 class="sign-in__title form-create__title">Create errand</h3>
+        <div class="input-validation-error" asp-validation-summary="All"></div>
+        <div class="input-validation-error" >@TempData[ControllerConstants.ErrorMessage]</div>
         <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="File"/>
         <div>
             <label class="form-create__label" asp-for="Title">Title</label><br>
             <input class="form-create__input" type="text" asp-for="Title">
@@ -16,24 +19,24 @@
         </div>
         <div>
             <label class="form-create__label" asp-for="Cost">Enter price how many you ready to pay</label><br>
-            <input class="form-create__input" type="number" placeholder="Enter digit" asp-for="Cost">
+            <input class="form-create__input" placeholder="Enter digit" asp-for="Cost" >
         </div>
         @foreach (var file in Model.File)
         {
             <a asp-controller="Errand" asp-action="GetFile" asp-route-id="@file.Id">Download @file.Name</a>
         }
         <!-- <div>
-        <label class="form-create__label" for="input__file"></label><br>
-        <input class="form-create__addfile" type="file" name="input__file" ></input>
-    </div>
-    <div>
-        <label class="form-create__label" for="input__file"></label><br>
-        <input class="form-create__addfile" type="file" name="input__file" ></input>
-    </div>
-    <div>
-        <label class="form-create__label" for="input__file"></label><br>
-        <input class="form-create__addfile" type="file" name="input__file" ></input>
-    </div>                       -->
+            <label class="form-create__label" for="input__file"></label><br>
+            <input class="form-create__addfile" type="file" name="input__file" ></input>
+        </div>
+        <div>
+            <label class="form-create__label" for="input__file"></label><br>
+            <input class="form-create__addfile" type="file" name="input__file" ></input>
+        </div>
+        <div>
+            <label class="form-create__label" for="input__file"></label><br>
+            <input class="form-create__addfile" type="file" name="input__file" ></input>
+        </div>                       -->
         <div>
             <input class="sign-in__button" type="submit">
         </div>

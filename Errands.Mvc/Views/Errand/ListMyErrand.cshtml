@@ -1,9 +1,10 @@
 ﻿
-@model IEnumerable<GetMyErrandViewModel>
+@model ListMyErrandsViewModel
 @{
     ViewData["Title"] = "My List";
 }
 <div class="main__table">
+    <div >@TempData[ControllerConstants.SuccessMessage]</div>
     <table class="table">
         <caption class="table__caption">My list</caption>
         <tr>
@@ -16,7 +17,7 @@
             <th class="table__title"></th>
             <th class="table__title"></th>
         </tr>
-        @foreach (var errand in Model)
+        @foreach (var errand in Model.Errands)
         {
             <tr>
                 <td class="text-right">
@@ -24,31 +25,31 @@
                 </td>
                 <td class="table__price">@errand.Cost</td>
                 <td class="text-right">@errand.Description</td>
-                <td class="@(errand.Done?"txt-success":"txt-danger")">@errand.Done</td>
-                <td class="@(errand.Active?"txt-success":"txt-danger")">@errand.Active</td>
+                <td class="@(errand.Done ? "txt-success" : "txt-danger")">@errand.Done</td>
+                <td class="@(errand.Active ? "txt-success" : "txt-danger")">@errand.Active</td>
                 <td class="text-center">
                     <form asp-action="Delete" method="post">
                         <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@errand.Id">Edit</a>
-                        <input type="hidden" name="id" value="@errand.Id" />
+                        <input type="hidden" name="id" value="@errand.Id"/>
                         <button type="submit">Delete</button>
                     </form>
                 </td>
                 <td>
-                   
+
                 </td>
                 @if (errand.HelperUserId != null)
                 {
                     <td>
                         @*<a asp-controller="Message" asp-action="Chat" asp-route-userId="@item.HelperUserId">@item.HelperUserId</a>*@
                         <form asp-action="Chat" asp-controller="Message" method="post">
-                            <input type="hidden" name="receiverUserId" value="@errand.HelperUserId" />
+                            <input type="hidden" name="receiverUserId" value="@errand.HelperUserId"/>
                             <button type="submit">Go to chat</button>
                         </form>
                     </td>
                     <td>
                         <form asp-action="Confirm" asp-controller="Errand" method="post">
-                            <input type="hidden" name="id" value="@errand.Id" />
-                            <button @(errand.Done?"disabled":"") type="submit">Confirm</button>
+                            <input type="hidden" name="id" value="@errand.Id"/>
+                            <button @(errand.Done ? "disabled" : "") type="submit">Confirm</button>
                         </form>
                     </td>
                 }
@@ -59,4 +60,10 @@
     <div class="text-center">
         <a asp-action="Create">Create new</a>
     </div>
+    <nav class="card__nav">
+        <a asp-action="ListMyErrand" asp-route-pageNumber="@(Model.PageInfo.CurrentPage - 1)"
+           class="@(Model.PageInfo.CurrentPage == 1?"nav-page__disabled":"nav-page__enabled")">back</a>
+        <a asp-action="ListMyErrand" asp-route-pageNumber="@(Model.PageInfo.CurrentPage + 1)"
+           class="@(Model.PageInfo.CurrentPage == Model.PageInfo.TotalPages?"nav-page__disabled":"nav-page__enabled")">next</a>
+    </nav>
 </div>

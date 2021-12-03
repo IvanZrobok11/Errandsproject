@@ -155,7 +155,7 @@ namespace Errands.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Errands",
+                name: "AllAsync",
                 columns: table => new
                 {
                     id = table.Column<Guid>(nullable: false),
@@ -220,7 +220,7 @@ namespace Errands.Data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Errands_UserId",
-                table: "Errands",
+                table: "AllAsync",
                 column: "UserId");
         }
 
@@ -242,7 +242,7 @@ namespace Errands.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Errands");
+                name: "AllAsync");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

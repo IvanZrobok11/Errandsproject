@@ -1,9 +1,10 @@
 ﻿
-@model IEnumerable<GetErrandToDoViewModel>
+@model ListErrandsToDoViewModel
 @{
     ViewData["Title"] = "I took";
 }
 <div class="main__table">
+    <div>@TempData[ControllerConstants.SuccessMessage]</div>
     <table class="table">
         <caption class="table__caption">My list</caption>
         <tr>
@@ -13,7 +14,7 @@
             <th class="table__title">Done</th>
             <th class="table__title"></th>
         </tr>
-        @foreach (var errand in Model)
+        @foreach (var errand in Model.Errands)
         {
             <tr>
                 <td class="text-right">
@@ -21,24 +22,30 @@
                 </td>
                 <td class="table__price">@errand.Cost</td>
                 <td class="text-right">@errand.Description</td>
-                <td class="@(errand.Done?"txt-success":"txt-danger")">@errand.Done</td>
+                <td class="@(errand.Done ? "txt-success" : "txt-danger")">@errand.Done</td>
                 @*<td><a asp-controller="Message" asp-action="Chat" asp-route-userId="@user.NeedlyUserId">@user.NeedlyUserId</a></td>*@
-            <td>
-                @if (errand.NeedlyUserId != null)
-                {
-                    <form asp-action="Chat" asp-controller="Message" method="post">
-                        <input type="hidden" name="receiverUserId" value="@errand.NeedlyUserId" />
-                        <button type="submit">Go to chat</button>
-                    </form>
-                }
-                @*@if (user.NeedlyUserId != null)
+                <td>
+                    @if (errand.NeedlyUserId != null)
+                    {
+                        <form asp-action="Chat" asp-controller="Message" method="post">
+                            <input type="hidden" name="receiverUserId" value="@errand.NeedlyUserId"/>
+                            <button type="submit">Go to chat</button>
+                        </form>
+                    }
+                    @*@if (user.NeedlyUserId != null)
                 {
                     
                     <a asp-controller="Message" asp-action="Chat" asp-route-userId="@user.NeedlyUserId">Go to chat</a>
                 }*@
-            </td>
+                </td>
             </tr>
         }
     </table>
-    
+    <nav class="card__nav">
+        <a asp-action="ListErrandToDo" asp-route-pageNumber="@(Model.PageInfo.CurrentPage - 1)"
+           class="@(Model.PageInfo.CurrentPage == 1?"nav-page__disabled":"nav-page__enabled")">&lt;&lt; Back</a>
+        <a asp-action="ListErrandToDo" asp-route-pageNumber="@(Model.PageInfo.CurrentPage + 1)"
+           class="@(Model.PageInfo.CurrentPage == Model.PageInfo.TotalPages?"nav-page__disabled":"nav-page__enabled")">Next &gt;&gt;</a>
+    </nav>
+
 </div>

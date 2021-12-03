@@ -1,110 +1,127 @@
-﻿using Errands.Data.Services;
+﻿using Errands.Application.Exceptions;
+using Errands.Data.Services;
 using Errands.Domain.Models;
 using Errands.Mvc.Models.ViewModels;
 using Errands.Mvc.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Errands.Application.Exceptions;
-using Errrands.Application.Common.Extension;
-using SixLabors.ImageSharp;
+using AutoMapper;
+using Errands.Application.Common.Services;
+using Errands.Mvc.Extensions;
 
 namespace Errands.Mvc.Controllers
 {
     [Authorize]
     public class ErrandController : Controller
     {
-        private readonly IErrandsRepository _errandRepository;
-        private readonly IMessageRepository _messageRepository;
-        private readonly FileServices _fileServices;
+        private readonly IErrandsService _errandService;
+        private readonly IMessageService _messageService;
+        private readonly IFileServices _fileServices;
         private readonly UserManager<User> _userManager;
         private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly IMapper _mapper;
 
         public ErrandController(
-            IErrandsRepository errandRepository, 
-            FileServices fileServices,
-            UserManager<User> userManager, 
-            IMessageRepository messageRepository, 
-            IDateTimeProvider dateTimeProvider)
+            IErrandsService errandService,
+            IFileServices fileServices,
+            UserManager<User> userManager,
+            IMessageService messageService,
+            IDateTimeProvider dateTimeProvider,
+            IMapper mapper)
         {
-            _errandRepository = errandRepository;
+            _errandService = errandService;
             _fileServices = fileServices;
             _userManager = userManager;
-            _messageRepository = messageRepository;
+            _messageService = messageService;
             _dateTimeProvider = dateTimeProvider;
+            _mapper = mapper;
         }
-        //}
-        
+        //
+
         [HttpGet]
-        public async Task<ViewResult> GetErrand(Guid errandId)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetErrand(Guid errandId)
         {
-            Errand errand = await _errandRepository.GetErrandByIdAsync(errandId);
+            Errand errand = await _errandService.GetErrandByIdAsync(errandId);
+            if (errand == null)
+            {
+                return NotFound();
+            }
             return View(errand);
         }
         [HttpGet]
-        public ViewResult ListMyErrand()
+        public async Task<IActionResult> ListMyErrand(int pageNumber = 1)
         {
-            string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            IEnumerable<GetMyErrandViewModel> errands = _errandRepository.GetErrandsByUserId(userid).Select(x => new GetMyErrandViewModel
+            var userId = User.GetId();
+            var errands = await _errandService
+                .GetErrandsByUserIdAsync(userId, pageNumber,
+                    ControllerConstants.ItemPerMyErrandsPage);
+            return View(new ListMyErrandsViewModel
             {
-                Id = x.Id,
-                Cost = x.Cost,
-                Description = x.Description,
-                Title = x.Title,
-                Done = x.Done,
-                Active = x.Active,
-                HelperUserId = x.HelperUserId
+                Errands = errands,
+                PageInfo = new PageInfo
+                {
+                    ItemsPerPage = ControllerConstants.ItemPerMyErrandsPage,
+                    TotalItems = await _errandService.MyErrandsTotal(userId),
+                    CurrentPage = pageNumber
+                }
             });
-            
-            return View(errands);
         }
         [HttpGet]
-        public ViewResult ListErrandToDo()
+        public async Task<IActionResult> ListErrandToDo(int pageNumber = 1)
         {
-            string userid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            IEnumerable<GetErrandToDoViewModel> errands = _errandRepository.GetErrandsByHelperUserId(userid)
-                .Select(x => new GetErrandToDoViewModel
+            var userId = User.GetId();
+            var errands = await _errandService
+                .GetErrandsByHelperUserIdAsync(userId, pageNumber, 
+                    ControllerConstants.ItemPerToDoErrandsPage);
+            return View(new ListErrandsToDoViewModel()
             {
-                Id = x.Id,
-                Cost = x.Cost,
-                Description = x.Description,
-                Title = x.Title,
-                Done = x.Done,
-                NeedlyUserId = x.UserId
+                Errands = errands,
+                PageInfo = new PageInfo()
+                {
+                    ItemsPerPage = ControllerConstants.ItemPerToDoErrandsPage,
+                    TotalItems = await _errandService.ErrandsToDoTotal(userId),
+                    CurrentPage = pageNumber
+                }
             });
-            return View(errands);
         }
+
 
         [HttpGet]
         public async Task<VirtualFileResult> GetFile(Guid id)
         {
-            var file = await _errandRepository.GetFileByIdAsync(id);
-            return File($"{file.Path.PathToUrl()}", "AppContext/pdf", file.Name);
-            
+            var file = await _errandService.GetFileByIdAsync(id);
+            return File($"{file.Path}", "AppContext/pdf", file.Name);
         }
-
+        
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new ErrandCreateViewModel());
+            return View(new CreateErrandModel());
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ErrandCreateViewModel model)
+        public async Task<IActionResult> Create(CreateErrandModel model)
         {
-            var errand = new Errand
+            if (!ModelState.IsValid)
             {
-                Title = model.Title,
-                Description = model.Desc,
-                Cost = model.Cost,
-                CreationDate = _dateTimeProvider.Now(),
-                UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value,
+                return View(model);
+            }
+
+            var errand = _mapper.Map<Errand>(model);
+            {
+                errand.CreationDate = _dateTimeProvider.Now();
+                errand.UserId = this.User.GetId();
             };
+
             var files = new List<FileModel>();
             if (model.Files != null)
             {
@@ -118,17 +135,17 @@ namespace Errands.Mvc.Controllers
                     }
                     catch (WrongExtensionFileException)
                     {
-                        TempData["errorMessage"] = "File have unallowable extension";
+                        TempData[ControllerConstants.ErrorMessage] = "File have unallowable extension";
                         return View(model);
                     }
                     catch (InvalidSizeFileException)
                     {
-                        TempData["errorMessage"] = "File size is bigger than allowed";
+                        TempData[ControllerConstants.ErrorMessage] = "File size is bigger than allowed";
                         return View(model);
                     }
                     catch (ImageProcessingException)
                     {
-                        TempData["errorMessage"] = "Processing exception";
+                        TempData[ControllerConstants.ErrorMessage] = "Processing exception";
                         return View(model);
                     }
                     catch (Exception ex)
@@ -137,47 +154,50 @@ namespace Errands.Mvc.Controllers
                     }
                 }
             }
-            await _errandRepository.CreateErrandAsync(errand, files);
-            return RedirectToAction(nameof(ListMyErrand));
+            await _errandService.CreateErrandAsync(errand, files);
+            TempData[ControllerConstants.SuccessMessage] = "Errand success created";
+            return RedirectToAction(nameof(this.ListMyErrand));
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var errand = await _errandRepository.GetErrandByIdAsync(id);
+            var errand = await _errandService.GetErrandByIdAsync(id);
             if (errand == null)
             {
                 return NotFound();
             }
-            var model = new ErrandEditViewModel
-            {
-                Title = errand.Title,
-                Desc = errand.Description,
-                Cost = errand.Cost,
-                Id = errand.Id,
-                File = errand.FileModels
-            };
+            var model = _mapper.Map<EditErrandModel>(errand);
             return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(ErrandEditViewModel model)
+        public async Task<IActionResult> Edit(EditErrandModel model)
         {
-            var errand = new Errand
+            if (!ModelState.IsValid)
             {
-                Title = model.Title,
-                Description = model.Desc,
-                Cost = model.Cost,
-                Id = model.Id
-            };
-            await _errandRepository.UpdateAsync(errand);
+                return View(model);
+            }
+            var map = _mapper.Map<Errand>(model);
+            var errand = await _errandService.GetErrandByIdAsync(model.Id);
+            {
+                errand.Cost = map.Cost;
+                errand.Description = map.Description;
+                errand.Title = map.Title;
+            }
+            await _errandService.UpdateAsync(errand);
+            TempData[ControllerConstants.SuccessMessage] = "Errand success edited";
             return RedirectToAction(nameof(ListMyErrand));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var errand = await _errandRepository.GetErrandByIdAsync(id);
+            var errand = await _errandService.GetErrandByIdAsync(id);
+            if (errand == null)
+            {
+                return NotFound();
+            }
             try
             {
                 var paths = errand.FileModels.Select(p => p.Path);
@@ -185,7 +205,7 @@ namespace Errands.Mvc.Controllers
                 {
                     _fileServices.DeleteFile(p);
                 }
-                await _errandRepository.DeleteAsync(id);
+                await _errandService.DeleteAsync(id);
             }
             catch (Exception)
             {
@@ -197,26 +217,26 @@ namespace Errands.Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Take(Guid id)
         {
-            var errand = await _errandRepository.GetErrandByIdAsync(id);
+            var errand = await _errandService.GetErrandByIdAsync(id);
 
             errand.Active = false;
-            errand.HelperUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            errand.HelperUserId = User.GetId();
 
-            var chat = await _messageRepository.GetChatByUsersIdAsync(errand.HelperUserId, errand.UserId);
+            var chat = await _messageService.GetChatByUsersIdAsync(errand.HelperUserId, errand.UserId);
             if (chat == null)
             {
-                chat = await _messageRepository.CreateChatAsync(errand.UserId, errand.HelperUserId);
+                chat = await _messageService.CreateChatAsync(errand.UserId, errand.HelperUserId);
             }
-            await _errandRepository.UpdateAsync(errand);
+            await _errandService.UpdateAsync(errand);
+            TempData[ControllerConstants.SuccessMessage] = $"You take {errand.Title} errand now!";
             return RedirectToAction("ListErrandToDo");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Confirm(Guid id)
         {
-            var errand = await _errandRepository.GetErrandByIdAsync(id);
-            if (errand.HelperUserId == null || 
-                errand.Done == true)
+            var errand = await _errandService.GetErrandByIdAsync(id);
+            if (errand.Done == true)
             {
                 return RedirectToAction("ListMyErrand");
             }
@@ -226,7 +246,8 @@ namespace Errands.Mvc.Controllers
             helperUser.CompletedErrands += 1;
 
             await _userManager.UpdateAsync(helperUser);
-            await _errandRepository.UpdateAsync(errand);
+            await _errandService.UpdateAsync(errand);
+
             return RedirectToAction("ListMyErrand");
         }
     }

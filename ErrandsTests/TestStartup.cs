@@ -25,9 +25,10 @@ using MyTested.AspNetCore.Mvc;
             base.ConfigureServices(services);
 
             services.ReplaceTransient<IDateTimeProvider>(_ => DateTimeProviderMock.Create);
-            services.ReplaceTransient<IErrandsRepository, ErrandRepositoryFake>();
+            //services.ReplaceTransient<IErrandsService, FakeErrandRepository>();
             services.Replace<UserManager<User>, FakeUserManager>(ServiceLifetime.Scoped);
             services.Replace<SignInManager<User>, FakeSignInManager>(ServiceLifetime.Scoped);
+            //services.ReplaceTransient<IMessageService, FakeMessageService>();
         }
     }
 }

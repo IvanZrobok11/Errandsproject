@@ -1,31 +1,33 @@
-﻿@model UserViewModel
+﻿@using Errrands.Application.Common.Extension
+@model UserViewModel
 
-<div>
-    <form asp-action="ChangeInfo" method="post">
-        <label>Nickname</label>
-        <input type="text" asp-for="@Model.UserName" />
-        <label>FirstName</label>
-        <input type="text" asp-for="@Model.FirstName" />
-        <label>LastName</label>
-        <input type="text" asp-for="@Model.LastName" />
-        <button type="submit">Change</button>
-    </form>
-    <h2>@TempData["message"]</h2>
+
+<div class="main__user-profile user-profile">
+    <h2 class="text-danger">@TempData["errorMessage"]</h2><br>
+
     @if (Model.Path == null)
     {
-        <img src="~/src/img/w128h1281338911651user.png" alt="Alternate Text" />
+        <img class="user-profile__profile-img" src="~/src/img/w128h1281338911651user.png" alt="">
         <form asp-action="ChangeLogo" method="post" enctype="multipart/form-data">
-            <input type="file" name="Logo" id="Logo" value="Attach"/>
-            <button type="submit">Save</button>
+            <input class="nav-page__enabled" type="file" name="Logo" id="Logo"  />
+            <button class="nav-page__enabled" type="submit">Save</button>
         </form>
-        @*@(Model.Logo.Path==null? "Add logo": "Change logo")*@
     }
     else
     {
-        <img src="@Model.Path" alt="Alternate Text" />
+        <img class="user-profile__profile-img" src="~/@Model.Path.PathToUrl()" alt="Alternate Text" />
         <form asp-action="ChangeLogo" method="post" enctype="multipart/form-data">
-            <input type="file" id="Logo"  name="Logo"/>
-            <button type="submit">Change logo</button>
+            <input class="nav-page__enabled" type="file" name="Logo" id="Logo" value="Attach" />
+            <button class="nav-page__enabled" type="submit">Save</button>
         </form>
     }
+    <form asp-action="ChangeInfo" method="post">
+        <label class="form-create__label" for="Username">Nickname</label>
+        <input class="form-create__input" name="Username" type="text" asp-for="@Model.UserName" /><br>
+        <label class="form-create__label">FirstName</label>
+        <input class="form-create__input" type="text" asp-for="@Model.FirstName" /><br>
+        <label class="form-create__label">LastName</label>
+        <input class="form-create__input" type="text" asp-for="@Model.LastName" /><br>
+        <button class="nav-page__enabled" type="submit">Change</button>
+    </form>
 </div>

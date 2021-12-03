@@ -8,5 +8,6 @@ namespace Errands.Mvc.Services
     public interface IDateTimeProvider
     {
         DateTime Now();
+        DateTime UtcNow();
     }
 }

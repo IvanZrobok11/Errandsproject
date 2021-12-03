@@ -1,20 +1,36 @@
-﻿
+﻿@inject UserManager<User> userManager
 @model UserViewModel
+@{
+    //var currentUserName = await userManager.FindByNameAsync(userManager.GetUserName(User));
+    var currentUserName = User.Identity.Name;
+}
 
-<div>
-    Email: @Model.Email
-    Nickname: @Model.UserName <br />
-    FirstName: @Model.FirstName<br />
-    LastName: @Model.LastName<br />
-    Completed errands : @Model.CompletedErrands<br />
+<div class="main__user-profile user-profile">
     @if (Model.Path == null)
     {
-        <img src="~/src/img/w128h1281338911651user.png" alt="Alternate Text" />
+        <img class="user-profile__profile-img" src="~/src/img/w128h1281338911651user.png" alt="Alternate Text" />
     }
     else
     {
-        <img src="~/@Model.Path" alt="Alternate Text" />
+        <img class="user-profile__profile-img" src="~/@Model.Path.PathToUrl()" alt="Alternate Text" />
     }
-    <a asp-action="ChangeInfo">ChangeInfo</a>
-    <a class="sign-in__link-signin" asp-route-id="@Model.Id" asp-action="ResetPassword" asp-controller="Account">Reset Passwor</a>
+    <div class="user-profile__info">
+        <p><b>Nickname: </b>@Model.UserName</p>
+        <p><b>FirstName: </b>@Model.FirstName</p>
+        <p><b>LastName: </b>@Model.LastName</p>
+        @if (Model.UserName == currentUserName)
+        {
+            <p><b>Email: </b>@Model.Email</p>
+        }
+        <p class="completed__task">
+            <b>Rating:</b> completed errand @Model.CompletedErrands
+        </p>
+    </div>
+    <div>
+        @if (Model.UserName == currentUserName)
+        {
+            <a class="nav-page__enabled" asp-action="ChangeInfo">ChangeInfo</a>
+            <a  class="nav-page__enabled" asp-route-id="@Model.Id" asp-action="ResetPassword" asp-controller="Account">Reset Password</a>
+        }
+    </div>
 </div>

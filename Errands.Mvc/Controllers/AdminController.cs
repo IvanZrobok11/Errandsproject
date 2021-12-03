@@ -15,17 +15,17 @@ namespace Errands.Mvc.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<User> _userManager;
-        private readonly IUserRepository _userRepository;
-        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IUserRepository userRepository)
+        private readonly IUserService _userService;
+        public AdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IUserService userService)
         {
             _roleManager = roleManager;
             _userManager = userManager;
-            _userRepository = userRepository;
+            _userService = userService;
         }
         [HttpGet]
         public IActionResult ListBlockedEmails()
         {           
-            return View(_userRepository.ListBlockedUsers);
+            return View(_userService.ListBlockedUsers);
         }
         [HttpGet]
         public async Task<IActionResult> ListUsers()
@@ -40,7 +40,7 @@ namespace Errands.Mvc.Controllers
             if (user != null)
             {
                 await _userManager.DeleteAsync(user);
-                await _userRepository.AddEmailToBlocked(user.Email);
+                await _userService.AddEmailToBlocked(user.Email);
             }
             return RedirectToAction("ListUsers");
         }

@@ -1,4 +1,5 @@
-﻿@model Errands.Mvc.Models.ChatDataViewModel
+﻿@using Errrands.Application.Common.Extension
+@model Errands.Mvc.Models.ChatDataViewModel
 <style>
     .chat__block {
         height: 700px;
@@ -13,14 +14,14 @@
         <span class="menu__user-logo">
             @if (Model.ReceiverUser.Logo != null)
             {
-                <img src="~/@Model.ReceiverUser.Logo.Path" alt="Alternate Text" />
+                <img src="~/@Model.ReceiverUser.Logo.Path.PathToUrl()" alt="Alternate Text" />
             }
             else
             {
                 <img src="~/src/img/w128h1281338911651user.png" alt="Alternate Text" />
             }
         </span>
-        <a class="chat__receiver-name" href="#">Receiver User Name</a>
+        <a class="chat__receiver-name" asp-route-identity="@Model.ReceiverUser.Id" asp-action="Profile" asp-controller="User" >@Model.ReceiverUser</a>
     </div>
     <div class="chat__block" id="message-body">
         <div class="chat__chatroom" id="chatroom">
@@ -40,8 +41,6 @@
     let senderUserName = `@Model.SenderUser.UserName`;
     let receiverUserName = `@Model.ReceiverUser.UserName`;
     let chatId = `@Model.ChatId`;
-    //move scroll always down
-    let chatBody = document.querySelector('#message-body');
     
     class LocationMessage {
         static get InStartChat () {
@@ -52,18 +51,20 @@
         }
     }
 
+    //always move chat_scroll down when load page
+    let chatBody = document.querySelector('#message-body');
+    //load messages
     function initializeChat() {
         let messages = downloadMessages(chatId, 40, 0);
 
         messages.forEach(function(m) {
-            //console.log(m.content + m.senderId);
             let userName = getUserNameById(m.senderId);
             createMessageInChat(userName, m.content, LocationMessage.InEndChat);
         });
         chatBody.scrollTop = chatBody.scrollHeight - chatBody.clientHeight;
     }
     initializeChat();
-
+    //
     function getUserNameById(userIdentity) {
         if (userIdentity === senderUserId) {
             return senderUserName;
@@ -91,7 +92,7 @@
                console.log(request.responseText);
         }
         return messages;
-    }
+    }  
     function createMessageInChat(userName, contextMessage, locationMessage) {
         //location chat has be enum LocationMessage
         let userNameElem = document.createElement("b");
@@ -122,7 +123,7 @@
     {
         let countMessages = document.querySelectorAll('.message').length;
         console.log(countMessages);
-        if (countMessages > 9) {
+        if (countMessages > 39) {
             let chatroom = document.querySelector('#chatroom');
             let buttonDLMore = document.createElement("input");
             buttonDLMore.classList.add('chat__download-messages');
@@ -135,10 +136,9 @@
             document.getElementById("chatroom").insertBefore(buttonDLMore, firstChild);
         }
             let scrollPosition = 150;
-        document.getElementById("download-messages").addEventListener("click", function (e) {
-            let messages = downloadMessages(chatId, 10, document.querySelectorAll('.message').length);
-            //console.log('skip message' + document.querySelectorAll('.message').length);
-            
+            document.getElementById("download-messages").addEventListener("click", function (e) {
+            let messages = downloadMessages(chatId, 20, document.querySelectorAll('.message').length);
+
             messages.reverse().forEach(function(m) {
                 //console.log(m.content + m.senderId);
                 console.log(scrollPosition);
@@ -158,14 +158,11 @@
     let sendBtn = document.querySelector('#send-btn');
     let inputForm = document.querySelector('#input-form');
     let inputs = [...inputForm.querySelectorAll('#message-input')];
-    inputForm.addEventListener('input',
-        function() {
+    inputForm.addEventListener('input', function() {
             let isIncomplete = inputs.some(input => !input.value);
             sendBtn.disabled = isIncomplete;
             sendBtn.style.cursor = isIncomplete ? 'not-allowed' : 'pointer';
-        }
-    );
-
+    });
     //
     const hubConnection = new signalR.HubConnectionBuilder()
         .withUrl("/messages", { accessTokenFactory: () => `@Model.SenderUser.Id` })

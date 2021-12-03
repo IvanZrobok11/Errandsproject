@@ -17,6 +17,7 @@ namespace ErrandsTests.FakeDependencies
         internal const string ValidUser = "Valid@valid.com";
         internal const string TwoFactorRequired = "TwoFactor@invalid.com";
         internal const string LockedOutUser = "Locked@invalid.com";
+        internal const string Password = "qwertyw12"; //8 character and alphanumeric
         public FakeSignInManager()
             : base(
                 new FakeUserManager(),
@@ -31,7 +32,7 @@ namespace ErrandsTests.FakeDependencies
 
         public override Task<SignInResult> PasswordSignInAsync(string userName, string password, bool isPersistent, bool lockoutOnFailure)
         {
-            if (userName == ValidUser && password == ValidUser)
+            if (userName == ValidUser && password == Password)
             {
                 return Task.FromResult(SignInResult.Success);
             }

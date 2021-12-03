@@ -1,20 +1,62 @@
 ﻿@model Errand
-<div>
-    <p>@Model.Title</p>
-    <p>Description: @Model.Description</p>
-    <p>CreationDate: @Model.CreationDate</p>
-    <p>Price @Model.Cost</p>
-    @foreach (var file in Model.FileModels)
-    {
-        if (file.Type == TypeFile.Image)
+
+<div class="main__cards">
+
+    <div class="card">
+        @if (Model.Active)
         {
-            <img src="~/@file.Path" />
-            <br />
+            <div>
+                <span class="card__label txt-success">Active</span><br><br>
+            </div>
         }
         else
         {
-            <a asp-action="GetFile" asp-controller="Errand" asp-route-id="@file.Id">@file.Name</a>
-            <br />
+            <div>
+                <span class="card__label txt-danger">Not active</span><br><br>
+            </div>
         }
-    }
-</div>
+    <h2 class="card__category">
+        @Model.Title
+    </h2>
+
+        @foreach (var file in Model.FileModels)
+        {
+            if (file.Type == TypeFile.Image)
+            {
+                <img src="~/@file.Path.PathToUrl()" />
+                <br />
+            }
+        }
+        @foreach (var file in Model.FileModels)
+        {
+            if (file.Type == TypeFile.File)
+            {
+                <a asp-action="GetFile" asp-controller="Errand" asp-route-id="@file.Id">@file.Name</a>
+                <br />
+            }
+        }
+        <div class="card__desk">
+            <b>Description</b>
+            <br>
+            @Model.Description
+        </div>
+        <div class="card__user">
+            <b><a asp-controller="User" asp-action="Profile" asp-route-identity="@Model.UserId">@Model.User.UserName</a></b>
+        </div>
+        <div class="card__price">Price: @Model.Cost.ToString("C0")</div>
+        @if (Model.Active && Model.User.UserName != User.Identity.Name)
+        {
+            <form asp-action="Take" asp-controller="Errand" method="post">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <button class="card__aply" type="submit">Take</button>
+            </form>
+        }
+        else
+        {
+            <form href="#" method="post">
+                <button class="card__disable" type="submit">Take</button>
+                <a class="card__aply" asp-action="Index" asp-controller="Home" asp-route-pageNumber="1">Cancel</a>
+            </form>
+        }
+    </div>
+</div>   

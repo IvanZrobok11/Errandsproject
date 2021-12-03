@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Z9pU3dguQSaX2j4dGOp81cd+/RX43zvHTrCIanlnI+X2rG/1kTnobTWRC3LWLyNcvBpjDqwDIjXIY/uoO+ywwg==",
+  "dgSpecHash": "tTK2x0J8PRNxsj9l5zH5gpiKUDe+sGH99gZqHQUIZ9Rp4iHux6RDOzqXx6Rag3sIoTo2PlbR+PkbsVjvfa9hbw==",
   "success": true,
   "projectFilePath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LapStore\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.20\\microsoft.aspnetcore.cryptography.internal.3.1.20.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\3.1.20\\microsoft.aspnetcore.cryptography.keyderivation.3.1.20.nupkg.sha512",
+    "C:\\Users\\LapStore\\.nuget\\packages\\microsoft.aspnetcore.http.features\\3.1.20\\microsoft.aspnetcore.http.features.3.1.20.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\3.1.20\\microsoft.aspnetcore.identity.entityframeworkcore.3.1.20.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.1\\microsoft.bcl.hashcode.1.1.1.nupkg.sha512",
@@ -28,7 +29,8 @@
     "C:\\Users\\LapStore\\.nuget\\packages\\microsoft.extensions.primitives\\3.1.20\\microsoft.extensions.primitives.3.1.20.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\system.collections.immutable\\1.7.1\\system.collections.immutable.1.7.1.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512",
-    "C:\\Users\\LapStore\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512"
+    "C:\\Users\\LapStore\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512",
+    "C:\\Users\\LapStore\\.nuget\\packages\\system.io.pipelines\\4.7.4\\system.io.pipelines.4.7.4.nupkg.sha512"
   ],
   "logs": []
 }

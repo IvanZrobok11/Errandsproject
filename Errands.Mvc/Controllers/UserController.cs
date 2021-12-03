@@ -1,4 +1,5 @@
-﻿using Errands.Data.Services;
+﻿using Errands.Application.Exceptions;
+using Errands.Data.Services;
 using Errands.Domain.Models;
 using Errands.Mvc.Models.ViewModels;
 using Errands.Mvc.Services;
@@ -7,10 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SixLabors.ImageSharp;
-using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Errands.Application.Exceptions;
 
 namespace Errands.Mvc.Controllers
 {
@@ -19,23 +18,27 @@ namespace Errands.Mvc.Controllers
     {
         private readonly SignInManager<User> _signInManager;
         private readonly UserManager<User> _userManager;
-        public readonly IUserRepository _userRepository;
-        private readonly FileServices _fileServices;
-        
+        private readonly IUserService _userService;
+        private readonly IFileServices _fileServices;
+
         public UserController(SignInManager<User> signInManager, UserManager<User> userManager,
-            IUserRepository userRepository, FileServices fileServices)
+            IUserService userService, IFileServices fileServices)
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            _userRepository = userRepository;
+            _userService = userService;
             _fileServices = fileServices;
         }
         [HttpGet]
-        public async Task<IActionResult> Profile()
-        {          
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        public async Task<IActionResult> Profile(string identity)
+        {
+            string userId = identity;
+            if (identity == null)
+            {
+                userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            }
             User user = await _userManager.FindByIdAsync(userId);
-            var path = await _userRepository.GetLogoPathAsync(userId);
+            var path = await _userService.GetLogoPathAsync(userId);
 
             return View(new UserViewModel
             {
@@ -45,7 +48,7 @@ namespace Errands.Mvc.Controllers
                 LastName = user.LastName,
                 Path = path,
                 CompletedErrands = user.CompletedErrands,
-                Id = userId,
+                Id = user.Id,
             });
         }
         [HttpGet]
@@ -53,7 +56,8 @@ namespace Errands.Mvc.Controllers
         {
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             User user = await _userManager.FindByIdAsync(userId);
-            var path = await _userRepository.GetLogoPathAsync(userId);
+            
+            var path = await _userService.GetLogoPathAsync(userId);
 
             return View(new UserViewModel
             {
@@ -71,31 +75,29 @@ namespace Errands.Mvc.Controllers
             {
                 return View(viewModel);
             }
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var newInfoAboutUser = user;
+            newInfoAboutUser.UserName = viewModel.UserName;
+            newInfoAboutUser.FirstName = viewModel.FirstName;
+            newInfoAboutUser.LastName = viewModel.LastName;
+
+            var result = await _userManager.UpdateAsync(newInfoAboutUser);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Profile");
+            }
             else
             {
-                var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var user = await _userManager.FindByIdAsync(userId);
-
-                var newInfoAboutUser = user;
-                newInfoAboutUser.UserName = viewModel.UserName;
-                newInfoAboutUser.FirstName = viewModel.FirstName;
-                newInfoAboutUser.LastName = viewModel.LastName;
-
-                var result = await _userManager.UpdateAsync(newInfoAboutUser);
-                if (result.Succeeded)
+                foreach (var error in result.Errors)
                 {
-                    return RedirectToAction("Profile");
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
             return View(viewModel);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeLogo(IFormFile Logo)
@@ -107,17 +109,17 @@ namespace Errands.Mvc.Controllers
             }
             var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             User user = await _userManager.FindByIdAsync(userId);
-            var path = await _userRepository.GetLogoPathAsync(userId);
+            var path = await _userService.GetLogoPathAsync(userId);
             try
             {
                 if (path != null)
                 {
                     _fileServices.DeleteFile(path);
-                    await _userRepository.DeleteLogoAsync(userId);
+                    await _userService.DeleteLogoAsync(userId);
                 }
-                var logo = _fileServices.SaveLogo(Logo);
+                var logo = await _fileServices.SaveLogoAsync(Logo);
                 logo.User = user;
-                await _userRepository.AddLogoAsync(logo);
+                await _userService.AddLogoAsync(logo);
             }
             catch (WrongExtensionFileException)
             {
@@ -136,6 +138,5 @@ namespace Errands.Mvc.Controllers
             }
             return RedirectToAction("Profile");
         }
-
     }
 }

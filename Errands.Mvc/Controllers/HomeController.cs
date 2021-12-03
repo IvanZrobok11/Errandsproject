@@ -1,38 +1,31 @@
 ﻿using Errands.Data.Services;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Errands.Mvc.Models.ViewModels;
+using Errands.Mvc.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Errands.Mvc.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IErrandsRepository _repository;
-        public int ItemsPerPage = 5;
-        public HomeController(IErrandsRepository repository)
+        private readonly IErrandsService _errandService;
+        public int ItemsPerPage = ControllerConstants.ItemPerMainPage;
+        public HomeController(IErrandsService errandService)
         {
-            _repository = repository;
+            _errandService = errandService;
         }
-        public ViewResult Index(int pageNumber = 1)
+        public async Task<ViewResult> Index(int pageNumber = 1)
         {
-            var list = _repository.Errands 
-                .OrderByDescending(d => d.CreationDate)
-                .Skip((pageNumber - 1) * ItemsPerPage)
-                .Take(ItemsPerPage);
+            var list = await _errandService.AllAsync(pageNumber, ItemsPerPage);
 
-            //list.Reverse();
-            return View(new ErrandsListViewModel 
-            { 
+            return View(new ListErrandsViewModel
+            {
                 Errands = list,
                 PageInfo = new PageInfo
                 {
                     CurrentPage = pageNumber,
                     ItemsPerPage = this.ItemsPerPage,
-                    TotalItems = _repository.Errands.Count()
+                    TotalItems = await _errandService.Total()
                 }
             });
         }

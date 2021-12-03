@@ -21,7 +21,7 @@ namespace Errands.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Errands.Domain.Models.Errand", b =>
+            modelBuilder.Entity("AllAsync.Domain.Models.Errand", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,10 +70,10 @@ namespace Errands.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Errands");
+                    b.ToTable("AllAsync");
                 });
 
-            modelBuilder.Entity("Errands.Domain.Models.FileModel", b =>
+            modelBuilder.Entity("AllAsync.Domain.Models.FileModel", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -102,7 +102,7 @@ namespace Errands.Data.Migrations
                     b.ToTable("FileModels");
                 });
 
-            modelBuilder.Entity("Errands.Domain.Models.Logo", b =>
+            modelBuilder.Entity("AllAsync.Domain.Models.Logo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,7 +126,7 @@ namespace Errands.Data.Migrations
                     b.ToTable("Logos");
                 });
 
-            modelBuilder.Entity("Errands.Domain.Models.User", b =>
+            modelBuilder.Entity("AllAsync.Domain.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -330,28 +330,28 @@ namespace Errands.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Errands.Domain.Models.Errand", b =>
+            modelBuilder.Entity("AllAsync.Domain.Models.Errand", b =>
                 {
-                    b.HasOne("Errands.Domain.Models.User", "User")
-                        .WithMany("Errands")
+                    b.HasOne("AllAsync.Domain.Models.User", "User")
+                        .WithMany("AllAsync")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_User_Errand");
                 });
 
-            modelBuilder.Entity("Errands.Domain.Models.FileModel", b =>
+            modelBuilder.Entity("AllAsync.Domain.Models.FileModel", b =>
                 {
-                    b.HasOne("Errands.Domain.Models.Errand", "Errand")
+                    b.HasOne("AllAsync.Domain.Models.Errand", "Errand")
                         .WithMany("FileModels")
                         .HasForeignKey("ErrandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Errands.Domain.Models.Logo", b =>
+            modelBuilder.Entity("AllAsync.Domain.Models.Logo", b =>
                 {
-                    b.HasOne("Errands.Domain.Models.User", "User")
+                    b.HasOne("AllAsync.Domain.Models.User", "User")
                         .WithOne("Logo")
-                        .HasForeignKey("Errands.Domain.Models.Logo", "UserId");
+                        .HasForeignKey("AllAsync.Domain.Models.Logo", "UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -365,7 +365,7 @@ namespace Errands.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Errands.Domain.Models.User", null)
+                    b.HasOne("AllAsync.Domain.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -374,7 +374,7 @@ namespace Errands.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Errands.Domain.Models.User", null)
+                    b.HasOne("AllAsync.Domain.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -389,7 +389,7 @@ namespace Errands.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Errands.Domain.Models.User", null)
+                    b.HasOne("AllAsync.Domain.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -398,7 +398,7 @@ namespace Errands.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Errands.Domain.Models.User", null)
+                    b.HasOne("AllAsync.Domain.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Login";
 }
+
 <div class="main__sidebar sidebar">
     <div class="sidebar__sign-in sign-in">
         <form class="sign-in__form form-horizontal" asp-action="Login" method="post">
@@ -10,9 +11,9 @@
             <span class="sign-in__dash"></span>
             <div class="input-validation-error" asp-validation-summary="ModelOnly"></div>
 
-            <label asp-for="Email" class="sign-in__label">Email</label>
-            <span asp-validation-for="Email"></span>
-            <input asp-for="Email" class="sign-in__input">
+            <label asp-for="UserName" class="sign-in__label">UserName</label>
+            <span asp-validation-for="UserName"></span>
+            <input asp-for="UserName" class="sign-in__input">
 
             <label asp-for="Password" class="sign-in__label">Password</label>
             <span asp-validation-for="Password"></span>

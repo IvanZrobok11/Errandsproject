@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using Errands.Mvc.Models;
 
 namespace Errands.Mvc.Controllers
@@ -16,25 +17,26 @@ namespace Errands.Mvc.Controllers
     [Authorize]
     public class MessageController : Controller
     {
-        private readonly IUserRepository _userRepository;
-        private readonly UserManager<User> _userManager;
-        private readonly IMessageRepository _messageRepository;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
+        private readonly IMessageService _messageService;
 
-        public MessageController(IUserRepository userRepository, UserManager<User> userManager, IMessageRepository messageRepository)
+        public MessageController(IUserService userService, IMapper mapper, IMessageService messageService)
         {
-            _userRepository = userRepository;
-            _userManager = userManager;
-            _messageRepository = messageRepository;
+            _userService = userService;
+            _mapper = mapper;
+            _messageService = messageService;
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ViewResult> Chat(string receiverUserId)
         {
-            User receiverUser = await _userRepository.GetUserInfoAsync(receiverUserId);
-            User senderUser = await _userRepository.GetUserInfoAsync(
+            User receiverUser = await _userService.GetUserInfoAsync(receiverUserId);
+            User senderUser = await _userService.GetUserInfoAsync(
                 User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            var chat = await _messageRepository.GetChatByUsersIdAsync(receiverUser.Id, senderUser.Id);
+            var chat = await _messageService.GetChatByUsersIdAsync(receiverUser.Id, senderUser.Id);
+
             var model = new ChatDataViewModel
             {
                 ChatId = chat.Id,
@@ -48,7 +50,7 @@ namespace Errands.Mvc.Controllers
         public JsonResult LoadMessages(Guid chatId, int countMessages, int skipMessages)
         {
             
-            var messages = _messageRepository.GetMessages(chatId)
+            var messages = _messageService.GetMessages(chatId)
                 .SkipLast(skipMessages).TakeLast(countMessages);
             return Json(messages.ToArray());
         }

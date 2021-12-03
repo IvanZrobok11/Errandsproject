@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
+using AutoMapper;
+using Errands.Application.Common.Services;
 
 namespace Errands.Mvc
 {
@@ -27,7 +29,7 @@ namespace Errands.Mvc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ErrandsDbContext>(options =>
-                options.UseSqlServer(GetConfiguration["DbConnection"]));
+                options.UseSqlServer(GetConfiguration["DbConnection"]), ServiceLifetime.Transient);
 
             services.AddIdentity<User, IdentityRole>(opts =>
                 {
@@ -40,13 +42,16 @@ namespace Errands.Mvc
                 .AddEntityFrameworkStores<ErrandsDbContext>()
                 .AddDefaultTokenProviders()
                 ;
+            
+            services.AddAutoMapper(typeof(ServiceMappingProfile).Assembly);
 
             services.AddSignalR();
-            services.AddTransient<IErrandsRepository, ErrandsRepository>();
-            services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<IMessageRepository, MessageRepository>();
-            services.AddTransient<IDateTimeProvider, DateTimeProvider>();
-            services.AddTransient<FileServices>();
+
+            services.AddScoped<IErrandsService, ErrandsService>()
+                .AddScoped<IUserService, UserService>()
+                .AddScoped<IMessageService, MessageService>()
+                .AddScoped<IDateTimeProvider, DateTimeProvider>()
+                .AddScoped<IFileServices ,FileServices>();
 
             services.AddControllersWithViews();
         }

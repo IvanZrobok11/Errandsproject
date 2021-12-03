@@ -1,38 +1,31 @@
-﻿using Errands.Data.Services;
+﻿using Errands.Application.Common;
+using Errands.Application.Exceptions;
 using Errands.Domain.Models;
-using Errands.Application.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Processing;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Errands.Application.Exceptions;
 
 namespace Errands.Mvc.Services
 {
-    public class FileServices
+    public class FileServices : IFileServices
     {
 
         private readonly IWebHostEnvironment _appEnvironment;
-
         private readonly IImageProfile _logoImageProfile;
         private readonly IFileProfile _fileProfile;
 
         public FileServices(IWebHostEnvironment appEnvironment)
         {
-
             _appEnvironment = appEnvironment;
             _logoImageProfile = new LogoImageProfile();
             _fileProfile = new BoxFile();
         }
-       // private const string PathToLogosImages = Path.Combine("repos", "usersFiles", _fileProfile.Folder);
         public async Task<FileModel> SaveFile(IFormFile file)
         {
             var fileExtension = Path.GetExtension(file.FileName);
@@ -51,28 +44,35 @@ namespace Errands.Mvc.Services
 
             await using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
+                //Save file
                 await file.CopyToAsync(fileStream);
             }
             return new FileModel
-            { 
+            {
                 Path = Path.Combine("repos", "usersFiles", _fileProfile.Folder, fileName),
                 Name = file.FileName,
                 Type = IdentifyTypeFile(fileExtension),
             };
 
         }
-        public Logo SaveLogo(IFormFile file)
+        public async Task<Logo> SaveLogoAsync(IFormFile file)
         {
             var fileExtension = Path.GetExtension(file.FileName);
 
             ValidateExtensionFile(fileExtension, _logoImageProfile.AllowedExtensions);
             ValidateSizeFile(file, _logoImageProfile.MaxSizeBytes);
-            var image = Image.Load(file.OpenReadStream());
-            ValidateSizeImageLogo(image);   
+
+            Image image;
+            await using(var fileStream = file.OpenReadStream())
+            {
+                image = await Image.LoadAsync(fileStream);
+            }
+        
+            ValidateSizeImageLogo(image);
 
             string filePath;
             string fileName;
-            string folderPath = Path.Combine(_appEnvironment.WebRootPath,"repos","usersFiles", _logoImageProfile.Folder);
+            string folderPath = Path.Combine(_appEnvironment.WebRootPath, "repos", "usersFiles", _logoImageProfile.Folder);
             do
             {
                 fileName = GenerateFileName(file);
@@ -80,23 +80,20 @@ namespace Errands.Mvc.Services
             } while (System.IO.File.Exists(filePath));
 
             Resize(image, _logoImageProfile);
-            Crop(image, _logoImageProfile); 
-            image.Save(filePath, new JpegEncoder { Quality = 75 });
+            Crop(image, _logoImageProfile);
+            //
+            await image.SaveAsync(filePath, new JpegEncoder { Quality = 75 });
             return new Logo
             {
                 Path = Path.Combine("repos", "usersFiles", _logoImageProfile.Folder, fileName),
-                Name = file.FileName             
+                Name = file.FileName
             };
         }
         public void DeleteFile(string filePath)
         {
             string fullPath = Path.Combine(_appEnvironment.WebRootPath, filePath);
             File.Delete(fullPath);
-        } 
-        /// <summary>
-        /// /////////////////////////////
-        /// </summary>
-        /// <param name="image"></param>
+        }
         private void ValidateSizeImageLogo(Image image)
         {
             if (image.Width < _logoImageProfile.Width || image.Height < _logoImageProfile.Height)
@@ -106,7 +103,7 @@ namespace Errands.Mvc.Services
         }
         private void ValidateExtensionFile(string fileExtension, IEnumerable<string> allowExtension)
         {
-            if (!allowExtension.Any(e => e == fileExtension))
+            if (allowExtension.All(e => e != fileExtension))
             {
                 throw new WrongExtensionFileException(fileExtension);
             }
@@ -152,8 +149,7 @@ namespace Errands.Mvc.Services
             var rectangle = GetCropRectangle(image, imageProfile.Width, imageProfile.Height);
             image.Mutate(action => action.Crop(rectangle));
         }
-
-        private Rectangle GetCropRectangle(IImageInfo image, int width,int height)
+        private Rectangle GetCropRectangle(IImageInfo image, int width, int height)
         {
             var widthDifference = image.Width - width;
             var heightDifference = image.Height - height;
