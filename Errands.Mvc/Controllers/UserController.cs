@@ -10,21 +10,24 @@ using Microsoft.AspNetCore.Mvc;
 using SixLabors.ImageSharp;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
+using Errands.Application.Common.Services;
+using Errands.Mvc.Extensions;
 
 namespace Errands.Mvc.Controllers
 {
     [Authorize]
     public class UserController : Controller
     {
-        private readonly SignInManager<User> _signInManager;
+        private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
         private readonly IUserService _userService;
         private readonly IFileServices _fileServices;
 
-        public UserController(SignInManager<User> signInManager, UserManager<User> userManager,
+        public UserController(IMapper mapper, UserManager<User> userManager,
             IUserService userService, IFileServices fileServices)
         {
-            _signInManager = signInManager;
+            _mapper = mapper;
             _userManager = userManager;
             _userService = userService;
             _fileServices = fileServices;
@@ -32,58 +35,36 @@ namespace Errands.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile(string identity)
         {
-            string userId = identity;
-            if (identity == null)
+            var userId = identity;
+            if (userId == null)
             {
-                userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                userId = this.User.GetId();
             }
             User user = await _userManager.FindByIdAsync(userId);
-            var path = await _userService.GetLogoPathAsync(userId);
-
-            return View(new UserViewModel
-            {
-                Email = user.Email,
-                UserName = user.UserName,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Path = path,
-                CompletedErrands = user.CompletedErrands,
-                Id = user.Id,
-            });
+            return View(_mapper.Map<UserProfileModel>(user));
         }
         [HttpGet]
         public async Task<IActionResult> ChangeInfo()
         {
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            User user = await _userManager.FindByIdAsync(userId);
-            
-            var path = await _userService.GetLogoPathAsync(userId);
-
-            return View(new UserViewModel
-            {
-                UserName = user.UserName,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Path = path
-            });
+            User user = await _userManager.FindByIdAsync(User.GetId());
+            return View(_mapper.Map<UserProfileModel>(user));
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ChangeInfo(UserViewModel viewModel)
+        public async Task<IActionResult> ChangeInfo(UserProfileModel profileModel)
         {
             if (!ModelState.IsValid)
             {
-                return View(viewModel);
+                return View(profileModel);
             }
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var user = await _userManager.FindByIdAsync(userId);
+            var changedInfo = await _userManager.FindByIdAsync(User.GetId());
+            {
+                changedInfo.UserName = profileModel.UserName;
+                changedInfo.FirstName = profileModel.FirstName;
+                changedInfo.LastName = profileModel.LastName;
+            }
 
-            var newInfoAboutUser = user;
-            newInfoAboutUser.UserName = viewModel.UserName;
-            newInfoAboutUser.FirstName = viewModel.FirstName;
-            newInfoAboutUser.LastName = viewModel.LastName;
-
-            var result = await _userManager.UpdateAsync(newInfoAboutUser);
+            var result = await _userManager.UpdateAsync(changedInfo);
             if (result.Succeeded)
             {
                 return RedirectToAction("Profile");
@@ -95,7 +76,7 @@ namespace Errands.Mvc.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
-            return View(viewModel);
+            return View(profileModel);
         }
 
         [HttpPost]
@@ -107,18 +88,17 @@ namespace Errands.Mvc.Controllers
                 TempData["message"] = "Please attach file";
                 return RedirectToAction("ChangeInfo");
             }
-            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            User user = await _userManager.FindByIdAsync(userId);
-            var path = await _userService.GetLogoPathAsync(userId);
+            var path = await _userService.GetLogoPathAsync(User.GetId());
             try
             {
                 if (path != null)
                 {
                     _fileServices.DeleteFile(path);
-                    await _userService.DeleteLogoAsync(userId);
+                    await _userService.DeleteLogoAsync(User.GetId());
                 }
+                
                 var logo = await _fileServices.SaveLogoAsync(Logo);
-                logo.User = user;
+                logo.UserId = User.GetId();
                 await _userService.AddLogoAsync(logo);
             }
             catch (WrongExtensionFileException)

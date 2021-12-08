@@ -1,10 +1,13 @@
 ﻿@using Errands.Data.Services
 @using System.Security.Claims
+@using Errands.Mvc.Extensions
+@using System.Linq
 
 @inject IUserService _userService
 @inject SignInManager<User> signInManager
+@inject IErrandsService _errandsService
 @{
-    string logoPath = await _userService.GetLogoPathAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+    string logoPath = await _userService.GetLogoPathAsync(User.GetId());
 }
 <header class="header">
     <div class="header__container">
@@ -21,7 +24,18 @@
                     <!-- <li><a href="#" class="menu__user-logo"><img src="img/w128h1281338911651user.png" alt=""></a></li>  -->
                     @if (signInManager.IsSignedIn(User))
                     {
-                        <li><a href="#" class="menu__message"><img src="~/src/img/messenger.png" alt=""><span>1</span></a></li>
+                        <li>
+                            <a asp-controller="Message" asp-action="InformAboutTakenErrands" class="menu__message">
+                                <img src="~/src/img/messenger.png" alt="">
+                                @{
+                                    var countNotice = await _errandsService.GetUnfinishedErrands(this.Context.User.GetId()).ContinueWith( e => e.Result.Count());
+                                }
+                                @if (countNotice > 0)
+                                {
+                                    <span>@countNotice</span>
+                                }
+                            </a>
+                        </li>
                         <li>
                             <div class="menu__click">
                                 <span>
@@ -57,7 +71,7 @@
                             </div>
                             <ul class="menu__sub-list ">
                                 <li>
-                                    <a asp-action="Profile" asp-controller="User" class="menu__sub-link">Profile</a>
+                                    <a asp-action="Profile" asp-controller="User" asp-route-identity="@this.Context.User.GetId()" class="menu__sub-link">Profile</a>
                                 </li>
                                 <li>
                                     <a href="" class="menu__sub-link">Setting</a>

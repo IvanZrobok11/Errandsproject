@@ -41,6 +41,7 @@
     let senderUserName = `@Model.SenderUser.UserName`;
     let receiverUserName = `@Model.ReceiverUser.UserName`;
     let chatId = `@Model.ChatId`;
+    let chatBody = document.querySelector('#message-body');
     
     class LocationMessage {
         static get InStartChat () {
@@ -51,27 +52,14 @@
         }
     }
 
-    //always move chat_scroll down when load page
-    let chatBody = document.querySelector('#message-body');
-    //load messages
-    function initializeChat() {
-        let messages = downloadMessages(chatId, 40, 0);
 
-        messages.forEach(function(m) {
-            let userName = getUserNameById(m.senderId);
-            createMessageInChat(userName, m.content, LocationMessage.InEndChat);
-        });
-        chatBody.scrollTop = chatBody.scrollHeight - chatBody.clientHeight;
-    }
-    initializeChat();
-    //
     function getUserNameById(userIdentity) {
         if (userIdentity === senderUserId) {
             return senderUserName;
         } else if (userIdentity === receiverUserId) {
             return receiverUserName;
         } else {
-            return 'Anonymous';
+            return 'Admin';
         }
     }
     function downloadMessages(chatId, countMessages ,skipMessages) {
@@ -91,14 +79,23 @@
                console.log("Status", request.status);
                console.log(request.responseText);
         }
+        console.log(messages);
         return messages;
     }  
-    function createMessageInChat(userName, contextMessage, locationMessage) {
+    function createMessageInChat(userName, contextMessage, dateMessage, locationMessage) {
+        console.log(dateMessage);
+        let date = new Date(dateMessage);
+        date = ' ' + date.toLocaleTimeString();
         //location chat has be enum LocationMessage
         let userNameElem = document.createElement("b");
         userNameElem.appendChild(document.createTextNode(userName + ": "));
         let contentMessageElem = document.createElement('span');
         contentMessageElem.appendChild(document.createTextNode(contextMessage));
+        contentMessageElem.classList.add('message-content');
+        let brElem = document.createElement('br');
+        let dateMessageElem = document.createElement('span');
+        dateMessageElem.appendChild(document.createTextNode(date));
+        dateMessageElem.classList.add('message__date');
 
         let elem = document.createElement("p");
         elem.classList.add('message');
@@ -109,6 +106,9 @@
         }
         elem.appendChild(userNameElem);
         elem.appendChild(contentMessageElem);
+        elem.appendChild(brElem)
+        elem.appendChild(dateMessageElem);
+
         if (locationMessage === LocationMessage.InStartChat) {
             var firstChild = document.getElementById("chatroom").firstChild;
             document.getElementById("chatroom").insertBefore(elem, firstChild);
@@ -116,8 +116,20 @@
             var lastChild = document.getElementById("chatroom").lastChild;
             document.getElementById("chatroom").insertBefore(elem, lastChild);
         }
-        //chatBody.scrollTop = chatBody.scrollHeight - chatBody.clientHeight;
+
     }
+    //load messages
+    function initializeChat() {
+        let messages = downloadMessages(chatId, 40, 0);
+
+        messages.forEach(function(m) {
+            let userName = getUserNameById(m.senderId);
+            createMessageInChat(userName, m.content, m.dateSend, LocationMessage.InEndChat);
+        });
+        //always move chat_scroll down when load page
+        chatBody.scrollTop = chatBody.scrollHeight - chatBody.clientHeight;
+    }
+    initializeChat();
     //
     function downloadOldMessages()
     {
@@ -143,7 +155,7 @@
                 //console.log(m.content + m.senderId);
                 console.log(scrollPosition);
                 let userName = getUserNameById(m.senderId);
-                createMessageInChat(userName, m.content, LocationMessage.InStartChat);
+                createMessageInChat(userName, m.content, m.dateSend, LocationMessage.InStartChat);
                 chatBody.scrollTop = 0;
                 var firstChild = document.getElementById("chatroom").firstChild;
                 document.getElementById("chatroom").insertBefore(document.getElementById('download-messages'), firstChild);
@@ -152,7 +164,7 @@
         });
     }
     downloadOldMessages();
-    
+    //
 
     //disable btn if input empty
     let sendBtn = document.querySelector('#send-btn');
@@ -167,8 +179,8 @@
     const hubConnection = new signalR.HubConnectionBuilder()
         .withUrl("/messages", { accessTokenFactory: () => `@Model.SenderUser.Id` })
         .build();
-    hubConnection.on("Receive", function (message, userName) {
-        createMessageInChat(userName, message, LocationMessage.InEndChat);
+    hubConnection.on("Receive", function (message, userName, dateTime) {
+        createMessageInChat(userName, message, dateTime ,LocationMessage.InEndChat);
         chatBody.scrollTop = chatBody.scrollHeight - chatBody.clientHeight;
     });
     hubConnection.start();

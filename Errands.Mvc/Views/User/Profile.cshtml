@@ -1,18 +1,18 @@
-﻿@inject UserManager<User> userManager
-@model UserViewModel
+﻿@inject IUserService _userService
+@model UserProfileModel
 @{
-    //var currentUserName = await userManager.FindByNameAsync(userManager.GetUserName(User));
     var currentUserName = User.Identity.Name;
+    string logoPath = await _userService.GetLogoPathAsync(Model.Id);
 }
 
 <div class="main__user-profile user-profile">
-    @if (Model.Path == null)
+    @if (logoPath == null)
     {
         <img class="user-profile__profile-img" src="~/src/img/w128h1281338911651user.png" alt="Alternate Text" />
     }
     else
     {
-        <img class="user-profile__profile-img" src="~/@Model.Path.PathToUrl()" alt="Alternate Text" />
+        <img class="user-profile__profile-img" src="~/@logoPath.PathToUrl()" alt="Alternate Text" />
     }
     <div class="user-profile__info">
         <p><b>Nickname: </b>@Model.UserName</p>
@@ -30,7 +30,7 @@
         @if (Model.UserName == currentUserName)
         {
             <a class="nav-page__enabled" asp-action="ChangeInfo">ChangeInfo</a>
-            <a  class="nav-page__enabled" asp-route-id="@Model.Id" asp-action="ResetPassword" asp-controller="Account">Reset Password</a>
+            <a class="nav-page__enabled" asp-route-id="@Model.Id" asp-action="ResetPassword" asp-controller="Account">Reset Password</a>
         }
     </div>
 </div>

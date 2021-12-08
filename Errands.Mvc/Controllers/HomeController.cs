@@ -14,7 +14,7 @@ namespace Errands.Mvc.Controllers
         {
             _errandService = errandService;
         }
-        public async Task<ViewResult> Index(int pageNumber = 1)
+        public async Task<ViewResult> Index([FromQuery]int pageNumber = 1)
         {
             var list = await _errandService.AllAsync(pageNumber, ItemsPerPage);
 

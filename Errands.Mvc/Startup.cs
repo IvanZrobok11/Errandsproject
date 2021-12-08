@@ -1,3 +1,4 @@
+using System;
 using Errands.Data.Services;
 using Errands.Domain.Models;
 using Errands.Mvc.Chat;
@@ -29,7 +30,7 @@ namespace Errands.Mvc
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ErrandsDbContext>(options =>
-                options.UseSqlServer(GetConfiguration["DbConnection"]), ServiceLifetime.Transient);
+                options.UseSqlServer(GetConfiguration["DbConnection"]));
 
             services.AddIdentity<User, IdentityRole>(opts =>
                 {
@@ -45,13 +46,16 @@ namespace Errands.Mvc
             
             services.AddAutoMapper(typeof(ServiceMappingProfile).Assembly);
 
-            services.AddSignalR();
+            services.AddSignalR().AddHubOptions<ChatHub>(conf =>
+            {
+                conf.EnableDetailedErrors = true;
+            });
 
-            services.AddScoped<IErrandsService, ErrandsService>()
-                .AddScoped<IUserService, UserService>()
-                .AddScoped<IMessageService, MessageService>()
-                .AddScoped<IDateTimeProvider, DateTimeProvider>()
-                .AddScoped<IFileServices ,FileServices>();
+            services.AddTransient<IErrandsService, ErrandsService>()
+                .AddTransient<IUserService, UserService>()
+                .AddTransient<IMessageService, MessageService>()
+                .AddTransient<IDateTimeProvider, DateTimeProvider>()
+                .AddTransient<IFileServices ,FileServices>();
 
             services.AddControllersWithViews();
         }

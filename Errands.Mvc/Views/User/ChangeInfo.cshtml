@@ -1,33 +1,39 @@
-﻿@using Errrands.Application.Common.Extension
-@model UserViewModel
-
+﻿@inject IUserService _userService
+@model UserProfileModel
+@{
+    string logoPath = await _userService.GetLogoPathAsync(User.GetId());
+}
 
 <div class="main__user-profile user-profile">
     <h2 class="text-danger">@TempData["errorMessage"]</h2><br>
 
-    @if (Model.Path == null)
+    @if (logoPath == null)
     {
         <img class="user-profile__profile-img" src="~/src/img/w128h1281338911651user.png" alt="">
         <form asp-action="ChangeLogo" method="post" enctype="multipart/form-data">
-            <input class="nav-page__enabled" type="file" name="Logo" id="Logo"  />
+            <input class="nav-page__enabled" type="file" name="Logo" id="Logo" />
             <button class="nav-page__enabled" type="submit">Save</button>
         </form>
     }
     else
     {
-        <img class="user-profile__profile-img" src="~/@Model.Path.PathToUrl()" alt="Alternate Text" />
+        <img class="user-profile__profile-img" src="~/@logoPath.PathToUrl()" alt="Alternate Text" />
         <form asp-action="ChangeLogo" method="post" enctype="multipart/form-data">
-            <input class="nav-page__enabled" type="file" name="Logo" id="Logo" value="Attach" />
+            <input class="nav-page__enabled" asp-for="Logo" value="Attach" />
             <button class="nav-page__enabled" type="submit">Save</button>
         </form>
     }
     <form asp-action="ChangeInfo" method="post">
-        <label class="form-create__label" for="Username">Nickname</label>
-        <input class="form-create__input" name="Username" type="text" asp-for="@Model.UserName" /><br>
+        <label class="form-create__label" asp-for="UserName">Nickname</label>
+        <input class="form-create__input" type="text" asp-for="@Model.UserName" /><br>
+
         <label class="form-create__label">FirstName</label>
         <input class="form-create__input" type="text" asp-for="@Model.FirstName" /><br>
+
         <label class="form-create__label">LastName</label>
         <input class="form-create__input" type="text" asp-for="@Model.LastName" /><br>
+
         <button class="nav-page__enabled" type="submit">Change</button>
+        <a class="nav-page__enabled " asp-controller="User" asp-action="Profile" asp-route-identity="@Context.User.GetId()" >Cancel</a>
     </form>
 </div>

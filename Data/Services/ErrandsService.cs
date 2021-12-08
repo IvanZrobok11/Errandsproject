@@ -20,7 +20,10 @@ namespace Errands.Data.Services
             _mapper = mapper;
         }
 
-
+       
+        public async Task<IEnumerable<Errand>> GetUnfinishedErrands(string userId)
+            => await _context.Errands.Where(e => e.UserId == userId)
+                .Where(e => !e.Done && e.HelperUserId != null).ToListAsync();
 
         public async Task<IEnumerable<GetMyErrandServiceModel>> GetErrandsByUserIdAsync(string id, int currentPage, int pageSize)
         {
@@ -44,10 +47,9 @@ namespace Errands.Data.Services
                 .Include(u => u.User).AsQueryable();
             return await SelectWith<ListErrandsServiceModel>(errand, currentPage, pageSize);
         }
-        private async Task<IEnumerable<TModel>> SelectWith<TModel>(IQueryable<Errand> query, int currentPage, int pageSize) where TModel : class
+        private async Task<IEnumerable<TModel>> SelectWith<TModel>(IQueryable<Errand> query, int currentPage, int pageSize) 
+            where TModel : class
         {
-           // query = _context.Errands.AsQueryable();
-
             return await query
                 .OrderByDescending(a => a.CreationDate)
                 .Skip((currentPage - 1) * pageSize)
@@ -57,20 +59,14 @@ namespace Errands.Data.Services
         }
 
 
-
-
-
-
-
-
-
-        public async Task<int> ErrandsToDoTotal(string id)
+        
+        public async Task<int> ErrandsToDoTotal(string userId)
             => await _context.Errands
-                .Where(i => i.HelperUserId == id)
+                .Where(i => i.HelperUserId == userId)
                 .CountAsync();
-        public async Task<int> MyErrandsTotal(string id)
+        public async Task<int> MyErrandsTotal(string userId)
             => await _context.Errands
-                .Where(i => i.UserId == id)
+                .Where(i => i.UserId == userId)
                 .CountAsync();
         public async Task<int> Total() =>
             await _context.Errands.CountAsync();

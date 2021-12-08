@@ -20,6 +20,7 @@ namespace Errands.Mvc.Chat
         public async Task Send(string message, string to, Guid chatId)
         {
             var userName = Context.User.Identity.Name;
+            var dateTime = DateTime.UtcNow;
             await _messageService.SaveMessage(new Message
             {
                 Content = message, 
@@ -30,8 +31,8 @@ namespace Errands.Mvc.Chat
 
             if (Context.UserIdentifier != to) 
                 await Clients.User(Context.UserIdentifier)
-                    .SendAsync("Receive", message, userName);
-            await Clients.User(to).SendAsync("Receive", message, userName);
+                    .SendAsync("Receive", message, userName, dateTime);
+            await Clients.User(to).SendAsync("Receive", message, userName, dateTime);
         }
     }
 }

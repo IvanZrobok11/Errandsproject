@@ -108,3 +108,4 @@ C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcore
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Account\ResetPassword.cshtml.g.cs
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\bin\Debug\netcoreapp3.1\AutoMapper.dll
 C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\obj\Debug\netcoreapp3.1\Razor\Views\Message\InformAboutTakenErrands.cshtml.g.cs

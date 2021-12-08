@@ -15,7 +15,7 @@ namespace ErrandsTests
                 .ShouldHave().Attributes(a =>
                     a.RestrictingForAuthorizedRequests());
         }
-
+        
         [Fact]
         public void GetLogin_ShouldHave_AllowAnonymousFilter()
         {

@@ -21,7 +21,8 @@ namespace ErrandsTests.FakeDependencies
                 Type = TypeFile.File,
             };
         }
-        public static IEnumerable<Errand> GetErrands(int count,  bool sameUser = true, bool done = false, bool active = true)
+        public static IEnumerable<Errand> GetErrands(int count,  bool sameUser = true, string helperUserId = null,
+            bool done = false, bool active = true)
         {
             var testUser = new User()
             {
@@ -33,7 +34,7 @@ namespace ErrandsTests.FakeDependencies
                 .Select(e => new Errand()
                 {
                     Id = GenerateGuid(byte.Parse(e.ToString())),
-                    Title = $"Title{e}",
+                    Title = $"title{e}",
                     Description = $"Description{e}",
                     Done = done,
                     Active = active,
@@ -41,10 +42,10 @@ namespace ErrandsTests.FakeDependencies
                     User = sameUser ? testUser : 
                         new User
                         {
-                            UserName = $"TestUser{count}",
-                            Id = $"TestId"
+                            UserName = $"name{count}",
+                            Id = $"identifier{count}"
                         },
-                    HelperUserId = "TestHelperUserId"
+                    HelperUserId = helperUserId
                 })
                 .ToList();
             return errands;

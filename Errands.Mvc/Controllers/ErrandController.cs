@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Errands.Application.Common.Services;
 using Errands.Mvc.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace Errands.Mvc.Controllers
 {
@@ -22,26 +23,23 @@ namespace Errands.Mvc.Controllers
     public class ErrandController : Controller
     {
         private readonly IErrandsService _errandService;
-        private readonly IMessageService _messageService;
         private readonly IFileServices _fileServices;
         private readonly UserManager<User> _userManager;
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly IMapper _mapper;
+        private readonly ILogger<ErrandController> _logger;
 
         public ErrandController(
-            IErrandsService errandService,
-            IFileServices fileServices,
-            UserManager<User> userManager,
-            IMessageService messageService,
-            IDateTimeProvider dateTimeProvider,
-            IMapper mapper)
+            IErrandsService errandService, IFileServices fileServices,
+            UserManager<User> userManager, IDateTimeProvider dateTimeProvider,
+            IMapper mapper, ILogger<ErrandController> logger)
         {
             _errandService = errandService;
             _fileServices = fileServices;
             _userManager = userManager;
-            _messageService = messageService;
             _dateTimeProvider = dateTimeProvider;
             _mapper = mapper;
+            _logger = logger;
         }
         //
 
@@ -57,7 +55,7 @@ namespace Errands.Mvc.Controllers
             return View(errand);
         }
         [HttpGet]
-        public async Task<IActionResult> ListMyErrand(int pageNumber = 1)
+        public async Task<IActionResult> ListMyErrand([FromQuery]int pageNumber = 1)
         {
             var userId = User.GetId();
             var errands = await _errandService
@@ -132,20 +130,21 @@ namespace Errands.Mvc.Controllers
                         var fileModel = await _fileServices.SaveFile(uploadedFile);
                         fileModel.Errand = errand;
                         files.Add(fileModel);
+                        _logger.LogInformation("Created new errand:  <{title}>.", model.Title);
                     }
-                    catch (WrongExtensionFileException)
+                    catch (WrongExtensionFileException e)
                     {
-                        TempData[ControllerConstants.ErrorMessage] = "File have unallowable extension";
+                        TempData[TempDataResult.ErrorMessage] = "File have unallowable extension";
                         return View(model);
                     }
                     catch (InvalidSizeFileException)
                     {
-                        TempData[ControllerConstants.ErrorMessage] = "File size is bigger than allowed";
+                        TempData[TempDataResult.ErrorMessage] = "File size is bigger than allowed";
                         return View(model);
                     }
                     catch (ImageProcessingException)
                     {
-                        TempData[ControllerConstants.ErrorMessage] = "Processing exception";
+                        TempData[TempDataResult.ErrorMessage] = "Processing exception";
                         return View(model);
                     }
                     catch (Exception ex)
@@ -155,7 +154,7 @@ namespace Errands.Mvc.Controllers
                 }
             }
             await _errandService.CreateErrandAsync(errand, files);
-            TempData[ControllerConstants.SuccessMessage] = "Errand success created";
+            TempData[TempDataResult.SuccessMessage] = "Errand success created";
             return RedirectToAction(nameof(this.ListMyErrand));
         }
 
@@ -186,7 +185,7 @@ namespace Errands.Mvc.Controllers
                 errand.Title = map.Title;
             }
             await _errandService.UpdateAsync(errand);
-            TempData[ControllerConstants.SuccessMessage] = "Errand success edited";
+            TempData[TempDataResult.SuccessMessage] = "Errand success edited";
             return RedirectToAction(nameof(ListMyErrand));
         }
         [HttpPost]
@@ -200,6 +199,7 @@ namespace Errands.Mvc.Controllers
             }
             try
             {
+                _logger.LogInformation("Deleted errand:  <{title}>.", errand.Title);
                 var paths = errand.FileModels.Select(p => p.Path);
                 foreach (var p in paths)
                 {
@@ -207,28 +207,34 @@ namespace Errands.Mvc.Controllers
                 }
                 await _errandService.DeleteAsync(id);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new NotFoundException(errand?.Title, id);
+                _logger.LogWarning(ex, "Error delete file");
+                throw new NotFoundException(errand.Title, id);
             }
             return RedirectToAction(nameof(ListMyErrand));
+
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Take(Guid id)
+        public async Task<IActionResult> Take([FromServices] IMessageService messageService,Guid id)
         {
             var errand = await _errandService.GetErrandByIdAsync(id);
-
+            if (!errand.Active)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             errand.Active = false;
             errand.HelperUserId = User.GetId();
 
-            var chat = await _messageService.GetChatByUsersIdAsync(errand.HelperUserId, errand.UserId);
-            if (chat == null)
+            if (await messageService
+                .GetChatByUsersIdAsync(errand.HelperUserId, errand.UserId) == null)
             {
-                chat = await _messageService.CreateChatAsync(errand.UserId, errand.HelperUserId);
+                await messageService.CreateChatAsync(errand.UserId, errand.HelperUserId);
             }
             await _errandService.UpdateAsync(errand);
-            TempData[ControllerConstants.SuccessMessage] = $"You take {errand.Title} errand now!";
+            TempData[TempDataResult.SuccessMessage] = $"You take {errand.Title} errand now!";
             return RedirectToAction("ListErrandToDo");
         }
         [HttpPost]
@@ -236,7 +242,7 @@ namespace Errands.Mvc.Controllers
         public async Task<IActionResult> Confirm(Guid id)
         {
             var errand = await _errandService.GetErrandByIdAsync(id);
-            if (errand.Done == true)
+            if (errand.Done)
             {
                 return RedirectToAction("ListMyErrand");
             }

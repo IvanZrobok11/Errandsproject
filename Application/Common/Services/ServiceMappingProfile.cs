@@ -41,6 +41,9 @@ namespace Errands.Application.Common.Services
                     opt => opt.MapFrom(errand => errand.FileModels))
                 .ReverseMap();
 
+            this.CreateMap<User, UserProfileModel>()
+                .ForMember(userDto => userDto.CompletedErrands, opt =>
+                    opt.MapFrom(user => user.CompletedErrands));
 
         }
     }

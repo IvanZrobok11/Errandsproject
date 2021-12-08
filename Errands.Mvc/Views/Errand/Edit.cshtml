@@ -6,7 +6,7 @@
     <form asp-action="Edit" method="post" class="">
         <h3 class="sign-in__title form-create__title">Create errand</h3>
         <div class="input-validation-error" asp-validation-summary="All"></div>
-        <div class="input-validation-error" >@TempData[ControllerConstants.ErrorMessage]</div>
+        <div class="input-validation-error" >@TempData[TempDataResult.ErrorMessage]</div>
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="File"/>
         <div>

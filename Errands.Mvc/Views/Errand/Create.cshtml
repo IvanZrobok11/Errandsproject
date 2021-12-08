@@ -8,7 +8,7 @@
     <form asp-action="Create" method="post" class="" enctype="multipart/form-data">
         <h3 class="sign-in__title form-create__title">Create errand</h3>
         <div class="input-validation-error" asp-validation-summary="All"></div>
-        <div class="input-validation-error">@TempData[ControllerConstants.ErrorMessage]</div>
+        <div class="input-validation-error">@TempData[TempDataResult.ErrorMessage]</div>
         <div>
             <label class="form-create__label" asp-for="Title">Theme</label><br>
             <input class="form-create__input" type="text" asp-for="Title">

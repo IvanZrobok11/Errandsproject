@@ -7,4 +7,3 @@ C:\Users\LapStore\source\с#project\ErrandsProject\Domain\obj\Debug\netcoreapp3.
 C:\Users\LapStore\source\с#project\ErrandsProject\Domain\obj\Debug\netcoreapp3.1\Errands.Domain.csproj.CoreCompileInputs.cache
 C:\Users\LapStore\source\с#project\ErrandsProject\Domain\obj\Debug\netcoreapp3.1\Errands.Domain.dll
 C:\Users\LapStore\source\с#project\ErrandsProject\Domain\obj\Debug\netcoreapp3.1\Errands.Domain.pdb
-C:\Users\LapStore\source\с#project\ErrandsProject\Domain\obj\Debug\netcoreapp3.1\Errands.Domain.csproj.AssemblyReference.cache

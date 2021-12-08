@@ -54,8 +54,22 @@ using Errands.Mvc.Services;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 7 "C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\Views\_ViewImports.cshtml"
+using Errands.Mvc.Extensions;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 8 "C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\Views\_ViewImports.cshtml"
+using Errands.Data.Services;
+
+#line default
+#line hidden
+#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"2687aaaa16d1926bee5bd3e8689ea1ab007b3ee0", @"/Views/Admin/ListUsers.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"9849c63687be8fa6a89f04d0bb699dbba59a034f", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"b2290c3ce17e3c8c242a266992491cc74c3d8066", @"/Views/_ViewImports.cshtml")]
     public class Views_Admin_ListUsers : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<IEnumerable<User>>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("asp-action", "DeleteAndBlockedUser", global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -130,7 +144,7 @@ Write(user.Email);
 #line hidden
 #nullable disable
             WriteLiteral("</p>\r\n");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "2687aaaa16d1926bee5bd3e8689ea1ab007b3ee06657", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "2687aaaa16d1926bee5bd3e8689ea1ab007b3ee07054", async() => {
                 WriteLiteral("\r\n    <input type=\"hidden\" name=\"userId\"");
                 BeginWriteAttribute("value", " value=\"", 245, "\"", 261, 1);
 #nullable restore
@@ -167,7 +181,7 @@ WriteAttributeValue("", 253, user.Id, 253, 8, false);
 #line default
 #line hidden
 #nullable disable
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "2687aaaa16d1926bee5bd3e8689ea1ab007b3ee08955", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "2687aaaa16d1926bee5bd3e8689ea1ab007b3ee09352", async() => {
                 WriteLiteral("ListBlockedUserNames");
             }
             );

@@ -10,7 +10,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using Errands.Mvc.Extensions;
 using Errands.Mvc.Models;
+using Errands.Mvc.Services;
 
 namespace Errands.Mvc.Controllers
 {
@@ -18,13 +20,11 @@ namespace Errands.Mvc.Controllers
     public class MessageController : Controller
     {
         private readonly IUserService _userService;
-        private readonly IMapper _mapper;
         private readonly IMessageService _messageService;
 
-        public MessageController(IUserService userService, IMapper mapper, IMessageService messageService)
+        public MessageController(IUserService userService, IMessageService messageService)
         {
             _userService = userService;
-            _mapper = mapper;
             _messageService = messageService;
         }
         [HttpPost]
@@ -55,9 +55,14 @@ namespace Errands.Mvc.Controllers
             return Json(messages.ToArray());
         }
 
-
         [HttpGet]
-        public IActionResult MessageList()
+        public async Task<IActionResult> InformAboutTakenErrands([FromServices] IErrandsService errandsService)
+        {
+            var myErrands = await errandsService.GetUnfinishedErrands(User.GetId());
+            return View(myErrands);
+        }
+        [HttpPost]
+        public IActionResult InformAboutTakenErrands(int i)
         {
             return View();
         }

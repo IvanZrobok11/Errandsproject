@@ -54,8 +54,22 @@ using Errands.Mvc.Services;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 7 "C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\Views\_ViewImports.cshtml"
+using Errands.Mvc.Extensions;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 8 "C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\Views\_ViewImports.cshtml"
+using Errands.Data.Services;
+
+#line default
+#line hidden
+#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"e6a3fe9e646a3b6759c332480c76429cb6147202", @"/Views/Errand/GetErrand.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"9849c63687be8fa6a89f04d0bb699dbba59a034f", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"b2290c3ce17e3c8c242a266992491cc74c3d8066", @"/Views/_ViewImports.cshtml")]
     public class Views_Errand_GetErrand : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<Errand>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("asp-action", "GetFile", global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);
@@ -143,7 +157,7 @@ using Errands.Mvc.Services;
 #line hidden
 #nullable disable
             WriteLiteral("                ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "e6a3fe9e646a3b6759c332480c76429cb61472029458", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("img", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.SelfClosing, "e6a3fe9e646a3b6759c332480c76429cb61472029855", async() => {
             }
             );
             __Microsoft_AspNetCore_Mvc_Razor_TagHelpers_UrlResolutionTagHelper = CreateTagHelper<global::Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper>();
@@ -185,7 +199,7 @@ AddHtmlAttributeValue("", 608, file.Path.PathToUrl(), 608, 22, false);
 #line hidden
 #nullable disable
             WriteLiteral("                ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e6a3fe9e646a3b6759c332480c76429cb614720211514", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e6a3fe9e646a3b6759c332480c76429cb614720211911", async() => {
 #nullable restore
 #line 34 "C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\Views\Errand\GetErrand.cshtml"
                                                                                    Write(file.Name);
@@ -241,7 +255,7 @@ AddHtmlAttributeValue("", 608, file.Path.PathToUrl(), 608, 22, false);
 #line hidden
 #nullable disable
             WriteLiteral("\r\n        </div>\r\n        <div class=\"card__user\">\r\n            <b>");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e6a3fe9e646a3b6759c332480c76429cb614720214816", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e6a3fe9e646a3b6759c332480c76429cb614720215213", async() => {
 #nullable restore
 #line 44 "C:\Users\LapStore\source\с#project\ErrandsProject\Errands.Mvc\Views\Errand\GetErrand.cshtml"
                                                                                            Write(Model.User.UserName);
@@ -297,7 +311,7 @@ AddHtmlAttributeValue("", 608, file.Path.PathToUrl(), 608, 22, false);
 #line hidden
 #nullable disable
             WriteLiteral("            ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e6a3fe9e646a3b6759c332480c76429cb614720218143", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e6a3fe9e646a3b6759c332480c76429cb614720218540", async() => {
                 WriteLiteral("\r\n                <input type=\"hidden\" name=\"id\"");
                 BeginWriteAttribute("value", " value=\"", 1548, "\"", 1565, 1);
 #nullable restore
@@ -339,9 +353,9 @@ WriteAttributeValue("", 1556, Model.Id, 1556, 9, false);
 #line hidden
 #nullable disable
             WriteLiteral("            ");
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e6a3fe9e646a3b6759c332480c76429cb614720220763", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e6a3fe9e646a3b6759c332480c76429cb614720221160", async() => {
                 WriteLiteral("\r\n                <button class=\"card__disable\" type=\"submit\">Take</button>\r\n                ");
-                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e6a3fe9e646a3b6759c332480c76429cb614720221119", async() => {
+                __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "e6a3fe9e646a3b6759c332480c76429cb614720221516", async() => {
                     WriteLiteral("Cancel");
                 }
                 );
