@@ -20,7 +20,10 @@ namespace ErrandsTests
         //[Fact]
         [Theory]
         [InlineData(18, 1, ControllerConstants.ItemPerMainPage)]
-        [InlineData(18, 2, 6)]
+        [InlineData(18, 2, 8)]
+        [InlineData(20, 1, 10)]
+        [InlineData(20, 2, 10)]
+        [InlineData(20, 3, 0)]
         public void All_ShouldReturn_DefaultViewWithCorrectModel(int total, int page, int expectedCount)
             => MyController<HomeController>
                 .Instance(instance => instance

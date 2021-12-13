@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "65o1KGihQ8Q6t1dI3u5jJCuxxX0InmGLjP/XyoG2hkQu8Qs2xWqCDlZig8GKC1B5GuAdxmgq+AnHhv7w9pOUjw==",
+  "dgSpecHash": "VljCktj2Sv4PCkAZMiMewOg8eCLAhe3C54Hk0kelUxfPE8HvYXKCfzJEasXjd4d7rcJbfkeP46Gwh3YqcX0Kug==",
   "success": true,
   "projectFilePath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Errands.Mvc\\Errands.Mvc.csproj",
   "expectedPackageFiles": [
@@ -52,6 +52,7 @@
     "C:\\Users\\LapStore\\.nuget\\packages\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-arm64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\runtime.win-x64.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x64.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\runtime.win-x86.runtime.native.system.data.sqlclient.sni\\4.4.0\\runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512",
+    "C:\\Users\\LapStore\\.nuget\\packages\\serilog\\2.10.0\\serilog.2.10.0.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\sixlabors.imagesharp\\1.0.4\\sixlabors.imagesharp.1.0.4.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\sixlabors.imagesharp.web\\1.0.4\\sixlabors.imagesharp.web.1.0.4.nupkg.sha512",
     "C:\\Users\\LapStore\\.nuget\\packages\\system.collections\\4.3.0\\system.collections.4.3.0.nupkg.sha512",

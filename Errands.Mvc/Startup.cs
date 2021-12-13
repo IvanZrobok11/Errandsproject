@@ -15,6 +15,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
 using AutoMapper;
 using Errands.Application.Common.Services;
+using Errands.Mvc.Extensions;
+using Errands.Mvc.Middleware;
 
 namespace Errands.Mvc
 {
@@ -34,7 +36,7 @@ namespace Errands.Mvc
 
             services.AddIdentity<User, IdentityRole>(opts =>
                 {
-                    opts.Password.RequiredLength = 5;
+                    opts.Password.RequiredLength = 8;
                     opts.Password.RequireNonAlphanumeric = false;
                     opts.Password.RequireLowercase = false;
                     opts.Password.RequireUppercase = false;
@@ -71,8 +73,10 @@ namespace Errands.Mvc
             {
                 app.UseExceptionHandler("/Error/Error");
             }
-            app.UseHttpsRedirection();
+
+            app.UseErrorHandle();
             app.UseRouting();
+            app.UseHttpsRedirection();
 
             app.UseStaticFiles();
 

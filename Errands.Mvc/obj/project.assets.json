@@ -624,6 +624,15 @@
           }
         }
       },
+      "Serilog/2.10.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/Serilog.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/Serilog.dll": {}
+        }
+      },
       "SixLabors.ImageSharp/1.0.4": {
         "type": "package",
         "compile": {
@@ -2672,6 +2681,30 @@
         "runtimes/win-x86/native/sni.dll",
         "useSharedDesignerContext.txt",
         "version.txt"
+      ]
+    },
+    "Serilog/2.10.0": {
+      "sha512": "+QX0hmf37a0/OZLxM3wL7V6/ADvC1XihXN4Kq/p6d8lCPfgkRdiuhbWlMaFjR9Av0dy5F0+MBeDmDdRZN/YwQA==",
+      "type": "package",
+      "path": "serilog/2.10.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/net45/Serilog.dll",
+        "lib/net45/Serilog.xml",
+        "lib/net46/Serilog.dll",
+        "lib/net46/Serilog.xml",
+        "lib/netstandard1.0/Serilog.dll",
+        "lib/netstandard1.0/Serilog.xml",
+        "lib/netstandard1.3/Serilog.dll",
+        "lib/netstandard1.3/Serilog.xml",
+        "lib/netstandard2.0/Serilog.dll",
+        "lib/netstandard2.0/Serilog.xml",
+        "lib/netstandard2.1/Serilog.dll",
+        "lib/netstandard2.1/Serilog.xml",
+        "serilog.2.10.0.nupkg.sha512",
+        "serilog.nuspec"
       ]
     },
     "SixLabors.ImageSharp/1.0.4": {
@@ -6219,7 +6252,8 @@
       "Errrands.Application >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 3.1.21",
       "Microsoft.EntityFrameworkCore.SqlServer >= 3.1.20",
-      "Microsoft.EntityFrameworkCore.Tools >= 3.1.20"
+      "Microsoft.EntityFrameworkCore.Tools >= 3.1.20",
+      "Serilog >= 2.10.0"
     ]
   },
   "packageFolders": {
@@ -6289,6 +6323,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[3.1.20, )"
+          },
+          "Serilog": {
+            "target": "Package",
+            "version": "[2.10.0, )"
           }
         },
         "imports": [

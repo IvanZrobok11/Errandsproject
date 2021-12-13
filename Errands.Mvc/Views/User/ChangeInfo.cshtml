@@ -24,16 +24,17 @@
         </form>
     }
     <form asp-action="ChangeInfo" method="post">
+        <span asp-validation-for="UserName"></span><br />
         <label class="form-create__label" asp-for="UserName">Nickname</label>
-        <input class="form-create__input" type="text" asp-for="@Model.UserName" /><br>
+        <input class="form-create__input" type="text" asp-for="@Model.UserName"/><br>
 
         <label class="form-create__label">FirstName</label>
-        <input class="form-create__input" type="text" asp-for="@Model.FirstName" /><br>
+        <input class="form-create__input" type="text" asp-for="@Model.FirstName"/><br>
 
         <label class="form-create__label">LastName</label>
-        <input class="form-create__input" type="text" asp-for="@Model.LastName" /><br>
+        <input class="form-create__input" type="text" asp-for="@Model.LastName"/><br>
 
         <button class="nav-page__enabled" type="submit">Change</button>
-        <a class="nav-page__enabled " asp-controller="User" asp-action="Profile" asp-route-identity="@Context.User.GetId()" >Cancel</a>
+        <a class="nav-page__enabled " asp-controller="User" asp-action="Profile" asp-route-identity="@Context.User.GetId()">Cancel</a>
     </form>
 </div>

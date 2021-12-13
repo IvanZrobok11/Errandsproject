@@ -135,31 +135,30 @@
     {
         let countMessages = document.querySelectorAll('.message').length;
         console.log(countMessages);
-        if (countMessages > 39) {
-            let chatroom = document.querySelector('#chatroom');
-            let buttonDLMore = document.createElement("input");
-            buttonDLMore.classList.add('chat__download-messages');
-            buttonDLMore.setAttribute("id", "download-messages");
-            buttonDLMore.setAttribute("type", "button");
-            buttonDLMore.value = "download more";
-            chatroom.appendChild(buttonDLMore);
 
+        let chatroom = document.querySelector('#chatroom');
+        let buttonDLMore = document.createElement("input");
+        buttonDLMore.classList.add('chat__download-messages');
+        buttonDLMore.setAttribute("id", "download-messages");
+        buttonDLMore.setAttribute("type", "button");
+        buttonDLMore.value = "download more";
+        chatroom.appendChild(buttonDLMore);
+
+        var firstChild = document.getElementById("chatroom").firstChild;
+        document.getElementById("chatroom").insertBefore(buttonDLMore, firstChild);
+        let scrollPosition = 150;
+        document.getElementById("download-messages").addEventListener("click", function (e) {
+        let messages = downloadMessages(chatId, 20, document.querySelectorAll('.message').length);
+
+        messages.reverse().forEach(function(m) {
+            //console.log(m.content + m.senderId);
+            console.log(scrollPosition);
+            let userName = getUserNameById(m.senderId);
+            createMessageInChat(userName, m.content, m.dateSend, LocationMessage.InStartChat);
+            chatBody.scrollTop = 0;
             var firstChild = document.getElementById("chatroom").firstChild;
-            document.getElementById("chatroom").insertBefore(buttonDLMore, firstChild);
-        }
-            let scrollPosition = 150;
-            document.getElementById("download-messages").addEventListener("click", function (e) {
-            let messages = downloadMessages(chatId, 20, document.querySelectorAll('.message').length);
-
-            messages.reverse().forEach(function(m) {
-                //console.log(m.content + m.senderId);
-                console.log(scrollPosition);
-                let userName = getUserNameById(m.senderId);
-                createMessageInChat(userName, m.content, m.dateSend, LocationMessage.InStartChat);
-                chatBody.scrollTop = 0;
-                var firstChild = document.getElementById("chatroom").firstChild;
-                document.getElementById("chatroom").insertBefore(document.getElementById('download-messages'), firstChild);
-                chatBody.scrollTop = scrollPosition;
+            document.getElementById("chatroom").insertBefore(document.getElementById('download-messages'), firstChild);
+            chatBody.scrollTop = scrollPosition;
             });
         });
     }
@@ -173,7 +172,7 @@
     inputForm.addEventListener('input', function() {
             let isIncomplete = inputs.some(input => !input.value);
             sendBtn.disabled = isIncomplete;
-            sendBtn.style.cursor = isIncomplete ? 'not-allowed' : 'pointer';
+            //sendBtn.style.cursor = isIncomplete ? 'not-allowed' : 'pointer';
     });
     //
     const hubConnection = new signalR.HubConnectionBuilder()

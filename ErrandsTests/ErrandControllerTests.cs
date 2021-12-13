@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Errands.Application.Common.Services;
+using Errands.Data.Services;
 using Errands.Mvc.Services;
 using Microsoft.AspNetCore.Mvc;
 using Shouldly;
@@ -47,10 +48,8 @@ namespace ErrandsTests
                 .ShouldReturn()
                 .NotFound();
         }
-        [Theory]
-        [InlineData(true, TestUser.Username)]
-        [InlineData(false, TestUser.Username)]
-        public void GetErrand_ShouldReturn_ViewWithModel_AndHaveAllowAnonymousFilter(bool sameUser, string userId)
+        [Fact]
+        public void GetErrand_ShouldReturn_ViewWithModel_AndHaveAllowAnonymousFilter()
         {
             MyController<ErrandController>
                 .Instance(d => 
@@ -87,9 +86,9 @@ namespace ErrandsTests
                     .Passing(e =>
                         {
                             e.Errands.ShouldNotBeEmpty();
-                            e.Errands.SingleOrDefault(a => a.Title == "Title1")
+                            e.Errands.SingleOrDefault(a => a.Title == "title1")
                                 .ShouldNotBeNull();
-                            e.Errands.SingleOrDefault(a => a.Title == "Title2")
+                            e.Errands.SingleOrDefault(a => a.Title == "title2")
                                 .ShouldNotBeNull();
                         }
                     ));
@@ -253,7 +252,7 @@ namespace ErrandsTests
         {
             MyController<ErrandController>
                 .Instance(i => i
-                    .WithData(ErrandsTestData.GetErrands(2, helperUserId: "someId"))
+                    .WithData(ErrandsTestData.GetErrands(2, helperUserId: "someId", active: false))
                     .WithUser(TestUser.Identifier, TestUser.Username)
                 )
                 .Calling(m => m.Take(ErrandsTestData.GenerateGuid(1)))

@@ -571,3 +571,4 @@ C:\Users\LapStore\source\с#project\ErrandsProject\ErrandsTests\bin\Debug\netcor
 C:\Users\LapStore\source\с#project\ErrandsProject\ErrandsTests\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
 C:\Users\LapStore\source\с#project\ErrandsProject\ErrandsTests\bin\Debug\netcoreapp3.1\AutoMapper.dll
 C:\Users\LapStore\source\с#project\ErrandsProject\ErrandsTests\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\LapStore\source\с#project\ErrandsProject\ErrandsTests\bin\Debug\netcoreapp3.1\Serilog.dll

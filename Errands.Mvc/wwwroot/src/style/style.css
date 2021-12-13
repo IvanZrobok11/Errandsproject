@@ -29,12 +29,15 @@ h6 {
 
 html,
 body {
-  height: 100%;
   line-height: 1;
   font-size: 16px;
-  background-color: white;
   color: #1d1c1c;
-  font-family: Ubuntu;
+  background: repeat url("../img/bg_repeat.jpg");
+}
+
+.card__user-info {
+  margin: 15px 10px 10px 10px;
+  font-size: 20px;
 }
 
 body._lock {
@@ -42,6 +45,9 @@ body._lock {
 }
 
 .wrapper {
+  display: none;
+  overflow: hidden;
+  opacity: 0;
   min-height: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -50,8 +56,28 @@ body._lock {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  background-color: #F5F5F5;
-  overflow: hidden;
+}
+
+.wrapper__done {
+  display: flex;
+  opacity: 1;
+  overflow: auto;
+}
+
+.success__block {
+  background-color: #7be062;
+  opacity: 40%;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 20px;
+  font-optical-sizing: 0;
+  width: 100%;
+  color: black;
+  margin-bottom: 10px;
+}
+
+.main__table {
+  width: 100%;
 }
 
 /* ------------------ */
@@ -327,8 +353,8 @@ body._lock {
   padding-top: 60px;
   margin-right: 50px;
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 auto;
-          flex: 1 1 auto;
+      -ms-flex: 1 0 auto;
+          flex: 1 0 auto;
 }
 
 .main__container {
@@ -576,7 +602,6 @@ body._lock {
 .card__desk {
   font-size: 16px;
   margin-bottom: 10px;
-  letter-spacing: 1px;
   word-spacing: 1.1px;
   background-color: #e4e3e3;
   color: #282e33;
@@ -595,6 +620,7 @@ body._lock {
 .card__price {
   font-weight: bold;
   font-size: 22px;
+  margin-left: 10px;
 }
 
 .card__disable {
@@ -616,7 +642,7 @@ body._lock {
   margin-top: 10px;
   background-color: #154a5f;
   font-size: 25px;
-  letter-spacing: 3px;
+  letter-spacing: 1.2px;
   color: white;
   border-radius: 10px;
   padding: 5px 50px;
@@ -894,6 +920,13 @@ body._lock {
 .txt-danger {
   color: #d1cfcf;
   background-color: #9e2222;
+  padding: 5px 20px;
+  border-radius: 15px;
+}
+
+.txt-info {
+  color: #d1cfcf;
+  background-color: #22819e;
   padding: 5px 20px;
   border-radius: 15px;
 }

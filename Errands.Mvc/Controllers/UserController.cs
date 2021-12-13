@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Errands.Application.Common.Services;
 using Errands.Mvc.Extensions;
+using Microsoft.AspNetCore.Routing;
 
 namespace Errands.Mvc.Controllers
 {
@@ -35,11 +36,8 @@ namespace Errands.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Profile(string identity)
         {
-            var userId = identity;
-            if (userId == null)
-            {
-                userId = this.User.GetId();
-            }
+            var userId = identity ?? this.User.GetId();
+
             User user = await _userManager.FindByIdAsync(userId);
             return View(_mapper.Map<UserProfileModel>(user));
         }
@@ -63,7 +61,6 @@ namespace Errands.Mvc.Controllers
                 changedInfo.FirstName = profileModel.FirstName;
                 changedInfo.LastName = profileModel.LastName;
             }
-
             var result = await _userManager.UpdateAsync(changedInfo);
             if (result.Succeeded)
             {

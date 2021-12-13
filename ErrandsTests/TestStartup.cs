@@ -24,8 +24,8 @@ namespace ErrandsTests
             base.ConfigureServices(services);
 
             services.ReplaceTransient<IDateTimeProvider>(_ => DateTimeProviderMock.Create);
-            services.Replace<UserManager<User>, FakeUserManager>(ServiceLifetime.Scoped);
-            services.Replace<SignInManager<User>, FakeSignInManager>(ServiceLifetime.Scoped);
+            //services.Replace<UserManager<User>, FakeUserManager>(ServiceLifetime.Scoped);
+            //services.Replace<SignInManager<User>, FakeSignInManager>(ServiceLifetime.Scoped);
         }
     }
 }

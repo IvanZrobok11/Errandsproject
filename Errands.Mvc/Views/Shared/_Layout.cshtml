@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewData["Title"]</title>
+    <link href="~/src/style/loader.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/src/style/style.css">
 </head>
 <body>
@@ -32,25 +33,22 @@
         }
 
     </style>
-
-    <div class="wrapper">
+    <div id="loader" class="loader">
+        <div class="l_main">
+            <div class="l_square"><span></span><span></span><span></span></div>
+            <div class="l_square"><span></span><span></span><span></span></div>
+            <div class="l_square"><span></span><span></span><span></span></div>
+            <div class="l_square"><span></span><span></span><span></span></div>
+        </div>
+    </div>
+    <div id="wrapper" class="wrapper">
         @await Html.PartialAsync("_HeaderPartial")
         <main class="main">
             <div class="main__container">
                 @RenderBody()
             </div>           
         </main>
-        @*<section class="sub-main">
-                <nav class="sub-main__nav">
-                    <div class="sub-main__next-page">
-                        <a class="sub-main__link sub-main__link-active" href="#" class="next-page">1</a>
-                        <a class="sub-main__link" href="#" class="next-page">2</a>
-                        <a class="sub-main__link" href="#" class="next-page">3</a>
-                        <a class="sub-main__link" href="#" class="next-page">4</a>
-                        <a class="sub-main__link" href="#" class="next-page">...</a>
-                    </div>
-                </nav>
-            </section>*@
+       
         <footer class="footer">
             <div class="footer__container">
                 <div class="footer__links">
@@ -59,7 +57,7 @@
             </div>
         </footer>
     </div>
-
+    <script src="~/src/js/loader.js"></script>
     <script src="~/src/js/main.js"></script>
 </body>
 </html>
