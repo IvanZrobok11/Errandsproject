@@ -1,27 +1,24 @@
 ﻿using Errands.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using SixLabors.ImageSharp.Formats.Jpeg;
-using System.IO;
-using Errands.Application.Common;
+using System.Collections.Generic;
 using System.Linq;
-using SixLabors.ImageSharp;
-using Microsoft.AspNetCore.Hosting;
-using SixLabors.ImageSharp.Processing;
+using System.Threading.Tasks;
 
 namespace Errands.Data.Services
 {
-    public class UserService : IUserService
+    public class UsersRepository : IUsersRepository
     {
         private readonly ErrandsDbContext _context;
-        public UserService(ErrandsDbContext context)
+
+
+
+        public UsersRepository(ErrandsDbContext context)
         {
             _context = context;
         }
+        public IQueryable<User> Users => _context.Users;
+
+        public IQueryable<BlockedUser> BlockedUsers => _context.BlockedUsers;
         public async Task<Logo> GetLogoAsync(string userId)
         {
             var logo = await _context.Logos.FirstOrDefaultAsync(l => l.UserId == userId);
@@ -37,11 +34,6 @@ namespace Errands.Data.Services
         {
             await _context.Logos.AddAsync(logo);
             await _context.SaveChangesAsync();
-        }
-        public Logo DeleteLogo(Logo logo)
-        {
-            var logoEntry = _context.Logos.Remove(logo).Entity;
-            return logoEntry;
         }
         public async Task<Logo> DeleteLogoAsync(string userid)
         {
@@ -59,11 +51,10 @@ namespace Errands.Data.Services
                 .FirstOrDefaultAsync(u => u.Id == userId);
             return user;
         }
-        public async Task AddEmailToBlocked(string email)
+
+        public async Task AddBlockedUsersByEmail(string email)
         {
             await _context.BlockedUsers.AddAsync(new BlockedUser { Email = email });
         }
-        public List<BlockedUser> ListBlockedUsers =>
-            _context.BlockedUsers.ToList();
     }
 }

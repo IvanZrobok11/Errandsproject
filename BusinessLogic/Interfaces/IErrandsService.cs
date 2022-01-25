@@ -1,11 +1,11 @@
-﻿using Errands.Domain.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Errands.Application.Common.Services;
+using Errands.Domain.Models;
 
-namespace Errands.Data.Services
+namespace BusinessLogic.Interfaces
 {
     public interface IErrandsService
     {

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\Errrands.Application.csproj" />
+    <ProjectReference Include="..\Data\Errands.Data.csproj" />
+    <ProjectReference Include="..\Domain\Errands.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -3,11 +3,11 @@
 @using Errands.Mvc.Extensions
 @using System.Linq
 
-@inject IUserService _userService
+@inject IUsersRepository _usersRepository
 @inject SignInManager<User> signInManager
-@inject IErrandsService _errandsService
+@inject IErrandsRepository _errandsRepository
 @{
-    string logoPath = await _userService.GetLogoPathAsync(User.GetId());
+    string logoPath = await _usersRepository.GetLogoPathAsync(User.GetId());
 }
 <header class="header">
     <div class="header__container">
@@ -28,7 +28,7 @@
                             <a asp-controller="Message" asp-action="InformAboutTakenErrands" class="menu__message">
                                 <img src="~/src/img/messenger.png" alt="">
                                 @{
-                                    var countNotice = await _errandsService.GetUnfinishedErrands(this.Context.User.GetId()).ContinueWith( e => e.Result.Count());
+                                    var countNotice = await _errandsRepository.GetUnfinishedErrands(this.Context.User.GetId()).ContinueWith( e => e.Result.Count());
                                 }
                                 @if (countNotice > 0)
                                 {

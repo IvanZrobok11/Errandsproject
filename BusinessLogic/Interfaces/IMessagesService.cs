@@ -4,9 +4,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Errands.Domain.Models;
 
-namespace Errands.Data.Services
+namespace BusinessLogic.Interfaces
 {
-    public interface IMessageService
+    public interface IMessagesService
     {
         Task<Chat> GetChatByUsersIdAsync(string userId1, string userId2);
         Task<Chat> CreateChatAsync(string userId1, string userId2);

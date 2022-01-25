@@ -1,8 +1,8 @@
-﻿@inject IUserService _userService
+﻿@inject IUsersRepository _usersRepository
 @model UserProfileModel
 @{
     var currentUserName = User.Identity.Name;
-    string logoPath = await _userService.GetLogoPathAsync(Model.Id);
+    string logoPath = await _usersRepository.GetLogoPathAsync(Model.Id);
 }
 
 <div class="main__user-profile user-profile">

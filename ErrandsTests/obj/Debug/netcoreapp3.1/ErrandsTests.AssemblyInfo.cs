@@ -11,10 +11,11 @@
 using System;
 using System.Reflection;
 
-[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("Errands.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Data", "Errands.Data.csproj", "0")]
-[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("Errands.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain", "Errands.Domain.csproj", "0")]
-[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("Errands.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Errands.Mvc", "Errands.Mvc.csproj", "0")]
-[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("Errrands.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application", "Errrands.Application.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("BusinessLogic", "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\BusinessLogic", "BusinessLogic.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("Errands.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data", "Errands.Data.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("Errands.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain", "Errands.Domain.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("Errands.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Errands.Mvc", "Errands.Mvc.csproj", "0")]
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("Errrands.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null", "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application", "Errrands.Application.csproj", "0")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("ErrandsTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]

@@ -1070,19 +1070,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\LapStore\\.nuget\\packages\\": {}
+    "C:\\Users\\VanyaPc\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application\\Errrands.Application.csproj",
+      "projectUniqueName": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj",
       "projectName": "Errrands.Application",
-      "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application\\Errrands.Application.csproj",
-      "packagesPath": "C:\\Users\\LapStore\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application\\obj\\",
+      "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj",
+      "packagesPath": "C:\\Users\\VanyaPc\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\LapStore\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\VanyaPc\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1096,8 +1096,8 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj": {
-              "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj"
+            "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj": {
+              "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj"
             }
           }
         }
@@ -1132,7 +1132,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
       }
     }
   }

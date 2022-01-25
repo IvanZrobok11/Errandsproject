@@ -4,7 +4,7 @@
     ViewData["Title"] = "Notification";
 }
 
-@inject IUserService _userService
+@inject IUsersRepository _usersRepository
 
 <div class="main__table">
     @foreach (var errand in Model)
@@ -14,7 +14,7 @@
             <h2 class="card__label">
                 Errand  <a asp-controller="Errand" asp-action="GetErrand" asp-route-errandId="@errand.Id">  @errand.Title  </a>  took user: 
                 <a asp-controller="User" asp-action="Profile" asp-route-identity="@errand.HelperUserId">
-                    @await _userService.GetUserInfoAsync(errand.HelperUserId).ContinueWith(w => w.Result.UserName)
+                    @await _usersRepository.GetUserInfoAsync(errand.HelperUserId).ContinueWith(w => w.Result.UserName)
                 </a>
             </h2>
             <div class="card__user-info">

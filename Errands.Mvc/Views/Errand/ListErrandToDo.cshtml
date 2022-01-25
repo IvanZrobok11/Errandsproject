@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "I took";
 }
-@inject IUserService _userService
+@inject IUsersRepository _usersRepository
 
 <div class="main__table">
     @if (TempData[TempDataResult.SuccessMessage] != null)
@@ -33,7 +33,7 @@
                 <h3>
                     User:
                     <a asp-controller="User" asp-action="Profile" asp-route-identity="@errand.NeedlyUserId">
-                        @await _userService.GetUserInfoAsync(errand.NeedlyUserId).ContinueWith(w => w.Result.UserName)
+                        @await _usersRepository.GetUserInfoAsync(errand.NeedlyUserId).ContinueWith(w => w.Result.UserName)
                     </a>
                     <form asp-action="Chat" asp-controller="Message" method="post">
                         <input type="hidden" name="receiverUserId" value="@errand.NeedlyUserId" />

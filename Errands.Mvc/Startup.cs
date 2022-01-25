@@ -53,9 +53,9 @@ namespace Errands.Mvc
                 conf.EnableDetailedErrors = true;
             });
 
-            services.AddTransient<IErrandsService, ErrandsService>()
-                .AddTransient<IUserService, UserService>()
-                .AddTransient<IMessageService, MessageService>()
+            services.AddTransient<IErrandsRepository, ErrandsRepository>()
+                .AddTransient<IUsersRepository, UsersRepository>()
+                .AddTransient<IMessagesRepository, MessagesRepository>()
                 .AddTransient<IDateTimeProvider, DateTimeProvider>()
                 .AddTransient<IFileServices ,FileServices>();
 

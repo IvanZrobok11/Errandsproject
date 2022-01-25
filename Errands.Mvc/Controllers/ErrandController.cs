@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessLogic.Interfaces;
 
 namespace Errands.Mvc.Controllers
 {
@@ -27,13 +28,13 @@ namespace Errands.Mvc.Controllers
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly IMapper _mapper;
         private readonly ILogger<ErrandController> _logger;
-        public readonly IMessageService _messageService;
+        public readonly IMessagesService _messagesService;
 
         public ErrandController(
             IErrandsService errandService, IFileServices fileServices,
             UserManager<User> userManager, IDateTimeProvider dateTimeProvider,
             IMapper mapper, ILogger<ErrandController> logger,
-            IMessageService messageService)
+            IMessagesService messagesService)
         {
             _errandService = errandService;
             _fileServices = fileServices;
@@ -41,7 +42,7 @@ namespace Errands.Mvc.Controllers
             _dateTimeProvider = dateTimeProvider;
             _mapper = mapper;
             _logger = logger;
-            _messageService = messageService;
+            _messagesService = messagesService;
         }
         //
 
@@ -231,10 +232,10 @@ namespace Errands.Mvc.Controllers
             errand.Active = false;
             errand.HelperUserId = User.GetId();
 
-            if (await _messageService
-                .GetChatByUsersIdAsync(errand.HelperUserId, errand.UserId) == null)
+            if (await _messagesService
+                    .GetChatByUsersIdAsync(errand.HelperUserId, errand.UserId) == null)
             {
-                await _messageService.CreateChatAsync(errand.UserId, errand.HelperUserId);
+                await _messagesService.CreateChatAsync(errand.UserId, errand.HelperUserId);
             }
             await _errandService.UpdateAsync(errand);
             TempData[TempDataResult.SuccessMessage] = $"You take <{errand.Title}> errand now!";

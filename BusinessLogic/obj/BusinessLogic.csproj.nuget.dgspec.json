@@ -1,0 +1,285 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\BusinessLogic\\BusinessLogic.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj",
+        "projectName": "Errrands.Application",
+        "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj",
+        "packagesPath": "C:\\Users\\VanyaPc\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\VanyaPc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "AutoMapper": {
+              "target": "Package",
+              "version": "[10.1.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\BusinessLogic\\BusinessLogic.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\BusinessLogic\\BusinessLogic.csproj",
+        "projectName": "BusinessLogic",
+        "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\BusinessLogic\\BusinessLogic.csproj",
+        "packagesPath": "C:\\Users\\VanyaPc\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\BusinessLogic\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\VanyaPc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj"
+              },
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj"
+              },
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj",
+        "projectName": "Errands.Data",
+        "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj",
+        "packagesPath": "C:\\Users\\VanyaPc\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\VanyaPc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj"
+              },
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Magick.NET.Core": {
+              "target": "Package",
+              "version": "[8.3.3, )"
+            },
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[3.1.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.1.20, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.20, )"
+            },
+            "SixLabors.ImageSharp.Web": {
+              "target": "Package",
+              "version": "[1.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj",
+        "projectName": "Errands.Domain",
+        "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj",
+        "packagesPath": "C:\\Users\\VanyaPc\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\VanyaPc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.AspNetCore.Http.Features": {
+              "target": "Package",
+              "version": "[3.1.20, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[3.1.20, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\ErrandsTests\\ErrandsTests.csproj": {}
+    "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\ErrandsTests\\ErrandsTests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application\\Errrands.Application.csproj": {
+    "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application\\Errrands.Application.csproj",
+        "projectUniqueName": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj",
         "projectName": "Errrands.Application",
-        "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application\\Errrands.Application.csproj",
-        "packagesPath": "C:\\Users\\LapStore\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application\\obj\\",
+        "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj",
+        "packagesPath": "C:\\Users\\VanyaPc\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\LapStore\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\VanyaPc\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -28,8 +28,8 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj": {
-                "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj"
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj"
               }
             }
           }
@@ -64,21 +64,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Data\\Errands.Data.csproj": {
+    "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\BusinessLogic\\BusinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Data\\Errands.Data.csproj",
-        "projectName": "Errands.Data",
-        "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Data\\Errands.Data.csproj",
-        "packagesPath": "C:\\Users\\LapStore\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Data\\obj\\",
+        "projectUniqueName": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\BusinessLogic\\BusinessLogic.csproj",
+        "projectName": "BusinessLogic",
+        "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\BusinessLogic\\BusinessLogic.csproj",
+        "packagesPath": "C:\\Users\\VanyaPc\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\BusinessLogic\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\LapStore\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\VanyaPc\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -92,11 +92,75 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application\\Errrands.Application.csproj": {
-                "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application\\Errrands.Application.csproj"
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj"
               },
-              "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj": {
-                "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj"
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj"
+              },
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj",
+        "projectName": "Errands.Data",
+        "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj",
+        "packagesPath": "C:\\Users\\VanyaPc\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\VanyaPc\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj"
+              },
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj"
               }
             }
           }
@@ -149,21 +213,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj": {
+    "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj",
         "projectName": "Errands.Domain",
-        "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj",
-        "packagesPath": "C:\\Users\\LapStore\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\obj\\",
+        "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj",
+        "packagesPath": "C:\\Users\\VanyaPc\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\LapStore\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\VanyaPc\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -213,21 +277,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Errands.Mvc\\Errands.Mvc.csproj": {
+    "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Errands.Mvc\\Errands.Mvc.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Errands.Mvc\\Errands.Mvc.csproj",
+        "projectUniqueName": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Errands.Mvc\\Errands.Mvc.csproj",
         "projectName": "Errands.Mvc",
-        "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Errands.Mvc\\Errands.Mvc.csproj",
-        "packagesPath": "C:\\Users\\LapStore\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Errands.Mvc\\obj\\",
+        "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Errands.Mvc\\Errands.Mvc.csproj",
+        "packagesPath": "C:\\Users\\VanyaPc\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Errands.Mvc\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\LapStore\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\VanyaPc\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -241,11 +305,14 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application\\Errrands.Application.csproj": {
-                "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Application\\Errrands.Application.csproj"
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Application\\Errrands.Application.csproj"
               },
-              "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Data\\Errands.Data.csproj": {
-                "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Data\\Errands.Data.csproj"
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\BusinessLogic\\BusinessLogic.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\BusinessLogic\\BusinessLogic.csproj"
+              },
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj"
               }
             }
           }
@@ -305,21 +372,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\ErrandsTests\\ErrandsTests.csproj": {
+    "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\ErrandsTests\\ErrandsTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\ErrandsTests\\ErrandsTests.csproj",
+        "projectUniqueName": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\ErrandsTests\\ErrandsTests.csproj",
         "projectName": "ErrandsTests",
-        "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\ErrandsTests\\ErrandsTests.csproj",
-        "packagesPath": "C:\\Users\\LapStore\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\ErrandsTests\\obj\\",
+        "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\ErrandsTests\\ErrandsTests.csproj",
+        "packagesPath": "C:\\Users\\VanyaPc\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\ErrandsTests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\LapStore\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\VanyaPc\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -333,14 +400,14 @@
           "netcoreapp3.1": {
             "targetAlias": "netcoreapp3.1",
             "projectReferences": {
-              "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Data\\Errands.Data.csproj": {
-                "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Data\\Errands.Data.csproj"
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Data\\Errands.Data.csproj"
               },
-              "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj": {
-                "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Domain\\Errands.Domain.csproj"
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Domain\\Errands.Domain.csproj"
               },
-              "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Errands.Mvc\\Errands.Mvc.csproj": {
-                "projectPath": "C:\\Users\\LapStore\\source\\с#project\\ErrandsProject\\Errands.Mvc\\Errands.Mvc.csproj"
+              "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Errands.Mvc\\Errands.Mvc.csproj": {
+                "projectPath": "C:\\Users\\VanyaPc\\source\\C#Project\\Errands\\Errands.Mvc\\Errands.Mvc.csproj"
               }
             }
           }
@@ -411,7 +478,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.404\\RuntimeIdentifierGraph.json"
         }
       }
     }

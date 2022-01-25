@@ -3,6 +3,7 @@ using Errands.Mvc.Models.ViewModels;
 using Errands.Mvc.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using BusinessLogic.Interfaces;
 
 namespace Errands.Mvc.Controllers
 {

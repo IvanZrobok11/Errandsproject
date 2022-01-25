@@ -11,6 +11,7 @@ using SixLabors.ImageSharp;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using BusinessLogic.Interfaces;
 using Errands.Application.Common.Services;
 using Errands.Mvc.Extensions;
 using Microsoft.AspNetCore.Routing;
@@ -22,15 +23,15 @@ namespace Errands.Mvc.Controllers
     {
         private readonly IMapper _mapper;
         private readonly UserManager<User> _userManager;
-        private readonly IUserService _userService;
+        private readonly IUsersService _usersService;
         private readonly IFileServices _fileServices;
 
         public UserController(IMapper mapper, UserManager<User> userManager,
-            IUserService userService, IFileServices fileServices)
+            IUsersService usersService, IFileServices fileServices)
         {
             _mapper = mapper;
             _userManager = userManager;
-            _userService = userService;
+            _usersService = usersService;
             _fileServices = fileServices;
         }
         [HttpGet]
@@ -85,18 +86,18 @@ namespace Errands.Mvc.Controllers
                 TempData["message"] = "Please attach file";
                 return RedirectToAction("ChangeInfo");
             }
-            var path = await _userService.GetLogoPathAsync(User.GetId());
+            var path = await _usersService.GetLogoPathAsync(User.GetId());
             try
             {
                 if (path != null)
                 {
                     _fileServices.DeleteFile(path);
-                    await _userService.DeleteLogoAsync(User.GetId());
+                    await _usersService.DeleteLogoAsync(User.GetId());
                 }
                 
                 var logo = await _fileServices.SaveLogoAsync(Logo);
                 logo.UserId = User.GetId();
-                await _userService.AddLogoAsync(logo);
+                await _usersService.AddLogoAsync(logo);
             }
             catch (WrongExtensionFileException)
             {

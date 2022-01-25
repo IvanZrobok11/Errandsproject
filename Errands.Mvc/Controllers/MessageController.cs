@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using BusinessLogic.Interfaces;
 using Errands.Mvc.Extensions;
 using Errands.Mvc.Models;
 using Errands.Mvc.Services;
@@ -19,23 +20,23 @@ namespace Errands.Mvc.Controllers
     [Authorize]
     public class MessageController : Controller
     {
-        private readonly IUserService _userService;
-        private readonly IMessageService _messageService;
+        private readonly IUsersService _usersService;
+        private readonly IMessagesService _messagesService;
 
-        public MessageController(IUserService userService, IMessageService messageService)
+        public MessageController(IUsersService usersService, IMessagesService messagesService)
         {
-            _userService = userService;
-            _messageService = messageService;
+            _usersService = usersService;
+            _messagesService = messagesService;
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ViewResult> Chat(string receiverUserId)
         {
-            User receiverUser = await _userService.GetUserInfoAsync(receiverUserId);
-            User senderUser = await _userService.GetUserInfoAsync(
+            User receiverUser = await _usersService.GetUserInfoAsync(receiverUserId);
+            User senderUser = await _usersService.GetUserInfoAsync(
                 User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-            var chat = await _messageService.GetChatByUsersIdAsync(receiverUser.Id, senderUser.Id);
+            var chat = await _messagesService.GetChatByUsersIdAsync(receiverUser.Id, senderUser.Id);
 
             var model = new ChatDataViewModel
             {
@@ -50,15 +51,15 @@ namespace Errands.Mvc.Controllers
         public JsonResult LoadMessages(Guid chatId, int countMessages, int skipMessages)
         {
             
-            var messages = _messageService.GetMessages(chatId)
+            var messages = _messagesService.GetMessages(chatId)
                 .SkipLast(skipMessages).TakeLast(countMessages);
             return Json(messages.ToArray());
         }
 
         [HttpGet]
-        public async Task<IActionResult> InformAboutTakenErrands([FromServices] IErrandsService errandsService)
+        public async Task<IActionResult> InformAboutTakenErrands([FromServices] IErrandsService service)
         {
-            var myErrands = await errandsService.GetUnfinishedErrands(User.GetId());
+            var myErrands = await service.GetUnfinishedErrands(User.GetId());
             return View(myErrands);
         }
         [HttpPost]

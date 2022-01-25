@@ -11,17 +11,17 @@ namespace Errands.Mvc.Chat
     [Authorize]
     public class ChatHub : Hub
     {
-        private readonly IMessageService _messageService;
+        private readonly IMessagesRepository _messagesRepository;
 
-        public ChatHub(IMessageService messageService)
+        public ChatHub(IMessagesRepository messagesRepository)
         {
-            _messageService = messageService;
+            _messagesRepository = messagesRepository;
         }
         public async Task Send(string message, string to, Guid chatId)
         {
             var userName = Context.User.Identity.Name;
             var dateTime = DateTime.UtcNow;
-            await _messageService.SaveMessage(new Message
+            await _messagesRepository.SaveMessage(new Message
             {
                 Content = message, 
                 DateSend = DateTime.UtcNow, 

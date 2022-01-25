@@ -1,7 +1,7 @@
-﻿@inject IUserService _userService
+﻿@inject IUsersRepository _usersRepository
 @model UserProfileModel
 @{
-    string logoPath = await _userService.GetLogoPathAsync(User.GetId());
+    string logoPath = await _usersRepository.GetLogoPathAsync(User.GetId());
 }
 
 <div class="main__user-profile user-profile">
