@@ -1,4 +1,5 @@
-﻿using Errands.Application.Exceptions;
+﻿using System.Collections.Generic;
+using Errands.Application.Exceptions;
 using Errands.Data.Services;
 using Errands.Domain.Models;
 using Errands.Mvc.Models.ViewModels;
